@@ -67,5 +67,5 @@
   }
   if(window.addEventListener){window.addEventListener("load",wire,false);}else{window.attachEvent("onload",wire);}
 
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=11"); }catch(e){} }
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=12"); }catch(e){} }
 })();

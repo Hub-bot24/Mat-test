@@ -7,20 +7,34 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffd400">
 <style>
-  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif;margin:0}
+  /* Global & typography */
+  html,body{margin:0;padding:0}
+  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
+  *,*:before,*:after{box-sizing:border-box}
+
+  /* Layout */
   .wrap{max-width:860px;margin:0 auto;padding:20px}
   .header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
   .logo{height:36px}
   h1{font-size:22px;margin:0;font-weight:700}
+
+  /* Cards & notes */
   .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px;position:relative}
   .note.brand{background:#ffd4001A;border-color:#ffd40080}
   .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
   .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px}
+
+  /* Form controls */
   label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
-  input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc}
+  input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc;height:44px;line-height:22px}
   input.output{background:#f0f2f5}
-  .row2{display:flex;gap:12px;flex-wrap:wrap}
-  .half{flex:1 1 260px}
+
+  /* Two-column row using inline-block (legacy-safe) */
+  .row2{margin-top:10px;font-size:0} /* remove inline-block gaps */
+  .half{display:inline-block;vertical-align:top;width:49%;font-size:14px}
+  .half + .half{margin-left:2%}
+
+  /* Buttons & meta */
   .actions{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .btn{font-size:16px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
   .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
@@ -29,13 +43,18 @@
   footer{margin:16px 0 0;color:#666;font-size:12px;text-align:center}
   .hide{display:none}
 
+  /* Mobile: stack the two fields */
+  @media (max-width: 600px){
+    .half{width:100%;margin-left:0 !important;display:block}
+  }
+
   /* Print layout */
   @media print{
     body{background:#fff}
     .note, .actions, .debug{display:none !important}
     .wrap{max-width:100%;padding:0 20px}
     .card{border:1px solid #000}
-    input{border:1px solid #000}
+    input{border:1px solid #000;height:40px}
     footer{color:#000;margin-top:10px}
   }
 </style>
@@ -57,7 +76,7 @@
   </div>
 
   <!-- version/help banner -->
-  <div class="note"><b>Values update automatically.</b> Version v1.8 Pro • 2025-09-10</div>
+  <div class="note"><b>Values update automatically.</b> Version v1.8.1 Pro • 2025-09-10</div>
 
   <div class="card">
     <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
@@ -73,7 +92,7 @@
     <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
     <input id="R2" class="output" type="text" readonly>
 
-    <div class="row2" style="margin-top:10px">
+    <div class="row2">
       <div class="half">
         <label for="TB">Tested by</label>
         <input id="TB" type="text" placeholder="Full name">
@@ -92,9 +111,9 @@
     <div id="dbg" class="debug">Ready…</div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.8 Pro • 2025-09-10</footer>
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.8.1 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=11"></script>
+<script src="app-legacy.js?v=12"></script>
 </body>
 </html>
