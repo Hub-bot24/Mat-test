@@ -12,6 +12,7 @@
     .header { display:flex; align-items:center; gap:10px; }
     .logo { height:40px; }
     h1 { font-size:20px; margin:0; }
+    .banner { margin:6px 0; font-size:12px; color:#666; }
     .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:10px 0; }
     .info-grid label { font-weight:bold; font-size:12px; }
     .info-grid input { width:100%; border:1px solid #ccc; padding:4px; font-size:12px; }
@@ -21,10 +22,10 @@
     th { background:#eee; text-align:left; }
     .actions { margin:8px 0; display:flex; gap:8px; }
     button { padding:6px 10px; border:1px solid #999; border-radius:4px; cursor:pointer; }
-    footer { text-align:center; font-size:11px; margin-top:12px; color:#444; }
+    footer { text-align:center; font-size:11px; margin-top:12px; color:#444; border-top:1px solid #ccc; padding-top:6px; }
     @page { size: A4 portrait; margin: 12mm; }
     @media print {
-      .actions { display:none; }
+      .actions, .banner { display:none; }
       footer { color:#000; }
       .watermark { position:fixed; bottom:6mm; right:10mm; font-size:9pt; color:#888; }
     }
@@ -33,9 +34,11 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <img src="icons/colas-logo.png" class="logo">
+    <img src="icons/colas-logo.png" class="logo" alt="Colas">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
+  <div class="banner">Running v1.2 Pro — 2025-09-10 — J. Hugo</div>
+
   <div class="info-grid">
     <div><label>Project:</label><input></div>
     <div><label>Location:</label><input></div>
@@ -43,7 +46,7 @@
     <div><label>Quarry:</label><input></div>
     <div><label>Aggregate:</label><input></div>
     <div><label>Truck Rego:</label><input></div>
-    <div><label>Tested by:</label><input value="J. Hugo"></div>
+    <div><label>Tested by:</label><input></div>
     <div><label>Date:</label><input type="date" id="dateField"></div>
   </div>
 
@@ -55,9 +58,9 @@
   <div id="panels"></div>
 
   <footer>
-    © Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.1 Pro • 2025-09-10
+    © Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.2 Pro — 2025-09-10 — J. Hugo
   </footer>
-  <div class="watermark">v1.1 Pro • 2025-09-10 — J. Hugo</div>
+  <div class="watermark">v1.2 Pro — 2025-09-10 — J. Hugo</div>
 </div>
 <script src="app.js"></script>
 </body>
