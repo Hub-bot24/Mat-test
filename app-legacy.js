@@ -1,92 +1,49 @@
 (function(){
   function $(id){return document.getElementById(id);}
-  function fmt(v){if(!isFinite(v))return "";return (Math.round(v*1e6)/1e6).toString();}
   function toNum(v){if(v===null||v===undefined||v==="")return null;v=(""+v).replace(",",".");var x=parseFloat(v);return isNaN(x)?null:x;}
+  function fmt(v){if(!isFinite(v))return "";return (Math.round(v*1e6)/1e6).toString();}
+  function todayISO(){var d=new Date(),m=("0"+(d.getMonth()+1)).slice(-2),dy=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+dy;}
 
-  function todayISO(){
-    var d=new Date();
-    var m=("0"+(d.getMonth()+1)).slice(-2);
-    var day=("0"+d.getDate()).slice(-2);
-    return d.getFullYear()+"-"+m+"-"+day;
+  function calcOne(s){
+    var M1=toNum($("M1"+s).value), M2=toNum($("M2"+s).value), A=toNum($("A"+s).value), DL=toNum($("DL"+s).value);
+    var R1=null, R2=null;
+    if(M1!==null && M2!==null && A!==null && A!==0){ R1=(M1-M2)/A; }
+    if(DL!==null && R1!==null && R1!==0){ R2=1000*DL/R1; }
+    $("R1"+s).value = (R1===null?"":fmt(R1));
+    $("R2"+s).value = (R2===null?"":fmt(R2));
   }
 
-  function calc(){
-    var M1=toNum($("M1").value),M2=toNum($("M2").value),A=toNum($("A").value),DL=toNum($("DL").value);
-    var R1=null;if(M1!==null&&M2!==null&&A!==null&&A!==0){R1=(M1-M2)/A;}
-    var R2=null;if(DL!==null&&R1!==null&&R1!==0){R2=1000*DL/R1;}
-    $("R1").value=(R1===null?"":fmt(R1));
-    $("R2").value=(R2===null?"":fmt(R2));
-    var dbg=$("dbg"); if(dbg){ dbg.innerText="M1="+(M1===null?"":M1)+" | M2="+(M2===null?"":M2)+" | A="+(A===null?"":A)+" | DL="+(DL===null?"":DL)+" => R1="+(R1===null?"":fmt(R1))+", R2="+(R2===null?"":fmt(R2)); }
-  }
-
-  function mirror(){
-    // Mirror into bottom summary
-    var map=["M1","M2","A","R1","DL","R2","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];
-    for(var i=0;i<map.length;i++){
-      var id=map[i]; var el=$(id); var out=$("s_"+id);
-      if(el && out){ out.textContent = el.value || ""; }
+  function wirePanel(s){
+    var ids=["M1","M2","A","DL","PRJ","LOC","JOB","QRY","AGS","TRK","TB","DT"];
+    var evs=["input","change","keyup","blur"];
+    for(var i=0;i<ids.length;i++){
+      var el=$(ids[i]+s); if(!el) continue;
+      for(var j=0;j<evs.length;j++){
+        if(el.addEventListener){ el.addEventListener(evs[j], function(ss){ return function(){ calcOne(ss); }; }(s), false); }
+        else { el.attachEvent("on"+evs[j], function(ss){ return function(){ calcOne(ss); }; }(s)); }
+      }
     }
-    // Toggle details block
-    var opt=$("optDetails"), row=$("detailsRow");
-    if(opt && row){ row.style.display = opt.checked ? "" : "none"; }
+    var d=$("DT"+s); if(d && !d.value) d.value = todayISO();
+    calcOne(s);
   }
 
-  var deferredPrompt=null;
-  function isStandalone(){
-    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
-           (window.navigator && window.navigator.standalone === true);
-  }
-  function showInstallTip(){
-    if(isStandalone()){ return; }
-    try{ if(localStorage.getItem("colas_tip_dismissed")==="1"){ return; } }catch(e){}
-    var ua = navigator.userAgent || "";
-    var isiOS = /iPhone|iPad|iPod/i.test(ua) && /Safari/i.test(ua) && !/CriOS|FxiOS/i.test(ua);
-    var isAndroid = /Android/i.test(ua);
-    var text = "Install for offline use: ";
-    if(isiOS){ text = "iPhone/iPad: Share ↑ → 'Add to Home Screen'."; }
-    else if(isAndroid){ text = "Android: Menu (⋮) → 'Add to Home screen' / 'Install app'."; }
-    else { text = "Tip: After first load, this app works offline. Add to Home Screen on phones."; }
-    var tip=$("tipText"); if(tip) tip.innerText = text;
-    var box=$("installTip"); if(box) box.className = box.className.replace("hide","").trim();
-    var btn=$("installBtn"); if(btn) btn.style.display = deferredPrompt ? "" : "none";
-    var close=function(){ var bx=$("installTip"); if(bx){ bx.className = bx.className + " hide"; } try{ localStorage.setItem("colas_tip_dismissed","1"); }catch(e){} };
-    var x=$("tipClose"); if(x){ if(x.addEventListener){x.addEventListener("click",close,false);} else {x.attachEvent("onclick",close);} }
-  }
-  if(window.addEventListener){window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=$("installBtn");if(b){b.style.display="";}});}
+  window.resetPanel = function(s){
+    var ids=["M1","M2","A","DL","R1","R2","PRJ","LOC","JOB","QRY","AGS","TRK","TB"];
+    for(var i=0;i<ids.length;i++){ var el=$(ids[i]+s); if(el) el.value=""; }
+    $("M2"+s).value="0.85"; $("A"+s).value="0.97"; $("DL"+s).value="1.45";
+    var d=$("DT"+s); if(d) d.value=todayISO();
+    var f=$("M1"+s); if(f) f.focus();
+    calcOne(s);
+  };
+
+  function resetAll(){ resetPanel(1); resetPanel(2); resetPanel(3); }
 
   function wire(){
-    var ids=["M1","M2","A","DL","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK","optDetails"];var i,j,evs=["input","change","keyup","blur"];
-    for(i=0;i<ids.length;i++){var el=$(ids[i]);if(!el) continue;for(j=0;j<evs.length;j++){if(el.addEventListener){el.addEventListener(evs[j],function(){calc();mirror();},false);}else if(el.attachEvent){el.attachEvent("on"+evs[j],function(){calc();mirror();});}}}
-
-    var clearFn=function(){
-      var ids2=["M1","M2","A","DL","R1","R2","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];
-      for(var k=0;k<ids2.length;k++){ if($(ids2[k])) $(ids2[k]).value=""; }
-      $("M2").value="0.85";$("A").value="0.97";$("DL").value="1.45";
-      var dt=$("DT"); if(dt) dt.value=todayISO();
-      var m1=$("M1"); if(m1) m1.focus();
-      calc();mirror();
-    };
-    var clearBtn=$("clear"); if(clearBtn){ if(clearBtn.addEventListener){clearBtn.addEventListener("click",clearFn,false);} else {clearBtn.attachEvent("onclick",clearFn);} }
-
-    var pdfFn=function(){ try{mirror();window.print();}catch(e){} };
-    var pdfBtn=$("pdf"); if(pdfBtn){ if(pdfBtn.addEventListener){pdfBtn.addEventListener("click",pdfFn,false);} else {pdfBtn.attachEvent("onclick",pdfFn);} }
-
-    if(!$("M2").value)$("M2").value="0.85";if(!$("A").value)$("A").value="0.97";if(!$("DL").value)$("DL").value="1.45";
-    var dt=$("DT"); if(dt && !dt.value) dt.value=todayISO(); var m1=$("M1"); if(m1) m1.value="";
-    setInterval(function(){calc();mirror();},300);calc();mirror();
-
-    // Print hooks ensure latest values
-    if(window.matchMedia){
-      var mql = window.matchMedia('print');
-      if(mql && mql.addListener){ mql.addListener(function(e){ if(e.matches){ mirror(); } }); }
-    }
-    if(window.addEventListener){window.addEventListener("beforeprint",mirror,false);}else if(window.attachEvent){window.attachEvent("onbeforeprint",mirror);}
-
-    showInstallTip();
-    var installClick=function(){if(!deferredPrompt){return;}deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });};
-    var inst=$("installBtn"); if(inst){ if(inst.addEventListener){inst.addEventListener("click",installClick,false);} else {inst.attachEvent("onclick",installClick);} }
+    wirePanel(1); wirePanel(2); wirePanel(3);
+    var pdf=$("pdf"); if(pdf){ if(pdf.addEventListener){ pdf.addEventListener("click", function(){ window.print(); }, false); } else { pdf.attachEvent("onclick", function(){ window.print(); }); } }
+    var r=$("resetAll"); if(r){ if(r.addEventListener){ r.addEventListener("click", resetAll, false);} else { r.attachEvent("onclick", resetAll);} }
   }
-  if(window.addEventListener){window.addEventListener("load",wire,false);}else{window.attachEvent("onload",wire);}
+  if(window.addEventListener){ window.addEventListener("load", wire, false); } else { window.attachEvent("onload", wire); }
 
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=16"); }catch(e){} }
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=18"); }catch(e){} }
 })();

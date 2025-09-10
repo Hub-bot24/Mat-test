@@ -3,188 +3,148 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas Mat Test</title>
+<title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffd400">
 <style>
   html,body{margin:0;padding:0}
   body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif;-webkit-text-size-adjust:100%}
-  *,*:before,*:after{box-sizing:border-box}
-  .wrap{max-width:900px;margin:0 auto;padding:20px}
-  .header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-  .logo{height:36px}
-  h1{font-size:22px;margin:0;font-weight:700}
+  .wrap{max-width:900px;margin:0 auto;padding:14px}
+  .header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .logo{height:26px}
+  h1{font-size:18px;margin:0;font-weight:700}
 
-  .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px;position:relative}
-  .note.brand{background:#ffd4001A;border-color:#ffd40080}
-  .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
-  .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px;margin-bottom:12px}
+  .actions{display:flex;gap:8px;align-items:center;margin:6px 0 10px;flex-wrap:wrap}
+  .btn{font-size:12px;border:1px solid #ddd;border-radius:8px;background:#fff;padding:6px 10px;cursor:pointer}
+  .btn.primary{background:#ffd400;border-color:#ffd400}
+  .muted{font-size:11px;color:#666}
 
-  label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
-  input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc;height:44px;line-height:22px}
-  input.output{background:#f0f2f5}
+  .panel{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:8px;margin-bottom:8px}
+  .panel h3{margin:0 0 6px;font-size:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px}
+  .box{border:1px solid #000;padding:4px 6px;font-size:11px}
+  .box b{font-weight:600}
+  .box input{border:none;border-bottom:1px dashed #bbb;width:100%;font-size:11px;padding:2px 0;outline:none;background:transparent}
+  .box input[type="date"]{padding:2px 0}
 
-  .row2{margin-top:8px;font-size:0}
-  .half{display:inline-block;vertical-align:top;width:49%;font-size:14px}
-  .half + .half{margin-left:2%}
-
-  .fieldset{border:1px solid #dcdce1;border-radius:10px;padding:12px;margin-bottom:12px;background:#fff}
-  .legend{font-weight:700;margin:0 0 4px;color:#222}
-
-  .actions{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .btn{font-size:16px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
-  .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
-  .muted{color:#666;font-size:12px;margin-left:10px}
-  .debug{margin-top:10px;font-size:12px;color:#555;background:#eef5ff;border:1px dashed #b8d3ff;padding:8px 10px;border-radius:8px}
-  footer{margin:8px 0 0;color:#666;font-size:12px;text-align:center}
-  .hide{display:none}
-
-  /* Summary table at bottom */
-  .summary{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:12px}
-  .summary h3{margin:0 0 6px;font-size:16px}
-  table.sum{width:100%;border-collapse:collapse}
-  table.sum th, table.sum td{border:1px solid #000;padding:6px 8px}
+  table.sum{width:100%;border-collapse:collapse;margin-top:4px}
+  table.sum th,table.sum td{border:1px solid #000;padding:4px 5px;font-size:11px;vertical-align:middle}
   table.sum th{text-align:left;background:#f3f3f3}
-  .sum-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
-  .sum-2col .box{border:1px solid #000;padding:6px 8px}
-  @media (max-width: 620px){ .half{width:100%;margin-left:0 !important;display:block} .sum-2col{grid-template-columns:1fr} }
+  input.num{width:100%;border:none;background:transparent;font-size:11px;padding:0;margin:0;outline:none}
+  input.out{background:#f7f7f7;border:none;width:100%}
 
-  /* PRINT: force single A4 page, identical from mobile/desktop */
-  @page { size: A4 portrait; margin: 12mm; }
+  .rowbtns{display:flex;gap:6px;margin-top:4px}
+
+  @media (max-width: 640px){ .grid2{grid-template-columns:1fr} }
+
+  /* PRINT */
+  @page { size: A4 portrait; margin: 8mm; }
   @media print{
     html, body { width: 210mm; }
     body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .wrap{max-width:none;width: 186mm; padding:0; margin:0 auto;}
-    .note, .actions, .debug{display:none !important}
-
-    .fieldset, .card, .summary{border:1px solid #000;border-radius:0;page-break-inside:avoid}
-    .legend{font-size:14pt}
-    label{font-size:11pt;margin:4px 0 2px}
-    input{border:1px solid #000;height:32px;font-size:11pt;line-height:18px}
-    .card, .summary{padding:10px;margin-bottom:8px}
-    .fieldset{padding:10px;margin-bottom:8px}
-    h1{font-size:16pt;margin:0}
-    .header{margin-bottom:6px}
-    .logo{height:28px}
-    footer{color:#000;margin-top:6px;font-size:10pt}
-    .sum-2col{grid-template-columns:1fr 1fr}
-    table.sum th, table.sum td{font-size:11pt;padding:5px 6px}
+    .wrap{max-width:none;width:194mm;padding:0;margin:0 auto}
+    .actions{display:none}
+    .panel{border:1px solid #000;page-break-inside:avoid}
+    .logo{height:22px}
+    h1{font-size:14pt}
+    .panel h3{font-size:12pt}
+    table.sum th,table.sum td{font-size:10pt;padding:3px 4px}
+    .box, .box input, input.num, input.out{font-size:10pt}
+    footer{color:#000}
   }
+
+  footer{text-align:center;font-size:10px;color:#666;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="header">
-    <img class="logo" src="data:image/png;base64,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" alt="Colas logo">
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFUAAAAaCAYAAADG+xDjAAARHUlEQVR4nM2Ze9BdVXnGf+9aa+99zvedL/lykwTDJVwkFnKBXAgEA4SEAIJcrIqKHa8dbafWOp22Tqedqh2nWitTkenUqShFEVQuBsEACZIQ5BIMAeR+EQgJCbnn+75z2Xut9+0f+yDg1BYLznT9c/Y+5+y93/Xs933Ws55XzMx4g6O+QwIqhAQYmIdUgEvgI2oOlYBaAslxCsF6mG2gV63FxVtBIxrmEPKT8f4ElIOQzjq09+9oWI/5Iwn+IiyfT3KHkpUtyt4lxPB1QjwIlfeRFScS/EwSGSKKiIIaohkigKvqmHEIo2ANsAIA9YphePwbwkPeDFBJv3FuYJIwP4aQI+aBWAefOmBb0LSOlNZi+iDYDkLKED9G9KMkm4TZXLJ8PiPFsbTsbfjyV1i6mlRtApuM9ydCYyEwE0nP4cqbsGo9Rkk5eCyanUImy8ncAVQSAHBEHF3EMizlqBMcIBiIgsQ+2NkbguNNAdXMwKBOhQjSxUgoQ3h1SALsRaLdgcYbcdUmsO04N4JTBS3A9wAPNh5MML8flUg7HUeRTyFwOiKnQCip7G5c9yeYPY3oQVh2LjYwFy9D0HsSK68FexBlGMlnI9kKnJ+P6AEIDpxh0iNKiUNxvwayAJP+PP7v400BtccIUCCW46yOSQxER1DdSBXXoroGscfwWuEtQyQhUlGnuWI21H8vXUQSaIZYBrGNIRCUMhwAbgUSlmPhEILtgbSaFO/E4l6cOwQJS/G2APPDmN2M9lZjaQtiRyDFYlw+D+fnYDoRxDASCDjxgAD2/wPUSBeswGE4ewmLz5CqR8GuJupjOP8C3gxfTQEEC/tAx2E6AJIw6QBWgyk9RAw0RyxDATGHWALpYFJi5UQsLUYGZ2HFWYibitgTdKubqbiVwvYQ7ATI3k8Ms8jSZlLvHnqsQd2LZHY0uSzB5YsRfzDYJMxRP5cEhDcGqpqZQL98FYiAYWR1qbwMuVG/SF7+NAxBDIgGPI/Gu0hxDdhakK34GBALCAI6AK4LrgOWgURwiuFAGwhVXXqW189wJRBR6utFlOQESwGcIm4vrhzEGMb80Wh+Gj68A2QKKT1EFa/F6f2IBrrZGQwWiwh2MBafR9NKNN1LaQ2kmInLTyF3S3DMqKlHQMzABHU1zJ6Eey0Arxzba08lmpkzat4jgutiGMYAzvUv0IjZKCYNcAM4wBSMLURdh3Tvh3QXIg/gqIAG5hQxj6QWEnZDbNWKIOyoAbYM8xVYhhLwVvaD9Zj0EBTTBlVeklcONKfKe6ADeDPM9fCqv14kLXTo+imYLCEPK/BuFsYYsXwAl64jpX1EmUooFpL7pZhOQ+3naFxFsrsQm4CEM5BsCT7MApuGWk1HZYoUkuGcw1y9tDkTUAOngANz/WSwfqYatS4yQ0X6sqKqOUciSo7igBE8FVpuhXQDEldi6UmcH6vvnQZAwsuEChZAG5Btr4/TcD9LSwi7+r/n9f9Tq85SSfXv0gMREg28vARpAtE1cArid6AyiE8Z0Kmz2sZBNMzapBBQPx1kOUHeieTTge300hoqvRXSPrIwEwvvpaHHITGCrabSlRA3E2QaVfMUyM4klz+A3jg0U8wnkDpfnbkaVN97VZpmYAExVavTtCSR6kWhfhd4G6gzQRS1h9HyXlK6HWUtQbeTpQK0wCiQRhtyB9UgyUVc3kX2NTGpwI8iuQcZhN44yMYg7IR2C2jX3NIYBzIG5Vitb20AE4HUBOkgA/vBT4NuFzo52twLcQB8whUJdBAqhdCB0iANEJ2hWZukJxH8fDK3DOwIVDZR6Q24agPRVeCWkYXTcTIDS7sh3oGllZhsQ/0CtDiDnBPx/kBqAWYkV5DMyM3XWliqPhVkiNmYYXmf26g5hYSFEuI+LN4GeiNa3Ye3zXiLYEPgDBVDaaBFztYXG1z3ozEe2tghmTFvwTAXna8MTemicSrr1/VYc/N2XtqSM/yWDicvG89pyyfRbD3G/q2H8s1vdhmavIs/+tB4BrKxmipctxY8oeAXD8O1Vw9y1jkdFs8bwCojNbYz1pvCTdfCXWt30sYzZ+EE3nPOAFPHj0Iy8B1MOqgVRJmChtk4fyqZW4ToRGAdVbqB0h5GZTK+WEBwp5HZDFy1mVj9GE03o2EA3PFkci4uLCRlk6lINFKBSF+J9fWumHXMrFEvOJQYz0H5OFrdQWQ18DRBuzjLXilVVyGWkyQgufLIU5P49Ce288DGQSZM65Bil+6OFl/9asaFf+L52pcil34ZeiJMOMCxf7dDuhUXfXgSf/e13ex+7gBOOnGUtx6xhZU/fjuTWs9CVHAJsxILU/n4HyvfvSrxzrOVK68ING0MbeZ8+Us5X/8nx8Cw0LYeEyfu46rvTWTW23dB2SAygGcE0QzzieT3UVkTJ+MJLMayC5FwNMJOtHs70luH2fNofjiSn4HPFgAFKd5Gmdah6VGCDJHJCrxfgeUHIzIJrFVj6EAsmcFe0F9icQ296nbEnqBIO4CBmuecYi72F7kA5hAMMQHf4JN/Ebnm2xUf/NAUPvX3wuieyPOPG2e+q83GXzb44LvGGBjI+ceLG8yebzzzrPG5z+5l8xORy69qcdwRB3LSklGmz9jOddeMZ/zgNki+3hQ0umy4/yDe/b5d7B9rMBj2c/l3DmXZyVsZ62acd3bk4UdzvnjpIcyas4+8N8qcmQl6FWQdKu8J0eOkAxogDtdzoFODLAn10yBbimTnghxG0GehvJGU1tGVHZg/jcF0OlIcAbIbKzdCbz3Yw+zLFzKYzyL3S8Hmggu4Tu+bjLY/Thr7ADL6DRrlI+Tawdwg5jIsdDHfhTQOpy2cRRwlgoILjO2ruPP+kvEHBv7sM8ZR0zYz7/Au57/7BRqh5MG7W+zc5TjnDyPnv2sPhw9sY/kJbS686ADGup571zXxvkfM9vZLKJBsmCp4NCsxJvH9K3dRtj3vvWA6Linfu+oFoo8UrcTMYwcYKSsu/sKT/Oc/72Vkl6t1cxhBpE2WDKSWZubAip1Y43m0sZteHiEbJecxwtjl+L0fw4++nxTXoI2PwOCPKYp/oWn3QfoIqXwPsfw+6pai4y+jM/5Shszj2l8nti+g1/kUvfJqnMhURCai3qPFTtTvQbQB2gISWBPTcWjYg/l9dX6/LFxFQRJCk+iV0lcQeuDaUDUg3493+8nU18LeCbgGWKIRlVzbqAjtkFNlbTQfhYEufrBNyBSXVzz8VOCW62D22yJ//fkxjjh6PLeumsr9G1u4rOLzX/B85V8DRxzVYeVPlI9++CXuuXcIaUZIQ4gZyUdSSCRfkRwoTYyMYKP43jDEITTbR5W/SHS7MDp1TWpOVk0iVNNI2iIqJBsDtwvzitpUcJNqOeX2I+4x4DFCXpyDs2VY9QxW3U3pV0H+MxppN8RBkFgDEpuA74vyensnWjE4vsniYwt+8J0Ol15s/OnnZrB9a8H6m8b40EcO55jFOxk/JbHyGmH+SQXz57R4cqPy7Su6FE3PohNB6NEsp6K7Ojy+YQZF0aM1uIfD3pb47nUlW/aM8dFPz+TKS/bx7Lbd7KiUH12ZWDBvMnseDUxvtbn4GzP528+N8pNrR3j26Ymc9I52/e5TQdASkxJxtRYWLWqdHDsgRpVNo8rOQ4qzCDILsV2k6jpi93bMbcLLXKT5GfJiPmoHo/oIfu/f0Orex8hgQWPgnWScTWARuElI13aaYwCvjZojZT8WH8T11pP0Vkwewmn5Kuss1RksfXvPZzz51DCf/eQONmxoMjg1MFpFxnYLf/XnJX/5VcclX8n5xhczKquYeEDFjt1DJMb4xMeUL/7DIDu3Zixa1mb/iFAwSi/CkqUV//SlIzn/rN24MMq/Xdbkii8nXiwj9zzuGMy6XH7ZYVzyhW3cfs9eJk87kP0vNTho+nNccdVbmXnUM9AdBBR6w+ArLNuNuYhKTpTxdLLZtOwcMltcU4T+EuvcBr0n6Ay20ObRNNy5ZPZWNO4gpevBbiJpROQEJD+VLJyJ80N1wpnUO1FNariIWRvMIzQxiyQyvO7B9C403USKd5PpC3ja9cZHqEHFod6zc+cErr9e+MUv9iJuhPkLJvPuc3KGJu3AZAJ33DaRVau3suvFkikTYfEZLZafktFwY+za77jsW45etwQS3TiJww4vOPaYNjf+oOLgt2e878IWwTYTOZCrrx/l8Yf2cfZZUyjFc8PKl9i9tWT6tAEu+MAwc2aPIGUHfBuzcYiWKCXJvYUo8wjZUryfC8wAfZCoPyTpelxsIW4Rlp1Cnh0NKZLSekr7HsZWfDqGPJwM2WIsm0NFi8ISgsOsAyKIBMTUrM66/pbUJYweiQKHr3dK0sN4EisfIPXuRFlHkCdxCSQOgRfIFLImljIwQZxCtQeqwTqrmxFCgtJBkHrn1MlBQbM2LrSAHvgSbAAqDzoKjZq3bWwAcV00DeMKD74D7XGQJcgqLHWRYFA56LUgJdTvwlwT7GBwy3EDp2HuEDRuhnQNrvMIlY2g+ZG4/ExcfiwpCdK5G7GbqewRxA+T+xWE7FTws8EmkqReHsSsFv2Wv+KNSPpdXSrDbATis8R4M2qr0PQoue7FqUMo6jtLr2+rNUG6ffPXEHxt55n/9f3o799eFVX/uC/6Uu1k4XqYpPrYfG18S9n3JgImhqQckwrzXSo/neROw2dL6YXZZPISoXMnUv4MK7ch/lDKoeNo6lmItjB7kBh/SqWbwCuZPwEJy/FhEdhUxIXX+ij/w/idQE10UMBZs4/HDqJuxPdWQXU/yKM49uKqBlgLQsJc2Qc1gDYBw0mX1xuhuRLRvma1foZLqtsiGvqAliBtuv5g1M2m6ZchtgRxjmQb0M4qkvs56g7Fu1PJigU4nYOlp+hxI6XcgqQeRZqLz5dCvgjvDgabgAJKFy8BeZ2W4O8Eqlms+1ECSIVZjlOPkDB7AYv3ENMtaNyIsI1cdiDa6pslWtt+TmvThdfzWAPfBhVqs8L3E9phZiQpiX4IYx6ZnI0UsxEZxNIWyvgjXLyPkBwqiwn+bKRxGNgurLoZi6tJ1RhWTMbyFYRwFiaHIG4Qr30qNMNEa+dJHK/IyTcRVLTz8lX1JEXBRknigXH46IA25h6hirfieg+Q4qM4/zSeMVwarBtt/vU+0kGcAK6N+n2oKGZNkg6iciBZNh/vl+DC4UTdB+0HcdUqOsWvIMwh52yCP55OFnFpA1nvW1A+TdJjoTUD3Dlk/jiEyX0qCaCuP7/aV8YZWLs2gyR/80E1xgBfl50TxLQGN6XaTpQKEcVsAFMQaWO2iVitxsqf4/Spmh6kRKiVw2+E08/EfkhmtcnjR4k+I+lM4ERCsRDCLNAuWj0A5W2YW0/yUwnhPIJbhuhUEutJtgZ6m2p83Jm4xkLUHwcyHZEIEvoMnmoWNwiSYVQ1qOSYSt0i+n1w6qvhfQ0nvnq96X9RL0yv6hywhW7aREw/w1frcGkrmezFJYWUo5ki1kBSUasNP1ZXfecQXGM6sTgd8hU4AWvfD3EVnew+TN9CXp1P3jwBF4bRtJWkt6BpNRZLgswlFeeR58cgclQdpFDTUe1+9EOU/qy0jvu3z/Z/HW9Oi/q/HQYomO/zsAEdRAOW9qB6C6m6FUmPAFsxclzYj/g9JG1h6Xh8djJldgwNPRriNqJch5S34aJDB+bh/Kl4m4PyIl13GzGtxVejODuSkM/Bh8WYLMR5Ry3Oi7q18yb1on7b+D2CSl2+Un+auVf6YC7W5Z8qLD1MjD/F0lpQRdwsXHYSLjseOIhSH4PR/8BzLbFo4d0FZP5ckLkgQlX+EC2/RZI2Tk6mCEsRNxf8BCoPlSgFCW8Bs7qMf9+g/heWgh4JFrTLrgAAAABJRU5ErkJggg==" alt="Colas">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
 
-  <div id="installTip" class="note brand hide">
-    <button id="tipClose" class="x" aria-label="Close">×</button>
-    <div id="tipText">Tip text here…</div>
-    <div id="tipActions" style="margin-top:8px">
-      <button id="installBtn" class="btn">Install</button>
-    </div>
+  <div class="actions">
+    <button id="pdf" class="btn primary">Save as PDF</button>
+    <button id="resetAll" class="btn">Reset All</button>
+    <span class="muted">Works offline • Auto-calculates • v1.14 Pro • 2025-09-10</span>
   </div>
 
-  <div class="note"><b>Values update automatically.</b> Version v1.11 Pro • 2025-09-10</div>
-
-  <div class="fieldset">
-    <div class="legend">Test Details</div>
-    <div class="row2">
-      <div class="half">
-        <label for="PRJ">Project</label>
-        <input id="PRJ" type="text" placeholder="Project name">
-      </div>
-      <div class="half">
-        <label for="LOC">Site Location</label>
-        <input id="LOC" type="text" placeholder="Location / Section">
-      </div>
-    </div>
-    <div class="row2">
-      <div class="half">
-        <label for="JOB">Job / Contract</label>
-        <input id="JOB" type="text" placeholder="Contract / Work order">
-      </div>
-      <div class="half">
-        <label for="QRY">Quarry Source</label>
-        <input id="QRY" type="text" placeholder="Supplier / Pit">
-      </div>
-    </div>
-    <div class="row2">
-      <div class="half">
-        <label for="AGS">Aggregate Size</label>
-        <input id="AGS" type="text" placeholder="e.g. 7 mm">
-      </div>
-      <div class="half">
-        <label for="TRK">Truck Rego</label>
-        <input id="TRK" type="text" placeholder="ABC‑123">
-      </div>
-    </div>
-    <div class="row2">
-      <div class="half">
-        <label for="TB">Tested by</label>
-        <input id="TB" type="text" placeholder="Full name">
-      </div>
-      <div class="half">
-        <label for="DT">Date</label>
-        <input id="DT" type="date">
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
-    <input id="M1" type="number" step="any" inputmode="decimal">
-    <label for="M2">Mass of Canvas Mat (kg)</label>
-    <input id="M2" type="number" step="any" inputmode="decimal" value="0.85">
-    <label for="A">Area of Canvas Mat (m²)</label>
-    <input id="A" type="number" step="any" inputmode="decimal" value="0.97">
-    <label for="R1">Spread Rate (kg/m²) = (M1 − M2) / A</label>
-    <input id="R1" class="output" type="text" readonly>
-    <label for="DL">Loose Unit Mass of Screenings (t/m³)</label>
-    <input id="DL" type="number" step="any" inputmode="decimal" value="1.45">
-    <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
-    <input id="R2" class="output" type="text" readonly>
-
-    <div class="actions">
-      <button id="clear" class="btn" type="button">Reset</button>
-      <button id="pdf" class="btn primary" type="button">Save as PDF</button>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px">
-        <input id="optDetails" type="checkbox" checked> Include Test Details in summary
-      </label>
-      <span class="muted">Works offline • Auto-calculates</span>
-    </div>
-    <div id="dbg" class="debug">Ready…</div>
-  </div>
-
-  <!-- Bottom Summary (on same page) -->
-  <div class="summary">
-    <h3>Calculation Summary</h3>
-    <div class="sum-2col" id="detailsRow">
-      <div class="box"><b>Project:</b> <span id="s_PRJ"></span></div>
-      <div class="box"><b>Location:</b> <span id="s_LOC"></span></div>
-      <div class="box"><b>Job/Contract:</b> <span id="s_JOB"></span></div>
-      <div class="box"><b>Quarry:</b> <span id="s_QRY"></span></div>
-      <div class="box"><b>Aggregate:</b> <span id="s_AGS"></span></div>
-      <div class="box"><b>Truck Rego:</b> <span id="s_TRK"></span></div>
-      <div class="box"><b>Tested by:</b> <span id="s_TB"></span></div>
-      <div class="box"><b>Date:</b> <span id="s_DT"></span></div>
+  <!-- Panel Template (x3) -->
+  <div class="panel" id="P1">
+    <h3>Calculation Summary — Sheet 1</h3>
+    <div class="grid2">
+      <div class="box"><b>Project:</b> <input id="PRJ1"></div>
+      <div class="box"><b>Location:</b> <input id="LOC1"></div>
+      <div class="box"><b>Job/Contract:</b> <input id="JOB1"></div>
+      <div class="box"><b>Quarry:</b> <input id="QRY1"></div>
+      <div class="box"><b>Aggregate:</b> <input id="AGS1"></div>
+      <div class="box"><b>Truck Rego:</b> <input id="TRK1"></div>
+      <div class="box"><b>Tested by:</b> <input id="TB1"></div>
+      <div class="box"><b>Date:</b> <input id="DT1" type="date"></div>
     </div>
     <table class="sum">
       <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td id="s_M1"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td id="s_M2"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td id="s_A"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td id="s_R1"></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td id="s_DL"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td id="s_R2"></td></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M11" class="num" type="number" step="any" inputmode="decimal"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M21" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A1" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R11" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL1" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R21" class="out" readonly></td></tr>
     </table>
+    <div class="rowbtns"><button class="btn" onclick="resetPanel(1)">Reset Sheet 1</button></div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.11 Pro • 2025-09-10</footer>
+  <div class="panel" id="P2">
+    <h3>Calculation Summary — Sheet 2</h3>
+    <div class="grid2">
+      <div class="box"><b>Project:</b> <input id="PRJ2"></div>
+      <div class="box"><b>Location:</b> <input id="LOC2"></div>
+      <div class="box"><b>Job/Contract:</b> <input id="JOB2"></div>
+      <div class="box"><b>Quarry:</b> <input id="QRY2"></div>
+      <div class="box"><b>Aggregate:</b> <input id="AGS2"></div>
+      <div class="box"><b>Truck Rego:</b> <input id="TRK2"></div>
+      <div class="box"><b>Tested by:</b> <input id="TB2"></div>
+      <div class="box"><b>Date:</b> <input id="DT2" type="date"></div>
+    </div>
+    <table class="sum">
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M12" class="num" type="number" step="any" inputmode="decimal"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M22" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A2" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R12" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL2" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R22" class="out" readonly></td></tr>
+    </table>
+    <div class="rowbtns"><button class="btn" onclick="resetPanel(2)">Reset Sheet 2</button></div>
+  </div>
+
+  <div class="panel" id="P3">
+    <h3>Calculation Summary — Sheet 3</h3>
+    <div class="grid2">
+      <div class="box"><b>Project:</b> <input id="PRJ3"></div>
+      <div class="box"><b>Location:</b> <input id="LOC3"></div>
+      <div class="box"><b>Job/Contract:</b> <input id="JOB3"></div>
+      <div class="box"><b>Quarry:</b> <input id="QRY3"></div>
+      <div class="box"><b>Aggregate:</b> <input id="AGS3"></div>
+      <div class="box"><b>Truck Rego:</b> <input id="TRK3"></div>
+      <div class="box"><b>Tested by:</b> <input id="TB3"></div>
+      <div class="box"><b>Date:</b> <input id="DT3" type="date"></div>
+    </div>
+    <table class="sum">
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M13" class="num" type="number" step="any" inputmode="decimal"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M23" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A3" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R13" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL3" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R23" class="out" readonly></td></tr>
+    </table>
+    <div class="rowbtns"><button class="btn" onclick="resetPanel(3)">Reset Sheet 3</button></div>
+  </div>
+
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.14 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=16"></script>
+<script src="app-legacy.js?v=18"></script>
 </body>
 </html>
