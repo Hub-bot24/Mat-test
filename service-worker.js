@@ -1,5 +1,5 @@
 const VERSION = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
-const CACHE = `mattest-cache-${VERSION}`;
+const CACHE = `mattest-cache-v25-${VERSION}`;
 const ASSETS = ['./','./index.html','./app.js','./manifest.webmanifest','./icons/colas-logo.png'];
 
 self.addEventListener('install',e=>{

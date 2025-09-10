@@ -22,11 +22,10 @@
     th { background:#eee; text-align:left; }
     .actions { margin:8px 0; display:flex; gap:8px; }
     button { padding:6px 10px; border:1px solid #999; border-radius:4px; cursor:pointer; }
-    footer { text-align:center; font-size:11px; margin-top:12px; color:#444; border-top:1px solid #ccc; padding-top:6px; }
+    footer { text-align:center; font-size:11px; margin-top:12px; color:#000; font-weight:bold; }
     @page { size: A4 portrait; margin: 12mm; }
     @media print {
       .actions, .banner { display:none; }
-      footer { color:#000; }
       .watermark { position:fixed; bottom:6mm; right:10mm; font-size:9pt; color:#888; }
     }
   </style>
@@ -37,7 +36,7 @@
     <img src="icons/colas-logo.png" class="logo" alt="Colas">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
-  <div class="banner">Running v1.2 Pro — 2025-09-10 — J. Hugo</div>
+  <div class="banner">Running v1.3 Pro — 2025-09-10</div>
 
   <div class="info-grid">
     <div><label>Project:</label><input></div>
@@ -51,16 +50,14 @@
   </div>
 
   <div class="actions">
-    <button onclick="window.print()">Save as PDF</button>
+    <button onclick="window.print()">PDF</button>
     <button onclick="resetAll()">Reset All</button>
   </div>
 
   <div id="panels"></div>
 
-  <footer>
-    © Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.2 Pro — 2025-09-10 — J. Hugo
-  </footer>
-  <div class="watermark">v1.2 Pro — 2025-09-10 — J. Hugo</div>
+  <footer>v1.3 Pro — 2025-09-10 — J. Hugo</footer>
+  <div class="watermark">v1.3 Pro — 2025-09-10 — J. Hugo</div>
 </div>
 <script src="app.js"></script>
 </body>

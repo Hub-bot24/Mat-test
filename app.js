@@ -19,7 +19,13 @@ function createPanel(i){
 document.getElementById('panels').innerHTML=[1,2,3].map(i=>createPanel(i)).join('');
 
 function calc(i){
-  const m1=parseFloat(document.querySelector('.m1-'+i).value)||0;
+  const m1Field=document.querySelector('.m1-'+i);
+  const m1=parseFloat(m1Field.value);
+  if(isNaN(m1)){ // if M1 empty
+    document.querySelector('.r1-'+i).textContent='';
+    document.querySelector('.r2-'+i).textContent='';
+    return;
+  }
   const m2=parseFloat(document.querySelector('.m2-'+i).value)||0;
   const a=parseFloat(document.querySelector('.a-'+i).value)||0;
   const dl=parseFloat(document.querySelector('.dl-'+i).value)||0;
@@ -37,5 +43,9 @@ function resetPanel(i){
   document.querySelector('.r1-'+i).textContent='';
   document.querySelector('.r2-'+i).textContent='';
 }
-function resetAll(){[1,2,3].forEach(resetPanel);}
+function resetAll(){
+  document.querySelectorAll('.info-grid input').forEach(inp=>inp.value='');
+  document.getElementById('dateField').valueAsDate = new Date();
+  [1,2,3].forEach(resetPanel);
+}
 setInterval(()=>[1,2,3].forEach(calc),500);
