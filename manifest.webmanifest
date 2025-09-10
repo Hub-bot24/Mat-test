@@ -1,6 +1,6 @@
 {
-  "name": "Colas Mat Test \u2014 Mobile Parity",
-  "short_name": "Mat Mobile",
+  "name": "Colas Mat Test \u2014 Reset Fix",
+  "short_name": "Mat Reset",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",

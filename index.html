@@ -6,7 +6,6 @@
 <title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffd400">
-<meta name="format-detection" content="telephone=no">
 <style>
   html,body{margin:0;padding:0;-webkit-text-size-adjust:100%}
   body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
@@ -15,8 +14,8 @@
   .logo{height:26px}
   h1{font-size:18px;margin:0;font-weight:700}
 
-  .actions{display:flex;gap:8px;align-items:center;margin:6px 0 10px;flex-wrap:wrap}
-  .btn{font-size:12px;border:1px solid #ddd;border-radius:8px;background:#fff;padding:6px 10px;cursor:pointer}
+  .actions{display:flex;gap:16px;align-items:center;margin:8px 0 12px;flex-wrap:wrap}
+  .btn{font-size:12px;border:1px solid #ddd;border-radius:8px;background:#fff;padding:6px 12px;cursor:pointer}
   .btn.primary{background:#ffd400;border-color:#ffd400}
   .muted{font-size:11px;color:#666}
 
@@ -39,43 +38,21 @@
 
   @media (max-width: 640px){ .grid2{grid-template-columns:1fr} }
 
-  /* PRINT — enforce exact A4 on mobile & desktop */
+  /* PRINT */
   @page { size: A4 portrait; margin: 8mm; }
   @media print{
-    /* Make all measurements absolute for iOS Safari */
-    html, body { width: 210mm; min-height: 297mm; }
+    html, body { width: 210mm; min-height:297mm; }
     body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
-    /* Fixed wrapper width equals page width minus margins (8mm each side) */
     .wrap{max-width:none;width:194mm;padding:0;margin:0 auto}
-
-    /* Keep two-column header grid on print, even on phones */
-    .grid2{grid-template-columns:1fr 1fr}
-
-    /* Sharper, consistent sizing */
+    .actions{display:none !important}
+    .fieldset, .panel{border:1px solid #000;page-break-inside:avoid}
     .logo{height:22px}
     h1{font-size:14pt}
     .legend{font-size:12pt}
     .panel h3{font-size:11pt}
     table.sum th,table.sum td{font-size:10pt;padding:3px 4px}
     .box, .box input, input.num, input.out{font-size:10pt}
-
-    .actions{display:none !important}
-    .fieldset, .panel{border:1px solid #000;border-radius:0}
-  }
-
-  /* Fallback for browsers that ignore mm units (use px at 96dpi) */
-  @media print and (max-resolution: 96dpi){
-    html, body { width: 794px; }
-    .wrap{ width: 758px; }
-  }
-
-  /* iOS-specific print tweak */
-  @supports (-webkit-touch-callout: none) {
-    @media print {
-      html, body { zoom:1; }
-    }
+    footer{color:#000}
   }
 
   footer{text-align:center;font-size:10px;color:#666;margin-top:6px}
@@ -91,7 +68,7 @@
   <div class="actions">
     <button id="pdf" class="btn primary">Save as PDF</button>
     <button id="resetAll" class="btn">Reset All</button>
-    <span class="muted">Works offline • Auto-calculates • v1.17 Pro • 2025-09-10</span>
+    <span class="muted">Works offline • Auto-calculates • v1.18 Pro • 2025-09-10</span>
   </div>
 
   <div class="fieldset">
@@ -108,17 +85,17 @@
     </div>
   </div>
 
-  <!-- Tables -->
+  <!-- Panels same as before (3 tables) -->
   <div class="panel" id="P1">
     <h3>Calculation Table — Sheet 1</h3>
     <table class="sum">
       <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M11" class="num" type="number" step="any" inputmode="decimal"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M21" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A1" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R11" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL1" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R21" class="out" readonly></td></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M11" class="num" type="number"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M21" class="num" type="number" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A1" class="num" type="number" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R11" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL1" class="num" type="number" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R21" class="out" readonly></td></tr>
     </table>
     <div class="rowbtns"><button class="btn" onclick="resetPanel(1)">Reset Sheet 1</button></div>
   </div>
@@ -127,12 +104,12 @@
     <h3>Calculation Table — Sheet 2</h3>
     <table class="sum">
       <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M12" class="num" type="number" step="any" inputmode="decimal"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M22" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A2" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R12" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL2" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R22" class="out" readonly></td></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M12" class="num" type="number"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M22" class="num" type="number" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A2" class="num" type="number" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R12" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL2" class="num" type="number" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R22" class="out" readonly></td></tr>
     </table>
     <div class="rowbtns"><button class="btn" onclick="resetPanel(2)">Reset Sheet 2</button></div>
   </div>
@@ -141,19 +118,19 @@
     <h3>Calculation Table — Sheet 3</h3>
     <table class="sum">
       <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M13" class="num" type="number" step="any" inputmode="decimal"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M23" class="num" type="number" step="any" inputmode="decimal" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A3" class="num" type="number" step="any" inputmode="decimal" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td><input id="R13" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL3" class="num" type="number" step="any" inputmode="decimal" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td><input id="R23" class="out" readonly></td></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M13" class="num" type="number"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M23" class="num" type="number" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A3" class="num" type="number" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R13" class="out" readonly></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL3" class="num" type="number" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R23" class="out" readonly></td></tr>
     </table>
     <div class="rowbtns"><button class="btn" onclick="resetPanel(3)">Reset Sheet 3</button></div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.17 Pro • 2025-09-10</footer>
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.18 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=21"></script>
+<script src="app-legacy.js?v=22"></script>
 </body>
 </html>

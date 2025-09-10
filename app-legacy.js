@@ -1,7 +1,7 @@
 (function(){
   function $(id){return document.getElementById(id);}
   function toNum(v){if(v===null||v===undefined||v==="")return null;v=(""+v).replace(",",".");var x=parseFloat(v);return isNaN(x)?null:x;}
-  function fmt2(v){if(!isFinite(v))return "";return (Math.round(v*100)/100).toFixed(2);} // 2 decimals
+  function fmt2(v){if(!isFinite(v))return "";return (Math.round(v*100)/100).toFixed(2);}
   function todayISO(){var d=new Date(),m=("0"+(d.getMonth()+1)).slice(-2),dy=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+dy;}
 
   function calcOne(s){
@@ -33,16 +33,24 @@
     calcOne(s);
   };
 
-  function resetAll(){ resetPanel(1); resetPanel(2); resetPanel(3); }
+  function resetAll(){
+    // Reset shared info
+    var info=["PRJ","LOC","JOB","QRY","AGS","TRK","TB","DT"];
+    for(var i=0;i<info.length;i++){ var el=$(info[i]); if(el) el.value=""; }
+    var d=$("DT"); if(d) d.value=todayISO();
+
+    // Reset panels
+    resetPanel(1); resetPanel(2); resetPanel(3);
+  }
 
   function wire(){
     wirePanel(1); wirePanel(2); wirePanel(3);
     var dt=$("DT"); if(dt && !dt.value){ dt.value = todayISO(); }
 
-    var pdf=$("pdf"); if(pdf){ if(pdf.addEventListener){ pdf.addEventListener("click", function(){ window.print(); }, false); } else { pdf.attachEvent("onclick", function(){ window.print(); }); } }
-    var r=$("resetAll"); if(r){ if(r.addEventListener){ r.addEventListener("click", resetAll, false);} else { r.attachEvent("onclick", resetAll);} }
+    var pdf=$("pdf"); if(pdf){ pdf.addEventListener("click", function(){ window.print(); }); }
+    var r=$("resetAll"); if(r){ r.addEventListener("click", resetAll); }
   }
-  if(window.addEventListener){ window.addEventListener("load", wire, false); } else { window.attachEvent("onload", wire); }
+  window.addEventListener("load", wire);
 
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=21"); }catch(e){} }
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=22"); }catch(e){} }
 })();
