@@ -1,20 +1,20 @@
-const VERSION = 'v1.0 Pro ' + new Date().toISOString().slice(0,10);
-document.getElementById('ver').textContent = VERSION;
 document.getElementById('dateField').valueAsDate = new Date();
 
 function createPanel(i){
   return `<div class="panel">
-  <table>
-    <tr><th>Item</th><th>Value</th></tr>
-    <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input class="m1-${i}" type="number" step="0.01"></td></tr>
-    <tr><td>Mass of Canvas Mat (kg)</td><td><input class="m2-${i}" type="number" step="0.01"></td></tr>
-    <tr><td>Area of Canvas Mat (m²)</td><td><input class="a-${i}" type="number" step="0.01"></td></tr>
-    <tr><td><b>Spread Rate (kg/m²) = (M1–M2)/A</b></td><td><output class="r1-${i}"></output></td></tr>
-    <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input class="dl-${i}" type="number" step="0.01"></td></tr>
-    <tr><td><b>Spread Rate (m²/m³) = 1000×DL/R1</b></td><td><output class="r2-${i}"></output></td></tr>
-  </table>
-  <div class="actions"><button onclick="resetPanel(${i})">Reset</button></div>
-</div>`;}
+    <h3>Calculation Sheet ${i}</h3>
+    <table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input class="m1-${i}" type="number" step="0.01"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input class="m2-${i}" type="number" step="0.01" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input class="a-${i}" type="number" step="0.01" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><output class="r1-${i}"></output></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input class="dl-${i}" type="number" step="0.01" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><output class="r2-${i}"></output></td></tr>
+    </table>
+    <div class="actions"><button onclick="resetPanel(${i})">Reset</button></div>
+  </div>`;
+}
 
 document.getElementById('panels').innerHTML=[1,2,3].map(i=>createPanel(i)).join('');
 
@@ -30,7 +30,12 @@ function calc(i){
   document.querySelector('.r2-'+i).textContent=r2;
 }
 function resetPanel(i){
-  ['m1','m2','a','dl'].forEach(cls=>document.querySelector('.'+cls+'-'+i).value='');
-  ['r1','r2'].forEach(cls=>document.querySelector('.'+cls+'-'+i).textContent='');
+  document.querySelector('.m1-'+i).value='';
+  document.querySelector('.m2-'+i).value='0.85';
+  document.querySelector('.a-'+i).value='0.97';
+  document.querySelector('.dl-'+i).value='1.45';
+  document.querySelector('.r1-'+i).textContent='';
+  document.querySelector('.r2-'+i).textContent='';
 }
+function resetAll(){[1,2,3].forEach(resetPanel);}
 setInterval(()=>[1,2,3].forEach(calc),500);
