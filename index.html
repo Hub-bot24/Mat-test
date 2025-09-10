@@ -17,8 +17,10 @@
   .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
   .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px}
   label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
-  input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc}
+  input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc}
   input.output{background:#f0f2f5}
+  .row2{display:flex;gap:12px;flex-wrap:wrap}
+  .half{flex:1 1 260px}
   .actions{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .btn{font-size:16px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
   .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
@@ -26,6 +28,16 @@
   .debug{margin-top:10px;font-size:12px;color:#555;background:#eef5ff;border:1px dashed #b8d3ff;padding:8px 10px;border-radius:8px}
   footer{margin:16px 0 0;color:#666;font-size:12px;text-align:center}
   .hide{display:none}
+
+  /* Print layout */
+  @media print{
+    body{background:#fff}
+    .note, .actions, .debug{display:none !important}
+    .wrap{max-width:100%;padding:0 20px}
+    .card{border:1px solid #000}
+    input{border:1px solid #000}
+    footer{color:#000;margin-top:10px}
+  }
 </style>
 </head>
 <body>
@@ -35,7 +47,7 @@
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
 
-  <!-- Smart install note -->
+  <!-- Smart install tip -->
   <div id="installTip" class="note brand hide">
     <button id="tipClose" class="x" aria-label="Close">×</button>
     <div id="tipText">Tip text here…</div>
@@ -45,7 +57,7 @@
   </div>
 
   <!-- version/help banner -->
-  <div class="note"><b>If numbers don’t update, press <u>Calculate</u>.</b> Version v1.6 Pro • 2025-09-10</div>
+  <div class="note"><b>Values update automatically.</b> Version v1.8 Pro • 2025-09-10</div>
 
   <div class="card">
     <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
@@ -61,17 +73,28 @@
     <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
     <input id="R2" class="output" type="text" readonly>
 
+    <div class="row2" style="margin-top:10px">
+      <div class="half">
+        <label for="TB">Tested by</label>
+        <input id="TB" type="text" placeholder="Full name">
+      </div>
+      <div class="half">
+        <label for="DT">Date</label>
+        <input id="DT" type="date">
+      </div>
+    </div>
+
     <div class="actions">
-      <button id="calc" class="btn primary" type="button">Calculate</button>
-      <button id="clear" class="btn" type="button">Clear</button>
-      <span class="muted">Works offline • Up to 6 decimals</span>
+      <button id="clear" class="btn" type="button">Reset</button>
+      <button id="pdf" class="btn primary" type="button">Save as PDF</button>
+      <span class="muted">Works offline • Auto-calculates</span>
     </div>
     <div id="dbg" class="debug">Ready…</div>
   </div>
 
-  <footer>© Colas Mat Test — offline | v1.6 Pro • 2025-09-10</footer>
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.8 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=9"></script>
+<script src="app-legacy.js?v=11"></script>
 </body>
 </html>
