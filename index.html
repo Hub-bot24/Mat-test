@@ -1,136 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#ffd400">
-<style>
-  html,body{margin:0;padding:0;-webkit-text-size-adjust:100%}
-  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
-  .wrap{max-width:900px;margin:0 auto;padding:14px}
-  .header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-  .logo{height:26px}
-  h1{font-size:18px;margin:0;font-weight:700}
-
-  .actions{display:flex;gap:16px;align-items:center;margin:8px 0 12px;flex-wrap:wrap}
-  .btn{font-size:12px;border:1px solid #ddd;border-radius:8px;background:#fff;padding:6px 12px;cursor:pointer}
-  .btn.primary{background:#ffd400;border-color:#ffd400}
-  .muted{font-size:11px;color:#666}
-
-  .fieldset{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:8px;margin-bottom:8px;page-break-inside:avoid}
-  .legend{font-size:13px;font-weight:700;margin:0 0 6px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:2px}
-  .box{border:1px solid #000;padding:4px 6px;font-size:11px}
-  .box b{font-weight:600}
-  .box input{border:none;border-bottom:1px dashed #bbb;width:100%;font-size:11px;padding:2px 0;outline:none;background:transparent}
-  .box input[type="date"]{padding:2px 0}
-
-  .panel{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:6px;margin-bottom:8px;page-break-inside:avoid}
-  .panel h3{margin:0 0 6px;font-size:12px}
-  table.sum{width:100%;border-collapse:collapse;margin-top:2px}
-  table.sum th,table.sum td{border:1px solid #000;padding:4px 5px;font-size:11px;vertical-align:middle}
-  table.sum th{text-align:left;background:#f3f3f3}
-  input.num{width:100%;border:none;background:transparent;font-size:11px;padding:0;margin:0;outline:none}
-  input.out{background:#f7f7f7;border:none;width:100%}
-  .rowbtns{display:flex;gap:6px;margin-top:4px}
-
-  @media (max-width: 640px){ .grid2{grid-template-columns:1fr} }
-
-  /* PRINT */
-  @page { size: A4 portrait; margin: 8mm; }
-  @media print{
-    html, body { width: 210mm; min-height:297mm; }
-    body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .wrap{max-width:none;width:194mm;padding:0;margin:0 auto}
-    .actions{display:none !important}
-    .fieldset, .panel{border:1px solid #000;page-break-inside:avoid}
-    .logo{height:22px}
-    h1{font-size:14pt}
-    .legend{font-size:12pt}
-    .panel h3{font-size:11pt}
-    table.sum th,table.sum td{font-size:10pt;padding:3px 4px}
-    .box, .box input, input.num, input.out{font-size:10pt}
-    footer{color:#000}
-  }
-
-  footer{text-align:center;font-size:10px;color:#666;margin-top:6px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Spread Rate of Cover Aggregate (Canvas Mat) – Colas</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd400">
+  <style>
+    html,body{margin:0;padding:0;-webkit-text-size-adjust:100%}
+    body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
+    .wrap{max-width:900px;margin:0 auto;padding:14px}
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+    .logo{height:40px}
+    h1{font-size:20px;margin:0;font-weight:700}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px}
+    .info-grid label{font-weight:700;font-size:12px}
+    .info-grid input{width:100%;border:1px solid #ccc;padding:4px;font-size:12px}
+    .panel{border:1px solid #ccc;padding:10px;margin:10px 0;border-radius:6px;background:#fff}
+    table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+    th,td{border:1px solid #999;padding:4px;text-align:left}
+    th{background:#eee}
+    .actions{margin:6px 0;display:flex;gap:8px}
+    button{padding:6px 10px;border:1px solid #999;cursor:pointer;border-radius:4px}
+    footer{text-align:center;font-size:11px;margin-top:12px;color:#444}
+  </style>
 </head>
 <body>
 <div class="wrap">
   <div class="header">
-    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFUAAAAaCAYAAADG+xDjAAARHUlEQVR4nM2Ze9BdVXnGf+9aa+99zvedL/lykwTDJVwkFnKBXAgEA4SEAIJcrIqKHa8dbafWOp22Tqedqh2nWitTkenUqShFEVQuBsEACZIQ5BIMAeR+EQgJCbnn+75z2Xut9+0f+yDg1BYLznT9c/Y+5+y93/Xs933Ws55XzMx4g6O+QwIqhAQYmIdUgEvgI2oOlYBaAslxCsF6mG2gV63FxVtBIxrmEPKT8f4ElIOQzjq09+9oWI/5Iwn+IiyfT3KHkpUtyt4lxPB1QjwIlfeRFScS/EwSGSKKiIIaohkigKvqmHEIo2ANsAIA9YphePwbwkPeDFBJv3FuYJIwP4aQI+aBWAefOmBb0LSOlNZi+iDYDkLKED9G9KMkm4TZXLJ8PiPFsbTsbfjyV1i6mlRtApuM9ydCYyEwE0nP4cqbsGo9Rkk5eCyanUImy8ncAVQSAHBEHF3EMizlqBMcIBiIgsQ+2NkbguNNAdXMwKBOhQjSxUgoQ3h1SALsRaLdgcYbcdUmsO04N4JTBS3A9wAPNh5MML8flUg7HUeRTyFwOiKnQCip7G5c9yeYPY3oQVh2LjYwFy9D0HsSK68FexBlGMlnI9kKnJ+P6AEIDpxh0iNKiUNxvwayAJP+PP7v400BtccIUCCW46yOSQxER1DdSBXXoroGscfwWuEtQyQhUlGnuWI21H8vXUQSaIZYBrGNIRCUMhwAbgUSlmPhEILtgbSaFO/E4l6cOwQJS/G2APPDmN2M9lZjaQtiRyDFYlw+D+fnYDoRxDASCDjxgAD2/wPUSBeswGE4ewmLz5CqR8GuJupjOP8C3gxfTQEEC/tAx2E6AJIw6QBWgyk9RAw0RyxDATGHWALpYFJi5UQsLUYGZ2HFWYibitgTdKubqbiVwvYQ7ATI3k8Ms8jSZlLvHnqsQd2LZHY0uSzB5YsRfzDYJMxRP5cEhDcGqpqZQL98FYiAYWR1qbwMuVG/SF7+NAxBDIgGPI/Gu0hxDdhakK34GBALCAI6AK4LrgOWgURwiuFAGwhVXXqW189wJRBR6utFlOQESwGcIm4vrhzEGMb80Wh+Gj68A2QKKT1EFa/F6f2IBrrZGQwWiwh2MBafR9NKNN1LaQ2kmInLTyF3S3DMqKlHQMzABHU1zJ6Eey0Arxzba08lmpkzat4jgutiGMYAzvUv0IjZKCYNcAM4wBSMLURdh3Tvh3QXIg/gqIAG5hQxj6QWEnZDbNWKIOyoAbYM8xVYhhLwVvaD9Zj0EBTTBlVeklcONKfKe6ADeDPM9fCqv14kLXTo+imYLCEPK/BuFsYYsXwAl64jpX1EmUooFpL7pZhOQ+3naFxFsrsQm4CEM5BsCT7MApuGWk1HZYoUkuGcw1y9tDkTUAOngANz/WSwfqYatS4yQ0X6sqKqOUciSo7igBE8FVpuhXQDEldi6UmcH6vvnQZAwsuEChZAG5Btr4/TcD9LSwi7+r/n9f9Tq85SSfXv0gMREg28vARpAtE1cArid6AyiE8Z0Kmz2sZBNMzapBBQPx1kOUHeieTTge300hoqvRXSPrIwEwvvpaHHITGCrabSlRA3E2QaVfMUyM4klz+A3jg0U8wnkDpfnbkaVN97VZpmYAExVavTtCSR6kWhfhd4G6gzQRS1h9HyXlK6HWUtQbeTpQK0wCiQRhtyB9UgyUVc3kX2NTGpwI8iuQcZhN44yMYg7IR2C2jX3NIYBzIG5Vitb20AE4HUBOkgA/vBT4NuFzo52twLcQB8whUJdBAqhdCB0iANEJ2hWZukJxH8fDK3DOwIVDZR6Q24agPRVeCWkYXTcTIDS7sh3oGllZhsQ/0CtDiDnBPx/kBqAWYkV5DMyM3XWliqPhVkiNmYYXmf26g5hYSFEuI+LN4GeiNa3Ye3zXiLYEPgDBVDaaBFztYXG1z3ozEe2tghmTFvwTAXna8MTemicSrr1/VYc/N2XtqSM/yWDicvG89pyyfRbD3G/q2H8s1vdhmavIs/+tB4BrKxmipctxY8oeAXD8O1Vw9y1jkdFs8bwCojNbYz1pvCTdfCXWt30sYzZ+EE3nPOAFPHj0Iy8B1MOqgVRJmChtk4fyqZW4ToRGAdVbqB0h5GZTK+WEBwp5HZDFy1mVj9GE03o2EA3PFkci4uLCRlk6lINFKBSF+J9fWumHXMrFEvOJQYz0H5OFrdQWQ18DRBuzjLXilVVyGWkyQgufLIU5P49Ce288DGQSZM65Bil+6OFl/9asaFf+L52pcil34ZeiJMOMCxf7dDuhUXfXgSf/e13ex+7gBOOnGUtx6xhZU/fjuTWs9CVHAJsxILU/n4HyvfvSrxzrOVK68ING0MbeZ8+Us5X/8nx8Cw0LYeEyfu46rvTWTW23dB2SAygGcE0QzzieT3UVkTJ+MJLMayC5FwNMJOtHs70luH2fNofjiSn4HPFgAFKd5Gmdah6VGCDJHJCrxfgeUHIzIJrFVj6EAsmcFe0F9icQ296nbEnqBIO4CBmuecYi72F7kA5hAMMQHf4JN/Ebnm2xUf/NAUPvX3wuieyPOPG2e+q83GXzb44LvGGBjI+ceLG8yebzzzrPG5z+5l8xORy69qcdwRB3LSklGmz9jOddeMZ/zgNki+3hQ0umy4/yDe/b5d7B9rMBj2c/l3DmXZyVsZ62acd3bk4UdzvnjpIcyas4+8N8qcmQl6FWQdKu8J0eOkAxogDtdzoFODLAn10yBbimTnghxG0GehvJGU1tGVHZg/jcF0OlIcAbIbKzdCbz3Yw+zLFzKYzyL3S8Hmggu4Tu+bjLY/Thr7ADL6DRrlI+Tawdwg5jIsdDHfhTQOpy2cRRwlgoILjO2ruPP+kvEHBv7sM8ZR0zYz7/Au57/7BRqh5MG7W+zc5TjnDyPnv2sPhw9sY/kJbS686ADGup571zXxvkfM9vZLKJBsmCp4NCsxJvH9K3dRtj3vvWA6Linfu+oFoo8UrcTMYwcYKSsu/sKT/Oc/72Vkl6t1cxhBpE2WDKSWZubAip1Y43m0sZteHiEbJecxwtjl+L0fw4++nxTXoI2PwOCPKYp/oWn3QfoIqXwPsfw+6pai4y+jM/5Shszj2l8nti+g1/kUvfJqnMhURCai3qPFTtTvQbQB2gISWBPTcWjYg/l9dX6/LFxFQRJCk+iV0lcQeuDaUDUg3493+8nU18LeCbgGWKIRlVzbqAjtkFNlbTQfhYEufrBNyBSXVzz8VOCW62D22yJ//fkxjjh6PLeumsr9G1u4rOLzX/B85V8DRxzVYeVPlI9++CXuuXcIaUZIQ4gZyUdSSCRfkRwoTYyMYKP43jDEITTbR5W/SHS7MDp1TWpOVk0iVNNI2iIqJBsDtwvzitpUcJNqOeX2I+4x4DFCXpyDs2VY9QxW3U3pV0H+MxppN8RBkFgDEpuA74vyensnWjE4vsniYwt+8J0Ol15s/OnnZrB9a8H6m8b40EcO55jFOxk/JbHyGmH+SQXz57R4cqPy7Su6FE3PohNB6NEsp6K7Ojy+YQZF0aM1uIfD3pb47nUlW/aM8dFPz+TKS/bx7Lbd7KiUH12ZWDBvMnseDUxvtbn4GzP528+N8pNrR3j26Ymc9I52/e5TQdASkxJxtRYWLWqdHDsgRpVNo8rOQ4qzCDILsV2k6jpi93bMbcLLXKT5GfJiPmoHo/oIfu/f0Orex8hgQWPgnWScTWARuElI13aaYwCvjZojZT8WH8T11pP0Vkwewmn5Kuss1RksfXvPZzz51DCf/eQONmxoMjg1MFpFxnYLf/XnJX/5VcclX8n5xhczKquYeEDFjt1DJMb4xMeUL/7DIDu3Zixa1mb/iFAwSi/CkqUV//SlIzn/rN24MMq/Xdbkii8nXiwj9zzuGMy6XH7ZYVzyhW3cfs9eJk87kP0vNTho+nNccdVbmXnUM9AdBBR6w+ArLNuNuYhKTpTxdLLZtOwcMltcU4T+EuvcBr0n6Ay20ObRNNy5ZPZWNO4gpevBbiJpROQEJD+VLJyJ80N1wpnUO1FNariIWRvMIzQxiyQyvO7B9C403USKd5PpC3ja9cZHqEHFod6zc+cErr9e+MUv9iJuhPkLJvPuc3KGJu3AZAJ33DaRVau3suvFkikTYfEZLZafktFwY+za77jsW45etwQS3TiJww4vOPaYNjf+oOLgt2e878IWwTYTOZCrrx/l8Yf2cfZZUyjFc8PKl9i9tWT6tAEu+MAwc2aPIGUHfBuzcYiWKCXJvYUo8wjZUryfC8wAfZCoPyTpelxsIW4Rlp1Cnh0NKZLSekr7HsZWfDqGPJwM2WIsm0NFi8ISgsOsAyKIBMTUrM66/pbUJYweiQKHr3dK0sN4EisfIPXuRFlHkCdxCSQOgRfIFLImljIwQZxCtQeqwTqrmxFCgtJBkHrn1MlBQbM2LrSAHvgSbAAqDzoKjZq3bWwAcV00DeMKD74D7XGQJcgqLHWRYFA56LUgJdTvwlwT7GBwy3EDp2HuEDRuhnQNrvMIlY2g+ZG4/ExcfiwpCdK5G7GbqewRxA+T+xWE7FTws8EmkqReHsSsFv2Wv+KNSPpdXSrDbATis8R4M2qr0PQoue7FqUMo6jtLr2+rNUG6ffPXEHxt55n/9f3o799eFVX/uC/6Uu1k4XqYpPrYfG18S9n3JgImhqQckwrzXSo/neROw2dL6YXZZPISoXMnUv4MK7ch/lDKoeNo6lmItjB7kBh/SqWbwCuZPwEJy/FhEdhUxIXX+ij/w/idQE10UMBZs4/HDqJuxPdWQXU/yKM49uKqBlgLQsJc2Qc1gDYBw0mX1xuhuRLRvma1foZLqtsiGvqAliBtuv5g1M2m6ZchtgRxjmQb0M4qkvs56g7Fu1PJigU4nYOlp+hxI6XcgqQeRZqLz5dCvgjvDgabgAJKFy8BeZ2W4O8Eqlms+1ECSIVZjlOPkDB7AYv3ENMtaNyIsI1cdiDa6pslWtt+TmvThdfzWAPfBhVqs8L3E9phZiQpiX4IYx6ZnI0UsxEZxNIWyvgjXLyPkBwqiwn+bKRxGNgurLoZi6tJ1RhWTMbyFYRwFiaHIG4Qr30qNMNEa+dJHK/IyTcRVLTz8lX1JEXBRknigXH46IA25h6hirfieg+Q4qM4/zSeMVwarBtt/vU+0kGcAK6N+n2oKGZNkg6iciBZNh/vl+DC4UTdB+0HcdUqOsWvIMwh52yCP55OFnFpA1nvW1A+TdJjoTUD3Dlk/jiEyX0qCaCuP7/aV8YZWLs2gyR/80E1xgBfl50TxLQGN6XaTpQKEcVsAFMQaWO2iVitxsqf4/Spmh6kRKiVw2+E08/EfkhmtcnjR4k+I+lM4ERCsRDCLNAuWj0A5W2YW0/yUwnhPIJbhuhUEutJtgZ6m2p83Jm4xkLUHwcyHZEIEvoMnmoWNwiSYVQ1qOSYSt0i+n1w6qvhfQ0nvnq96X9RL0yv6hywhW7aREw/w1frcGkrmezFJYWUo5ki1kBSUasNP1ZXfecQXGM6sTgd8hU4AWvfD3EVnew+TN9CXp1P3jwBF4bRtJWkt6BpNRZLgswlFeeR58cgclQdpFDTUe1+9EOU/qy0jvu3z/Z/HW9Oi/q/HQYomO/zsAEdRAOW9qB6C6m6FUmPAFsxclzYj/g9JG1h6Xh8djJldgwNPRriNqJch5S34aJDB+bh/Kl4m4PyIl13GzGtxVejODuSkM/Bh8WYLMR5Ry3Oi7q18yb1on7b+D2CSl2+Un+auVf6YC7W5Z8qLD1MjD/F0lpQRdwsXHYSLjseOIhSH4PR/8BzLbFo4d0FZP5ckLkgQlX+EC2/RZI2Tk6mCEsRNxf8BCoPlSgFCW8Bs7qMf9+g/heWgh4JFrTLrgAAAABJRU5ErkJggg==" alt="Colas">
+    <img src="icons/colas-logo.png" class="logo">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
-
-  <div class="actions">
-    <button id="pdf" class="btn primary">Save as PDF</button>
-    <button id="resetAll" class="btn">Reset All</button>
-    <span class="muted">Works offline • Auto-calculates • v1.18 Pro • 2025-09-10</span>
+  <div class="info-grid">
+    <div><label>Project:</label><input></div>
+    <div><label>Location:</label><input></div>
+    <div><label>Job/Contract:</label><input></div>
+    <div><label>Quarry:</label><input></div>
+    <div><label>Aggregate:</label><input></div>
+    <div><label>Truck Rego:</label><input></div>
+    <div><label>Tested by:</label><input value="J. Hugo"></div>
+    <div><label>Date:</label><input type="date" id="dateField"></div>
   </div>
 
-  <div class="fieldset">
-    <div class="legend">Test Information (shared by all three tables)</div>
-    <div class="grid2">
-      <div class="box"><b>Project:</b> <input id="PRJ"></div>
-      <div class="box"><b>Location:</b> <input id="LOC"></div>
-      <div class="box"><b>Job/Contract:</b> <input id="JOB"></div>
-      <div class="box"><b>Quarry:</b> <input id="QRY"></div>
-      <div class="box"><b>Aggregate:</b> <input id="AGS"></div>
-      <div class="box"><b>Truck Rego:</b> <input id="TRK"></div>
-      <div class="box"><b>Tested by:</b> <input id="TB"></div>
-      <div class="box"><b>Date:</b> <input id="DT" type="date"></div>
-    </div>
-  </div>
+  <!-- Three panels -->
+  <div id="panels"></div>
 
-  <!-- Panels same as before (3 tables) -->
-  <div class="panel" id="P1">
-    <h3>Calculation Table — Sheet 1</h3>
-    <table class="sum">
-      <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M11" class="num" type="number"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M21" class="num" type="number" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A1" class="num" type="number" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R11" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL1" class="num" type="number" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R21" class="out" readonly></td></tr>
-    </table>
-    <div class="rowbtns"><button class="btn" onclick="resetPanel(1)">Reset Sheet 1</button></div>
-  </div>
-
-  <div class="panel" id="P2">
-    <h3>Calculation Table — Sheet 2</h3>
-    <table class="sum">
-      <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M12" class="num" type="number"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M22" class="num" type="number" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A2" class="num" type="number" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R12" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL2" class="num" type="number" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R22" class="out" readonly></td></tr>
-    </table>
-    <div class="rowbtns"><button class="btn" onclick="resetPanel(2)">Reset Sheet 2</button></div>
-  </div>
-
-  <div class="panel" id="P3">
-    <h3>Calculation Table — Sheet 3</h3>
-    <table class="sum">
-      <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input id="M13" class="num" type="number"></td></tr>
-      <tr><td>Mass of Canvas Mat (kg)</td><td><input id="M23" class="num" type="number" value="0.85"></td></tr>
-      <tr><td>Area of Canvas Mat (m²)</td><td><input id="A3" class="num" type="number" value="0.97"></td></tr>
-      <tr><td><b>Spread Rate (kg/m²)</b></td><td><input id="R13" class="out" readonly></td></tr>
-      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input id="DL3" class="num" type="number" value="1.45"></td></tr>
-      <tr><td><b>Spread Rate (m²/m³)</b></td><td><input id="R23" class="out" readonly></td></tr>
-    </table>
-    <div class="rowbtns"><button class="btn" onclick="resetPanel(3)">Reset Sheet 3</button></div>
-  </div>
-
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.18 Pro • 2025-09-10</footer>
+  <footer>
+    © Colas Mat Test — offline • Created by <b>J. Hugo</b> • <span id="ver"></span>
+  </footer>
 </div>
 
-<script src="app-legacy.js?v=24"></script>
+<script src="app.js?v=1.0"></script>
 </body>
 </html>

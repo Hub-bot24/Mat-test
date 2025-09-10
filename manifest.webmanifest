@@ -1,20 +1,12 @@
 {
-  "name": "Colas Mat Test \u2014 Reset Fix",
-  "short_name": "Mat Reset",
-  "start_url": ".",
+  "name": "Colas Mat Test",
+  "short_name": "MatTest",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffd400",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    {"src":"icons/colas-logo.png","sizes":"192x192","type":"image/png"},
+    {"src":"icons/colas-logo.png","sizes":"512x512","type":"image/png"}
   ]
 }
