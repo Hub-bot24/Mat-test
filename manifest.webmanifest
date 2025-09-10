@@ -1,6 +1,6 @@
 {
-  "name": "Colas Mat Test \u2014 Triple",
-  "short_name": "Mat Triple",
+  "name": "Colas Mat Test \u2014 Triple Shared Header",
+  "short_name": "Mat Triple SH",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
