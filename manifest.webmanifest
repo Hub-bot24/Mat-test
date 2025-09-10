@@ -1,10 +1,10 @@
 {
-  "name": "Mat Test \u2014 Offline Calculator",
+  "name": "Colas Mat Test",
   "short_name": "Mat Test",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#111111",
+  "theme_color": "#ffd400",
   "icons": [
     {
       "src": "icons/icon-192.png",

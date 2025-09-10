@@ -3,30 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mat Test — Offline Calculator (v1.5)</title>
+<title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas Mat Test</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#ffd400">
 <style>
-  body{background:#f7f7f9;color:#111;font-family:Arial,sans-serif;margin:0}
-  .wrap{max-width:760px;margin:0 auto;padding:20px}
-  h1{font-size:24px;margin:0 0 12px}
-  .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px}
+  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif;margin:0}
+  .wrap{max-width:860px;margin:0 auto;padding:20px}
+  .header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .logo{height:36px}
+  h1{font-size:22px;margin:0;font-weight:700}
+  .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px;position:relative}
+  .note.brand{background:#ffd4001A;border-color:#ffd40080}
+  .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
   .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px}
   label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
   input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc}
   input.output{background:#f0f2f5}
-  .actions{margin-top:10px}
+  .actions{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .btn{font-size:16px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
-  .btn.primary{background:#111;color:#fff;border-color:#111}
+  .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
   .muted{color:#666;font-size:12px;margin-left:10px}
   .debug{margin-top:10px;font-size:12px;color:#555;background:#eef5ff;border:1px dashed #b8d3ff;padding:8px 10px;border-radius:8px}
   footer{margin:16px 0 0;color:#666;font-size:12px;text-align:center}
+  .hide{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Field Spread Rate — Offline Calculator</h1>
-  <div class="note">If numbers don’t update, press <b>Calculate</b>. Version v1.5 • 2025-09-10</div>
+  <div class="header">
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHcAAAAkCAYAAACzI6XTAAAfgUlEQVR4nO2bebRdV33fP7+99znnDm+Q9GRJlmxL8jzbyEY2nmSDR4yDgQAhDAmEENKkyWI1TbpWVluaJiEhK7QJDSEp4BAI1AkCYzzbeMATRjaxHQO25UmSNQ9vvvees4df/9hXA23SFBwn/aP7rbfefdK975zf+e7f9P19t6iq8iquBEBE8EBAiIACAhioR/JLC9g+SiDRIlGgSQlGMWoxCgUgEkE2E5vn8P5ZnP0TUlgInI2Ycymqs8GuRCkJCVz/LnRuPepuRcsZklmDMW/DFVeBXca8bKdkFa4WYn0Djf0jonsKI2dh01uozbV0yjEKDJosRAsGsEoEXGxAK1DJ/24UJIJaVEHMHqDI70ntbLqBZCASKbCv2rOXVxvcIbpkqw55uf9X60Ga4S9VthpQiajOIdpBTAlpAGEbIT5BSvfh9T4SW+jOn0qyU/hyG9E1qDkKx+spzVVYeya1jYjfi8bH0XgLwgPEMIPV43DFa/HFWynL1wCL8M02fPgGRboD19uIhIAWiriLidVPkTpnE6SLoaFFQqLD2wpRQVCMJITe0OgKtEVKiskGHQAWAyoNiYilRd7d//Tr1Qc3/K9XhAPISiKavQgjCC1EIzBL3tpjEAOkLaT4XWK8Bcz9pPQyViM2TSBpAbiXwEbQErQkaosmOozpINUYO6rzWWQuY4QLoCkgbkD1JkJ4mOh3UDZttFyEts/GumsRXZvvUb8Feitp7glUHseXfVI1golvx8m7ceWZYErqIVqiCUODFY9QQSgggS+Gjn7A/sD+HZ8AQ/WqPfp/Fs9VyWFYBDLaNUoNRAKLELU4Hf6XRpAZEnfRxHtw8XbU9yAlrBUMCVKT32cS2AGkCtI40IEUwfXATZKA+f6FFNU8xnZwXI3wbsSMQzHHQB+i9LcSe48gdhOkEVK6EK2uRrpnoXYxFRWhfgKtb8KEO1DZTNIu6k7BlKch7iqcOxbScog56mABUwMBjwcSBsUgCBaogNbB7PQqrVcVXEWpmQcKDNUBpxXRDA4RqxWiCrFG04s08VYSdxDCU1iZp4yjiPEY0wf6SN4toAVoSdIJoEFMD6RGJEFyGXBK8POgQhJBikhdLiCZtVjzTpxbR21ncEwj/nFS/XVE7kW1IabDKd1rgfNwxZUQVoAmvHmIlK7D+G9BmCKaIzDmTKy9FFueC3YlMApiSElRU+83GhCMuAzw/tRkXq2n/88A7oC9OeTSRSJYBZvtzACHjfh0L15vIMgGJMxQSkWRupAENQHUDYsWA6IgAzA9RBqitvJmQfMmAQQDahEEiQMQky8oASUS1IF0wCwmpffjqlOx1Ykgi0C34ut7wN+JiY/Ts3vAdKjc6Ti5FmOvBrMMTZsY+Eep/F+TBnuodR5tldhyFYW9CGevAr8aTDHMQooaQIYRzEAOVe7VevyvdlhWgnrA5C9pgN0QXyTWz+H9Jpz7M2IcIEmwzmNNDcGAX5jzbvvF/KdiF00joA4VRSWAeIyaXJCZAUgzjA5l9lwtiUYhOYwahAD0cxGnEW2A/jGodaT2UYTyEmx5NYU7CownNhvpp5uJeh9FeJgyBdBjUXctqXUNyZ1EOwQ0PEud7ifo3QSegQBlWkVZnAjuSlx1FMgRkJYAgsowetEAJf/MBdWh5ex+N/u/XflzqpI/FQFJoHtJ/klC8wBwP8hjiMzj/MgwDw37Awogge3nvBW7Q/D6YOLwGhZSF00VojXgQFvZw0kZaNMH06Chi0gAE1CxqLRJ0aBExARSNY31FtO0UBWwI0R3GslcTtm6BIkngo3E+DiD+iai3k6RNlOkDqormWq/h5H2KbQ5OpvefI8YboNwGyov0ktHIMUxWHcOzr2Owp6KsCzbq4oeqEX4oRx88OkfisOPtqRRVUuuTUjkas72gQHQEFmIUGJw+YoJUIU0/K4smoabQYSER4zLN+4HSPM0Se9H9WaUJzDaA4ocomzE+C7ENmJ6SLEPCeNQHwlmCqpNkEqIE5A6GSxbo5qLNDU1jtnh0ygBm0FDILVQLWnKOYrQwvg22B6hmiJag9RLcX4RoXwJR8SkCkILUpXNdAOSg769msK8nlZxGSIjwDw+3YIP64npuxTNHkxaijFrMfZyjLsAqiVg9uHrjdje9SS+y8BtxFeCkzNx8VoqcznGnEBwJZYIUSA5FCU4ZSAQdMDCJIgIGIMieTMghzQdwzr8QMuZ9w2SkKCqw9dD4IafMpBEMXF/c56GbwJoUCZR7ZFYhWAx0iCpNSyMnqZJf0Mwd1LU+5A4h2EeYxTB5YJHDEkiUkxB7CL1cnC7wU1BGMmeaHrD1gHAHwwicRTVNqhBYjE0UEB83piSixjVgsY6SrMHadoQFxFdIEqJVY+1uwlpAkPEUAN1vp5ovj8EL5GYOohZjchZFPYSrF0L6SjoN2j1X/FhI3V4Gm82Ia6k4nwq3oPVS6i7BUXaCb0HkfpmSA/jZRZfHkEqT6CUSymKs0jmJDwtDEqpk9BECC2k6uR7MaCSQTVKjoiqUNRDNF1+BioHHF2iqpr9nr8/QitEERJQ0GRQJQKBhCHSIpFDoGUTjoWkpiGEbyP8NUbvAb8X0Q6mnM0e7iuIbVQMKinnHCOZcQoj+RrF7nwdvxCNI/l1GAO3Dykmhzu0Gt553mjqF5HbrKHFJufiDJIQ4gSu2ARRIU4QrSHFTrbL7iDYFia1MLEYfq4HCBpH0TSKCZM5Ijkl2ZpgR9B0CtZcTuHOR4qTwdSk+Awh3otP99CEpzA0VOUyPO+jJedRyNphL74RjV8nxFuR9ANM3UPckYT2eUR7Ka48D8cR0BRohNjqgRGUXGVnEmxIiGgCW3MwiDMEucqBVNP+EtMPPTIMHVhQDAVzKONIHFJsMvRkIoQ+oXmEwD0Ebob0LGUQytQdhoEBpAVga6L0sYUBW4I1QI8mDHAzqxEbsgfbGZIqxBFMWeWyOhwOZgspTEMcxWgL7CzIfDbE2hxVUoSUILVyZY3Nmzh1EDVgd4DzeGlhTIXpg9QLSaNbMi3oxxAjKPNgPKbo5n8fNCD7SMZjjIO0BJ8codgLBYT6fZTFCVTFmaCnQCxAnqDR6xmkO+k0m4kGgnsdyltp2StxbjloHwbPo+EeND2A8gDJ9sCdQTDXQHkl6k6kE7tDSnMetJ9xkS5KG02KO1ASZXo3rxLUIapB9xdQ+SuRdH9kNzTJYq3NTp8UwgCNTxHiegJ3UvmXD4BuTD+HUjUQF0Aap7EesfMUXcfk3pJdO0eYnvaMTAhHrFTG7FbiwCBplBAcZVfBeHbtdOzeXiJiWLx8D0uWeUjj+P4s1s2icZRmfiWNFCg7aLf3UtqIBAN0hvnXozYh/RWk9maC8/RmzyExz3jnRezscmjNoKaP2oY6eTqdUeqBYe8ew+S+Ad2lDYdPTFDJAsJ0H+d8ttF4EkqyDSFYDKsRuQhrrsLYs8GNQQok/yAh3ozYG4lpJ2q6BH0DUlyNaZ2FcgwlA0z9GFrfhKRvEnUTybYxdiWkD1K2TwaOg3QYYGgsBJuIzNENoxjJFTiiORIOE6+oTml24ypH5STDiDcEvNwNFMTBTmL8Jkmux/K3GN9g0gKM7B2+dTR7jDFEE0kmESUSXEXdX8oXPjfg5ht2sXXTDN4XFK3IiSet4Nd/YYyz1/WZj7sY7x7Pw/dXfOFzL/P4Y9uZnSoQ7TKyeJI1r13Mz7z/JNacN0/dPEJ75Di+8kdt/uBPX2DRYfN89KOrOPf8FnF+F9YaEI9KH7WJ1B/HTSi33dbhP//mFEVZ83ufWMK5a/ukySPRYiux2IepjuDBexbz53+8ne8/uYvgLYP2Qk5/jfChnx/hDRfNY/sR0W7O63YmV/hSoUap6RGdI8oqnHkdhV1LoT857HU34cM9BG4jpEdJcR+F7aDuApxdR2mvQPRoiHNEfzupuR7hEepqkhSWU+g6rLuMojwL3AoCJZFIGVuIDAstOZhvISCqswptVO3BesnMg+wEv4vUf57I3URzGyp7cRqwcQEmKdCHuDC3LHY+h2xtESlJBCiFfbNH85Ffep7bb5jDyHLU7aE90mcw12LQH+eCU3fw+RuP57DV06z/H21+85deYnryWLz0aI3Og19GXc9SGcPCsR6/+8mTufxt36NVHsanPjrGv/lPPRYf9nd85nNruPwySHMvYo3JacNFoo9IEUnmNN790zu49fZMGrzz3Z5P/1lC9rXRYjsyOsaGh1fwc+96ih1bT0Fcjensouc7oJv5g48v48O/4Ij9bVhaaJog0sGZTbldYwSKmmh34VVJGEQcRToWtVeDfRfGnYgxivpvo4N7Mf2/JfEdlERorUbKixFzOWV5KuBIcRsh/gU+PomPP8AwiTXLKbgEZ65BzJlIqUALZRRSO+M69GKHjgzR1pyc9Xm8fwTvN6BxI534bVwUHGOIWQrSJ5mGZAXokmx/WAEvyEWmRCwBiYqx43zmT3Zx9zf2MVocz9GnWz74b9dw2Ipt3HdL4sUnHB/97eNZtGqGp58p+Z1/v4n5+eNpLd7NT39wCedd3kXE8MCdJV/7zHYmp1byO7/9bU46dxHHrbaoU6RStGWgmkXtAClmc65MFfgS8Q6zYI77vtHioQemKReOQBzjm7ft4rHHTmDtyTtomoZC2tx84yw7dlaMLpnhvR9ZzoVXGm66Tjh65Uo+/IsLqWc2UzIBUhCKObzbjRkswNgemG0QW9jBkdg0mtkw0yPKFMZ+nqBfJtmTwL2Bon0JjP46g1Gh7e8l1Y9RNHdB+hRJPsl8cyLJ/hSuuJq2/y3KUtHyYcLgJkzzKMR7kHQnFIvZE99Pu1hNxx2DmKOG/T6ggiN4MHsgPkoa3I+JG7BsRGU3UiSEMnOGTOUWRkuMlsME3sNQAs3QaxXFEaPFupK53Z4v3zhHlKNYsWIH1/350aw8/SnwlsvOXELjpyntHpAjuPXWipe2raRo7eYDH1jGb/1uH+b3gizibes8mCV87jPPsXFTh7u+McJxv9Km1TcUYZ6x2cNZ0PQwvYrUtMCmfE/qUDdJ1BGu+5sp9tSwbGQcE6fYu2vAlz5vWft7izDzbWR0mli3h8XYADudOHY08oe/D64FfmYLJowj4qHagdMK6a3EyG5QmwtHdZloMZO5JBXFSZkZMvqo3k+I9zOY+QJOLqZwF9KUV1KOnA+8izR4luTvIqVbIH0Mms+Q0smonAfFGyjaH4MSkn+S5L+M+Duo0sdJdUE0K7HyekSugvJUcAVu3n+cJnyXgsfosi+DF0co5cjcsxaToJ1stPTATWe/98sgTiDF5mGVprlDQRFjwBl2bJ9h97Sjb6ZZc9FSVh7nibumkbga7F5stR0/P04hFVt/YNF6hrEF8Ka3TaP1NGlGUN2KlaW89fJVrP9Mw3wIbPx+Aczg246Z9iSjbZgrx6AYp4kN4gIiPUyMuOJIvvvwKA/f8yRtfwTvfc9KXnim4vabZ7j97ifYuLXi6GNqvCxk3dVH8LkvfZ+dMy0+8cnH+ItPL+GMUz3v+pkJ3vyOhOvsRENAcHnE53Yewh00iAxyOhi2YoqhJ4ux9Cjo42JB2YxSxhmU9Yj5IimOUOsVmNZ7sK1LMeWVdOOvIPrf0OaTKFsQvZVYfxyfLsOYD1B23kC/czaelxntfREGd5HMgwTuI6Uv4nuXYMpzcKInYWV7LnClj5VZxM5AGoFUQH0MuEmwk7lHDUuzysDNQLUd57vDIK+H/ExAHE5/xolmkuAakvWkImDSDqwRcC1SNY0WgpGlOC2wKYD1qNHhxGcTECi1oWAaK4pyGNClbz0UM6RSaazg3TyNncRQUkqDMZCqUb70F5HePsfikWne+6GX2PTCKHffMcrWl5bzpevgP3z8RXrTfS5Zt48vfHWMz3665PFHKvbu2sxDj5zEw48+RZ2O4b0f6JDm92DTQlCDcXPUphwSg5onVoBQDBkzpbR7sL6FDYszj2BnULcn9yUKSUuSBjL/VFBEICyFdAxSH0dIJVH3EmlIOgVmG8nsIDBOoIVwEoSnQZ7EVFPAc5lMkgbX6b4J4htR/68Jze1E8zeoe5wYZ7F2nMJ+L/ducQGiReZtbT+HvXAo75zHeCoWVQ9RWLa8y9IFkbBnhEfu3c0PnjmRU06bAZR66ii2fL/h2NMjuEmOPKXGmA5z8/PcuL7N2jUGmWgjdhzcGF+7YZ6+HyDa4piTstJBUbqzRzHi9nKYOYqiWEAh24Ex6D0HYREbnhVuvXM3TTPBm98+Qcsmtm7Zw+gR80zvKLn9axv58M8vZemyfTBfcOlpJRd/cZbJ2RFuu/4U/uPvbmFm7yjfvD3x0+86AWN7qHdIHAMtsUUDpMwB6xDYWCHDKZbr7YE4DrRJbh5fVPTMBNgzKMxarHsfbWOBGp1/EA13E9ONoC8AHepuhXVvwMrbabkLEKlQ/ywj/Zug9x3mRv4a7USKtBLn34KVN9AtzwezFNckizUR21pCUf4y9H+eFHcT7XUMiutx9SySPCqTeXJGGvK9i7N3F/uG7BXDsJywxpJ8Q3dignf8RJtPfuwHTG89io/8wk7e+8urGJuAW2/oc+8tW/nIB9fw9n+1gMuu2cp//5N97Nq8hL/67A5qHefCCyywgrvvbbj+8wO8X8zRKxuuurIAttKy42BaRD2M9V9R/u4JS79egJPEutc7TliziC//cY+tM5vpTnje8r5j+cs/qPidP76bzrICGd3GM3umuf4rh/Mrv7GYya2j/NqH97Jg9Qhv/bkjMWNzGGvwMdEd6YC1pKCHDOkENxg9ONiwTd70pp+JBCqSVqidRtw8UVaj8g5Gi6tw5Tk5AoaN9AffIsV70PQUKluQskUpV+D0rXSLc6Boo2mK2t9HiN/CDR6iHGwEB0HfQ6c8nrJ4DehpkBbl4GlB+rpZhXEMXWwyWQ9kAfqksA/T/1s0PUzUu1GzEaMeoxV5hOrBuCG4h3DPalA1qBTM9Jfw7351Gzd9ZY4mHQ6dRCpqBr5EfYtV3ef47G3LWHtOZP0NXX7jAzWzM218gvbYTpTDmJ6tcK2aZYdt5hP/5XjeeJliR/byqY8eyy997BmWTCxjbu+LeG8wBdRNjy+uX8lFa5ewbu0udu2a5/yLLJ/+K+WjPztg5/ZF1AunePK5DnOzlpNO2MNX1p/Pb//q06y/oYcZm6JyKxnMLKFlerQ6f8enP3sGb3zLDtLsTswwLGN7ML8CbIBiJve9NuUZQCpIFOxrLaal5zKa3o5j3ZAzfwmND9M0j1LO3UlSy2CkS9Ndjsg6uuZaCo6CNEdqNhLSLShfRvRlQrSIORdTXoHYMyndxWTAQv5WchslFa5MK8AI0EPNXGapdBSTOhhdgXaWI3olNn6QmB4g6B1oeowUJiloUTB/MNUe4DhTbqjF02pt448+dTivu0D42lf38MILPXzqUXaVk05ewq/94lrOOP05+rPT/OS1ysqx1/KXn9vChkd3MT0XqJoBR5+0m9dcMM7Pvv8Ezl6zl2ZfxHSV8YV9zjyxZqyzh+LILknaeCrCoOTwRR023NXnqFabFasDb/+J1Ry5aJZPfX4rVgyhOonf/8Qmbr5hjqoe8L0Nz/GBj4wzHWuefcbS9LewuNrNMas6fOiXz+SyK2eIM5NYqUD6YAyJClPNAIGkER8XEMIikJW46jisO5oJ3k/p2pCmiP4WlK8Rm++Qao/Tw6A6DlOso1NdTNedDKlFDNvpxz8kmi+h7EW9UskyiuI9lOU6cGup7dH0KXAps8EqAcXnaRAGkxTRRjWPUwMkkyVMxoAdoLqHPqMY6eLU4SIg82jcgI93kPRRqvpplAFQY9wwPOv+8ZUQBEyRsK0FzM0uZPdOZX5uJwvGhOWHtzFuijA1gilrYoJiPJDiArZPzbF7r2dBv8XCFbOMT4yDmSPuXIUp9hE72+n7RbjeAqyZATtJtIrXJaS5Y+gs/Db0WkTric7hykDZPxFTPZnFALKaxs7g5xaDPEvZnEyxqIWa59m6ZSGze6cZH2kYWdFhdKwh9hO2WYRoH1pbgYroj8AWzxGCoOZIpDwdzPk4eyHIGRAaCE8S/EN4vYtknyISsZxIWZyLK85kn7uGFrO02Yyf/QHG343a+1DZh7AU416DtVci5s1EWUQwDmuGg76YEDsFOp71W/trWgvI4P+kxNg/sJcDTikcSm9FYID2n6SJG0j6TeA7FOzGRoOEUdA2uAZVRVXBgikdSAWpohmAsy9nBWBqQSoys2UaTOVzz6gd0ETyCSHlgmX/BEgkhyQNHBRo2UwJagBjgDrPxZNH1YEImlqk1EKMw5mpnFp8Fx8VygG2iJgikNQT6xKagoIuWbc1IDFHsh5MgcRTQa7AtC5HWsegtAjNJlL8Epgv4GbnQEuCWQLluai7grJ9NoHFBPq0pm6E5ttE8yBN8QLRdTFyLqV5M6W7ANxqDqg1hlOAA8P9Azj9fYN8/aeQ2cwAFuI0sXmUkG4BeYiYNmMJlKHMjf+wENPUQgmInc1kQ5gA0xwg4/ezK6q5+ZfhrPagQT9sjOpQfHaIFXn8N9Q/hxEgISZvGpX9Pbnm64QxxPQRMw8YNHYgFSgNSIOJ41ksb6dJJuLNAho9DWMvoijOYsZdTJdIkV7A1A+Dvwv1TyBNApYyM7GcjlxBla7JMhvtodyDj3cQw+NE9yRGF2LMWVh7Psaegy1OAV2MJoO4Q+3mHwDy71+vEFwlkIspi2a9bvIozzLw36TmAbr+dmgqTBrFmgBmX85Z0WVdVCFgFB3+nf2jSsRkCi29Mnmgapkd/cBDicNZ73DDuSafIhhuAuwseaBdQVhAXZQkaXB2IWrWYOQybHUuYpeQYp/G308yXyOE+5CBp2ARYldh3Ztw9looF4E2NPExYroF0j3gX8T6AmdWMNe+gnZ5AoU9AzgadJwcl3pAHyeL+FEAPXS9QnATDbsQsnhNEFRzNDRJERqk+R4pfYvAjVlmE2us7yKxmzlpN1RAmCaH4SRAOwOvDin28sMakh9lKVpM51Flag9Df8mwBDkoTnD9XOmnLhq7RGqk3AWmzWR1Me10Lh1zGZJOzUL5uIGUvkpMD2LmX0CkIXVPIZbvQOzrKcslgEfrWRjciY/348tv07gpkFW49HpKs46qOBHMyZkmBVQDIkNrxaGqOPnxN/crD8tJOeAYkvu8pA60jSQwRrNiIM6j6bv4dDtJHyLGLQg1LbMdo5kkIXSHOq4BuLlMmDDCj7tzQcHO5QJPhyI8CjQmQBBrD2AcSAQbiHYBpLMp5FoqezG0TH74cTt1fTOR9VjdiAsFko4hFlfh5E0YezoUAvoCqbkPE25B0yOEYMAshOpUxF6Kra5CdAXBOJJAqX6YyznwraKI0aEC5seXvr5ycH3KgwUzS1YljuQ7NHPAPjxdDCMYbedIiIdiNyF9nUG8i2rwDBr6oAOcbTC2htQbGmrAvBJwBfzivOnsPGr6JPGIyX14TIYYFqKimGIC49bg3BUYdy7Ewwh1wA1uReNdDIo7aaqtIEfi4qW05FqsW8Ns2aFkgPN3Q7gOM3iMOBhF3ChpxBH5EKU7DeNOyASDxPwMKIdqz4PSpv23jG1AZsnS16FS8sex/pWBG4GXgMOGOUvABbJysoJoUVuTsHkcSEMWurWRWEL0wE5C3ICP30DNvZC2U6I4fzg0i6DaepAc+dHNg2YiHzlx8yRpiDgaPwZpKdZOEFqHU5kLKeRS0AnQnSRuodGv4nmSVj+gpoUWp2LknRS8BVwbilmC30BIj5DCA0h6BKeK2BUE3g7lG5Fy9VArvRBhDKNgZJ5MNrQgloiR3IaSj5/k0r6T05MC7l8wLKfcGJN3o8kTk6QH6/WG4dkZzR4koMPyK6licfkICFMQXsTXG9BwP1E3YOw2imQRMcNTBJD/gB7izD9cKR+i+Rz+rEH6qCieLirHAWso7FmY6gQw56BM4cNDhOYBJHwPU2/DmjmkLOkX76ZTXYbRNZkH0A34+HWSPgRhC7aZwcgy1L4Nse/FVitJDsChvsJIyrLq4cZSLPuFpjBLi9Fhi6mHmHFQrfxKDnj+E544+Af6rX+oDTtw+xFww1zLsIrdSj8+T695jrb5U5Lfi4kDKpOwqhCGOl+EWIHEFia0hxb1wfVR59Fk0JllGKdo93B8cQlUb8XICTj6NL2nKevbCdxLr3qciMH2z6XkLbj2eRTt5RBbEDYS9X405fYlpYDVozDuZOry52hVy7EyAYwdYm8epID73+zXQ17Jj51y/vH16p/y+0eXJx9OBjSrYMX0EZkDGuiPkvRJQryRpHei+gwFHqtthDZNMY0zEUPMJEgq8KFAzTi2XELN6+nYdRi5MI8w7fP4cCPUt2PCs3g3BeUSkIsozdUYzgLbAruZXv09RL9BbLaiaTdqBlTVKoxehDPXIqyBcpBnQlph2S+7FfaPPfMJin+Z9f8AuMM8cyDsDokJ1eEzMsNpywyEnYTmGTQ8SkgPoOYlbP94KHZC9WIWRMgEVq+g4J0YczZz1Q5crDG95yHeRXB3o/oyLX84ljOI1fuwrdPyEczQI8YH8ekb1OZbDOxmRpLF6hoc1+DcpWCOhqKFF4gaqMQjOFSrnDpg6Kn/H9wfDmMkVDN5IcMWJWu0EiIuz0gTINvQ8AQhPo6R9aSwAOJrMOZ8bHkW2GVgC1Q9Ib5Mmr8R0/wVpvgB2j6CwOUU7k1YewboktzumkQKd9MMvoTV7yO6BDVrcOltmNYKYByMRU0eYwdRVKBNGtYDuceXAyPuf3lw/ycrNCJ7lrSdSAAAAABJRU5ErkJggg==" alt="Colas logo">
+    <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
+  </div>
+
+  <!-- Smart install note -->
+  <div id="installTip" class="note brand hide">
+    <button id="tipClose" class="x" aria-label="Close">×</button>
+    <div id="tipText">Tip text here…</div>
+    <div id="tipActions" style="margin-top:8px">
+      <button id="installBtn" class="btn">Install</button>
+    </div>
+  </div>
+
+  <!-- version/help banner -->
+  <div class="note"><b>If numbers don’t update, press <u>Calculate</u>.</b> Version v1.6 Pro • 2025-09-10</div>
+
   <div class="card">
     <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
     <input id="M1" type="number" step="any" inputmode="decimal">
@@ -40,6 +60,7 @@
     <input id="DL" type="number" step="any" inputmode="decimal" value="1.45">
     <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
     <input id="R2" class="output" type="text" readonly>
+
     <div class="actions">
       <button id="calc" class="btn primary" type="button">Calculate</button>
       <button id="clear" class="btn" type="button">Clear</button>
@@ -47,8 +68,10 @@
     </div>
     <div id="dbg" class="debug">Ready…</div>
   </div>
-  <footer>© Mat Test Mobile — offline | Created by <b>J. Hugo</b> | v1.5 • 2025-09-10</footer>
+
+  <footer>© Colas Mat Test — offline | v1.6 Pro • 2025-09-10</footer>
 </div>
-<script src="app-legacy.js?v=7"></script>
+
+<script src="app-legacy.js?v=9"></script>
 </body>
 </html>
