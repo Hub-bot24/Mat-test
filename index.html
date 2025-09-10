@@ -9,21 +9,21 @@
   <style>
     body { font-family: Arial, sans-serif; background:#f7f7f9; margin:0; padding:0; }
     .wrap { max-width:900px; margin:0 auto; padding:14px; }
-    .header { display:flex; align-items:center; gap:10px; }
-    .logo { height:40px; }
-    h1 { font-size:20px; margin:0; }
-    .banner { margin:6px 0; font-size:12px; color:#666; }
+    .header { text-align:center; }
+    .logo { height:50px; display:block; margin:0 auto; }
+    h1 { font-size:20px; margin:5px 0; }
+    .banner { margin:6px 0; font-size:12px; color:#666; text-align:center; }
     .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:10px 0; }
     .info-grid label { font-weight:bold; font-size:12px; }
     .info-grid input { width:100%; border:1px solid #ccc; padding:4px; font-size:12px; }
-    .panel { border:1px solid #ccc; padding:10px; margin:10px 0; border-radius:6px; background:#fff; }
+    .panel { border:1px solid #ccc; padding:10px; margin:8px 0; border-radius:6px; background:#fff; }
     table { width:100%; border-collapse:collapse; font-size:13px; }
     th, td { border:1px solid #999; padding:4px; }
     th { background:#eee; text-align:left; }
-    .actions { margin:8px 0; display:flex; gap:8px; }
+    .actions { margin:8px 0; display:flex; gap:8px; justify-content:center; }
     button { padding:6px 10px; border:1px solid #999; border-radius:4px; cursor:pointer; }
-    footer { text-align:center; font-size:11px; margin-top:12px; color:#000; font-weight:bold; }
-    @page { size: A4 portrait; margin: 12mm; }
+    footer { text-align:center; font-size:11px; margin-top:6px; color:#000; font-weight:bold; }
+    @page { size: A4 portrait; margin: 10mm; }
     @media print {
       .actions, .banner { display:none; }
       .watermark { position:fixed; bottom:6mm; right:10mm; font-size:9pt; color:#888; }
@@ -33,10 +33,10 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <img src="icons/colas-logo.png" class="logo" alt="Colas">
+    <img src="icons/colas-logo.png" class="logo" alt="Colas Logo">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
-  <div class="banner">Running v1.3 Pro — 2025-09-10</div>
+  <div class="banner" id="versionBanner"></div>
 
   <div class="info-grid">
     <div><label>Project:</label><input></div>
@@ -56,9 +56,9 @@
 
   <div id="panels"></div>
 
-  <footer>v1.3 Pro — 2025-09-10 — J. Hugo</footer>
-  <div class="watermark">v1.3 Pro — 2025-09-10 — J. Hugo</div>
+  <footer id="footerVersion"></footer>
+  <div class="watermark" id="watermarkVersion"></div>
 </div>
-<script src="app.js"></script>
+<script src="app.js?v=25"></script>
 </body>
 </html>

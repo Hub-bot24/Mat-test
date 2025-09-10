@@ -1,4 +1,18 @@
+function todayStr(){
+  const d=new Date();
+  return d.toISOString().split('T')[0];
+}
+
 document.getElementById('dateField').valueAsDate = new Date();
+
+function updateVersion(){
+  const today=todayStr();
+  const txt=`v1.4 Pro — ${today} — J. Hugo`;
+  document.getElementById('versionBanner').textContent=`Running ${txt}`;
+  document.getElementById('footerVersion').textContent=txt;
+  document.getElementById('watermarkVersion').textContent=txt;
+}
+updateVersion();
 
 function createPanel(i){
   return `<div class="panel">
@@ -21,7 +35,7 @@ document.getElementById('panels').innerHTML=[1,2,3].map(i=>createPanel(i)).join(
 function calc(i){
   const m1Field=document.querySelector('.m1-'+i);
   const m1=parseFloat(m1Field.value);
-  if(isNaN(m1)){ // if M1 empty
+  if(isNaN(m1)){
     document.querySelector('.r1-'+i).textContent='';
     document.querySelector('.r2-'+i).textContent='';
     return;
