@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
-<title>Mat Test — Offline Calculator</title>
+<title>Mat Test — Offline Calculator (v1.1)</title>
 <style>
   :root{ --gap:14px; --pad:16px; --radius:14px; --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
   html, body { height:100%; background:#f7f7f9; color:#111; font-family: var(--font); margin:0; }
@@ -23,13 +23,14 @@
   .muted { color:#666; font-size:12px; }
   footer { margin-top:20px; color:#666; font-size:12px; text-align:center; }
   .note { background:#fff7cc; border:1px solid #ffe37a; padding:10px 12px; border-radius:10px; font-size:13px; margin:0 0 12px; }
+  .debug { font-size:12px; color:#555; background:#eef5ff; border:1px dashed #b8d3ff; padding:8px 10px; border-radius:8px; }
   @media print { body { background:#fff; } .actions { display:none; } .card { box-shadow:none; border:1px solid #eee; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Field Spread Rate — Offline Calculator</h1>
-  <div class="note">Install once → works completely offline. Add to Home Screen for 1‑tap access.</div>
+  <div class="note">If numbers don’t update instantly, press <strong>Calculate</strong>. Version v1.1 • 2025-09-10</div>
   <div class="card grid">
 
     <div class="row">
@@ -64,13 +65,15 @@
       <button id="clear">Clear</button>
       <span class="muted">Live updates • Values saved locally • Up to 6 decimals</span>
     </div>
+    <div class="debug" id="dbg">Ready…</div>
   </div>
 
-  <footer>© Mat Test Mobile — offline | Created by <strong>J. Hugo</strong> | v1.0 • 2025-09-10</footer>
+  <footer>© Mat Test Mobile — offline | Created by <strong>J. Hugo</strong> | v1.1 • 2025-09-10</footer>
 </div>
 
 <script>
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js')); }
+// Register service worker for offline
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js?v=3')); }
 
 (function(){
   const $ = id => document.getElementById(id);
@@ -85,9 +88,13 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => naviga
   function calc(){
     const M1=n($("#M1").value), M2=n($("#M2").value), A=n($("#A").value), DL=n($("#DL").value);
     let R1=null; if (M1!=null && M2!=null && A!=null && A!==0) R1=(M1-M2)/A;
-    $("#R1").value = (R1==null? "" : fmt(R1));
     let R2=null; if (DL!=null && R1!=null && R1!==0) R2=1000*DL/R1;
+
+    $("#R1").value = (R1==null? "" : fmt(R1));
     $("#R2").value = (R2==null? "" : fmt(R2));
+
+    // debug line
+    $("#dbg").textContent = "M1=" + (M1??"") + " | M2=" + (M2??"") + " | A=" + (A??"") + " | DL=" + (DL??"") + " => R1=" + (R1==null?"":fmt(R1)) + ", R2=" + (R2==null?"":fmt(R2));
   }
 
   ["input","change","keyup","blur"].forEach(ev => ["M1","M2","A","DL"].forEach(id => document.getElementById(id).addEventListener(ev, calc)));
@@ -96,6 +103,9 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => naviga
     ["M1","M2","A","DL","R1","R2"].forEach(id => document.getElementById(id).value = "");
     $("#M2").value = "0.85"; $("#A").value = "0.97"; $("#DL").value = "1.45"; $("#M1").focus(); calc();
   });
+
+  // Failsafe: recalc every 300ms in case an environment swallows events
+  setInterval(calc, 300);
 
   calc();
 })();
