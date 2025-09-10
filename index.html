@@ -7,34 +7,32 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffd400">
 <style>
-  /* Global & typography */
   html,body{margin:0;padding:0}
   body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
   *,*:before,*:after{box-sizing:border-box}
-
-  /* Layout */
-  .wrap{max-width:860px;margin:0 auto;padding:20px}
+  .wrap{max-width:900px;margin:0 auto;padding:20px}
   .header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
   .logo{height:36px}
   h1{font-size:22px;margin:0;font-weight:700}
 
-  /* Cards & notes */
   .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px;position:relative}
   .note.brand{background:#ffd4001A;border-color:#ffd40080}
   .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
   .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px}
 
-  /* Form controls */
   label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
   input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc;height:44px;line-height:22px}
   input.output{background:#f0f2f5}
 
-  /* Two-column row using inline-block (legacy-safe) */
-  .row2{margin-top:10px;font-size:0} /* remove inline-block gaps */
+  /* Two-col rows (legacy-safe inline-block) */
+  .row2{margin-top:8px;font-size:0}
   .half{display:inline-block;vertical-align:top;width:49%;font-size:14px}
   .half + .half{margin-left:2%}
 
-  /* Buttons & meta */
+  /* Professional header block for PDF */
+  .fieldset{border:1px solid #dcdce1;border-radius:10px;padding:12px;margin-bottom:12px;background:#fff}
+  .legend{font-weight:700;margin:0 0 4px;color:#222}
+
   .actions{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .btn{font-size:16px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
   .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
@@ -43,18 +41,19 @@
   footer{margin:16px 0 0;color:#666;font-size:12px;text-align:center}
   .hide{display:none}
 
-  /* Mobile: stack the two fields */
-  @media (max-width: 600px){
+  /* Mobile stack */
+  @media (max-width: 620px){
     .half{width:100%;margin-left:0 !important;display:block}
   }
 
-  /* Print layout */
+  /* Print styling for professional PDF */
   @media print{
     body{background:#fff}
     .note, .actions, .debug{display:none !important}
-    .wrap{max-width:100%;padding:0 20px}
-    .card{border:1px solid #000}
-    input{border:1px solid #000;height:40px}
+    .wrap{max-width:100%;padding:0 15mm}
+    .card, .fieldset{border:1px solid #000;border-radius:0}
+    input{border:1px solid #000;height:38px}
+    .legend{font-size:16px}
     footer{color:#000;margin-top:10px}
   }
 </style>
@@ -76,22 +75,41 @@
   </div>
 
   <!-- version/help banner -->
-  <div class="note"><b>Values update automatically.</b> Version v1.8.1 Pro • 2025-09-10</div>
+  <div class="note"><b>Values update automatically.</b> Version v1.9 Pro • 2025-09-10</div>
 
-  <div class="card">
-    <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
-    <input id="M1" type="number" step="any" inputmode="decimal">
-    <label for="M2">Mass of Canvas Mat (kg)</label>
-    <input id="M2" type="number" step="any" inputmode="decimal" value="0.85">
-    <label for="A">Area of Canvas Mat (m²)</label>
-    <input id="A" type="number" step="any" inputmode="decimal" value="0.97">
-    <label for="R1">Spread Rate (kg/m²) = (M1 − M2) / A</label>
-    <input id="R1" class="output" type="text" readonly>
-    <label for="DL">Loose Unit Mass of Screenings (t/m³)</label>
-    <input id="DL" type="number" step="any" inputmode="decimal" value="1.45">
-    <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
-    <input id="R2" class="output" type="text" readonly>
-
+  <!-- Professional job/site header -->
+  <div class="fieldset">
+    <div class="legend">Test Details</div>
+    <div class="row2">
+      <div class="half">
+        <label for="PRJ">Project</label>
+        <input id="PRJ" type="text" placeholder="Project name">
+      </div>
+      <div class="half">
+        <label for="LOC">Site Location</label>
+        <input id="LOC" type="text" placeholder="Location / Section">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="half">
+        <label for="JOB">Job / Contract</label>
+        <input id="JOB" type="text" placeholder="Contract / Work order">
+      </div>
+      <div class="half">
+        <label for="QRY">Quarry Source</label>
+        <input id="QRY" type="text" placeholder="Supplier / Pit">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="half">
+        <label for="AGS">Aggregate Size</label>
+        <input id="AGS" type="text" placeholder="e.g. 7 mm">
+      </div>
+      <div class="half">
+        <label for="TRK">Truck Rego</label>
+        <input id="TRK" type="text" placeholder="ABC‑123">
+      </div>
+    </div>
     <div class="row2">
       <div class="half">
         <label for="TB">Tested by</label>
@@ -102,6 +120,26 @@
         <input id="DT" type="date">
       </div>
     </div>
+  </div>
+
+  <div class="card">
+    <label for="M1">Mass of Canvas Mat &amp; Aggregate (kg)</label>
+    <input id="M1" type="number" step="any" inputmode="decimal">
+
+    <label for="M2">Mass of Canvas Mat (kg)</label>
+    <input id="M2" type="number" step="any" inputmode="decimal" value="0.85">
+
+    <label for="A">Area of Canvas Mat (m²)</label>
+    <input id="A" type="number" step="any" inputmode="decimal" value="0.97">
+
+    <label for="R1">Spread Rate (kg/m²) = (M1 − M2) / A</label>
+    <input id="R1" class="output" type="text" readonly>
+
+    <label for="DL">Loose Unit Mass of Screenings (t/m³)</label>
+    <input id="DL" type="number" step="any" inputmode="decimal" value="1.45">
+
+    <label for="R2">Spread Rate (m²/m³) = 1000 × DL / R1</label>
+    <input id="R2" class="output" type="text" readonly>
 
     <div class="actions">
       <button id="clear" class="btn" type="button">Reset</button>
@@ -111,9 +149,9 @@
     <div id="dbg" class="debug">Ready…</div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.8.1 Pro • 2025-09-10</footer>
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.9 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=12"></script>
+<script src="app-legacy.js?v=13"></script>
 </body>
 </html>

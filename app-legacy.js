@@ -43,29 +43,35 @@
   if(window.addEventListener){window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=$("installBtn");if(b){b.style.display="";}});}
 
   function wire(){
-    var ids=["M1","M2","A","DL","TB","DT"];var i,j,evs=["input","change","keyup","blur"];
-    for(i=0;i<ids.length;i++){var el=$(ids[i]);for(j=0;j<evs.length;j++){if(el.addEventListener){el.addEventListener(evs[j],calc,false);}else if(el.attachEvent){el.attachEvent("on"+evs[j],calc);}}}
+    // Inputs to watch for auto-calc
+    var ids=["M1","M2","A","DL","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];var i,j,evs=["input","change","keyup","blur"];
+    for(i=0;i<ids.length;i++){var el=$(ids[i]);if(!el) continue;for(j=0;j<evs.length;j++){if(el.addEventListener){el.addEventListener(evs[j],calc,false);}else if(el.attachEvent){el.attachEvent("on"+evs[j],calc);}}}
 
+    // Reset
     var clearFn=function(){
-      var ids2=["M1","M2","A","DL","R1","R2","TB","DT"];
-      for(var k=0;k<ids2.length;k++){$(ids2[k]).value="";}
-      $("M2").value="0.85";$("A").value="0.97";$("DL").value="1.45";
-      $("DT").value=todayISO();
+      var ids2=["M1","M2","A","DL","R1","R2","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];
+      for(var k=0;k<ids2.length;k++){ if($(ids2[k])) $(ids2[k]).value=""; }
+      $("M2").value="0.85";$("A").value="0.97";$("DL").value="1.45";$("DT").value=todayISO();
       $("M1").focus();calc();
     };
     if($("clear").addEventListener){$("clear").addEventListener("click",clearFn,false);}else{$("clear").attachEvent("onclick",clearFn);}
+
+    // Save as PDF (print)
     var pdfFn=function(){ try{window.print();}catch(e){} };
     if($("pdf").addEventListener){$("pdf").addEventListener("click",pdfFn,false);}else{$("pdf").attachEvent("onclick",pdfFn);}
 
-    if(!$("M2").value)$("M2").value="0.85";if(!$("A").value)$("A").value="0.97";if(!$("DL").value)$("DL").value="1.45";$("M1").value="";
-    if(!$("DT").value)$("DT").value=todayISO();
+    // Defaults
+    if(!$("M2").value)$("M2").value="0.85";if(!$("A").value)$("A").value="0.97";if(!$("DL").value)$("DL").value="1.45";
+    if(!$("DT").value)$("DT").value=todayISO();$("M1").value="";
     setInterval(calc,300);calc();
 
+    // A2HS
     showInstallTip();
     var installClick=function(){if(!deferredPrompt){return;}deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});};
     if($("installBtn").addEventListener){$("installBtn").addEventListener("click",installClick,false);}else{$("installBtn").attachEvent("onclick",installClick);}
   }
   if(window.addEventListener){window.addEventListener("load",wire,false);}else{window.attachEvent("onload",wire);}
 
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=12"); }catch(e){} }
+  // SW
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=13"); }catch(e){} }
 })();
