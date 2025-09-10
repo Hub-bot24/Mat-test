@@ -16,7 +16,19 @@
     var R2=null;if(DL!==null&&R1!==null&&R1!==0){R2=1000*DL/R1;}
     $("R1").value=(R1===null?"":fmt(R1));
     $("R2").value=(R2===null?"":fmt(R2));
-    $("dbg").innerText="M1="+(M1===null?"":M1)+" | M2="+(M2===null?"":M2)+" | A="+(A===null?"":A)+" | DL="+(DL===null?"":DL)+" => R1="+(R1===null?"":fmt(R1))+", R2="+(R2===null?"":fmt(R2));
+    var dbg=$("dbg"); if(dbg){ dbg.innerText="M1="+(M1===null?"":M1)+" | M2="+(M2===null?"":M2)+" | A="+(A===null?"":A)+" | DL="+(DL===null?"":DL)+" => R1="+(R1===null?"":fmt(R1))+", R2="+(R2===null?"":fmt(R2)); }
+  }
+
+  function mirror(){
+    // Mirror into bottom summary
+    var map=["M1","M2","A","R1","DL","R2","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];
+    for(var i=0;i<map.length;i++){
+      var id=map[i]; var el=$(id); var out=$("s_"+id);
+      if(el && out){ out.textContent = el.value || ""; }
+    }
+    // Toggle details block
+    var opt=$("optDetails"), row=$("detailsRow");
+    if(opt && row){ row.style.display = opt.checked ? "" : "none"; }
   }
 
   var deferredPrompt=null;
@@ -34,38 +46,47 @@
     if(isiOS){ text = "iPhone/iPad: Share ↑ → 'Add to Home Screen'."; }
     else if(isAndroid){ text = "Android: Menu (⋮) → 'Add to Home screen' / 'Install app'."; }
     else { text = "Tip: After first load, this app works offline. Add to Home Screen on phones."; }
-    $("tipText").innerText = text;
-    $("installTip").className = $("installTip").className.replace("hide","").trim();
-    $("installBtn").style.display = deferredPrompt ? "" : "none";
-    var close=function(){ $("installTip").className = $("installTip").className + " hide"; try{ localStorage.setItem("colas_tip_dismissed","1"); }catch(e){} };
-    if($("tipClose").addEventListener){$("tipClose").addEventListener("click",close,false);} else {$("tipClose").attachEvent("onclick",close);}
+    var tip=$("tipText"); if(tip) tip.innerText = text;
+    var box=$("installTip"); if(box) box.className = box.className.replace("hide","").trim();
+    var btn=$("installBtn"); if(btn) btn.style.display = deferredPrompt ? "" : "none";
+    var close=function(){ var bx=$("installTip"); if(bx){ bx.className = bx.className + " hide"; } try{ localStorage.setItem("colas_tip_dismissed","1"); }catch(e){} };
+    var x=$("tipClose"); if(x){ if(x.addEventListener){x.addEventListener("click",close,false);} else {x.attachEvent("onclick",close);} }
   }
   if(window.addEventListener){window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=$("installBtn");if(b){b.style.display="";}});}
 
   function wire(){
-    var ids=["M1","M2","A","DL","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];var i,j,evs=["input","change","keyup","blur"];
-    for(i=0;i<ids.length;i++){var el=$(ids[i]);if(!el) continue;for(j=0;j<evs.length;j++){if(el.addEventListener){el.addEventListener(evs[j],calc,false);}else if(el.attachEvent){el.attachEvent("on"+evs[j],calc);}}}
+    var ids=["M1","M2","A","DL","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK","optDetails"];var i,j,evs=["input","change","keyup","blur"];
+    for(i=0;i<ids.length;i++){var el=$(ids[i]);if(!el) continue;for(j=0;j<evs.length;j++){if(el.addEventListener){el.addEventListener(evs[j],function(){calc();mirror();},false);}else if(el.attachEvent){el.attachEvent("on"+evs[j],function(){calc();mirror();});}}}
 
     var clearFn=function(){
       var ids2=["M1","M2","A","DL","R1","R2","TB","DT","PRJ","LOC","JOB","QRY","AGS","TRK"];
       for(var k=0;k<ids2.length;k++){ if($(ids2[k])) $(ids2[k]).value=""; }
-      $("M2").value="0.85";$("A").value="0.97";$("DL").value="1.45";$("DT").value=todayISO();
-      $("M1").focus();calc();
+      $("M2").value="0.85";$("A").value="0.97";$("DL").value="1.45";
+      var dt=$("DT"); if(dt) dt.value=todayISO();
+      var m1=$("M1"); if(m1) m1.focus();
+      calc();mirror();
     };
-    if($("clear").addEventListener){$("clear").addEventListener("click",clearFn,false);}else{$("clear").attachEvent("onclick",clearFn);}
+    var clearBtn=$("clear"); if(clearBtn){ if(clearBtn.addEventListener){clearBtn.addEventListener("click",clearFn,false);} else {clearBtn.attachEvent("onclick",clearFn);} }
 
-    var pdfFn=function(){ try{window.print();}catch(e){} };
-    if($("pdf").addEventListener){$("pdf").addEventListener("click",pdfFn,false);}else{$("pdf").attachEvent("onclick",pdfFn);}
+    var pdfFn=function(){ try{mirror();window.print();}catch(e){} };
+    var pdfBtn=$("pdf"); if(pdfBtn){ if(pdfBtn.addEventListener){pdfBtn.addEventListener("click",pdfFn,false);} else {pdfBtn.attachEvent("onclick",pdfFn);} }
 
     if(!$("M2").value)$("M2").value="0.85";if(!$("A").value)$("A").value="0.97";if(!$("DL").value)$("DL").value="1.45";
-    if(!$("DT").value)$("DT").value=todayISO();$("M1").value="";
-    setInterval(calc,300);calc();
+    var dt=$("DT"); if(dt && !dt.value) dt.value=todayISO(); var m1=$("M1"); if(m1) m1.value="";
+    setInterval(function(){calc();mirror();},300);calc();mirror();
+
+    // Print hooks ensure latest values
+    if(window.matchMedia){
+      var mql = window.matchMedia('print');
+      if(mql && mql.addListener){ mql.addListener(function(e){ if(e.matches){ mirror(); } }); }
+    }
+    if(window.addEventListener){window.addEventListener("beforeprint",mirror,false);}else if(window.attachEvent){window.attachEvent("onbeforeprint",mirror);}
 
     showInstallTip();
-    var installClick=function(){if(!deferredPrompt){return;}deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});};
-    if($("installBtn").addEventListener){$("installBtn").addEventListener("click",installClick,false);}else{$("installBtn").attachEvent("onclick",installClick);}
+    var installClick=function(){if(!deferredPrompt){return;}deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });};
+    var inst=$("installBtn"); if(inst){ if(inst.addEventListener){inst.addEventListener("click",installClick,false);} else {inst.attachEvent("onclick",installClick);} }
   }
   if(window.addEventListener){window.addEventListener("load",wire,false);}else{window.attachEvent("onload",wire);}
 
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=14"); }catch(e){} }
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=16"); }catch(e){} }
 })();

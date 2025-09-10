@@ -18,7 +18,7 @@
   .note{background:#fff7cc;border:1px solid #ffe37a;padding:10px 12px;border-radius:10px;margin:0 0 12px;position:relative}
   .note.brand{background:#ffd4001A;border-color:#ffd40080}
   .note .x{position:absolute;right:10px;top:8px;border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer}
-  .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px}
+  .card{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px;margin-bottom:12px}
 
   label{display:block;font-size:14px;color:#333;margin:8px 0 6px}
   input[type="text"],input[type="date"],input[type="number"],input.output{width:100%;font-size:18px;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fbfbfc;height:44px;line-height:22px}
@@ -36,14 +36,20 @@
   .btn.primary{background:#ffd400;color:#111;border-color:#ffd400}
   .muted{color:#666;font-size:12px;margin-left:10px}
   .debug{margin-top:10px;font-size:12px;color:#555;background:#eef5ff;border:1px dashed #b8d3ff;padding:8px 10px;border-radius:8px}
-  footer{margin:16px 0 0;color:#666;font-size:12px;text-align:center}
+  footer{margin:8px 0 0;color:#666;font-size:12px;text-align:center}
   .hide{display:none}
 
-  @media (max-width: 620px){
-    .half{width:100%;margin-left:0 !important;display:block}
-  }
+  /* Summary table at bottom */
+  .summary{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:12px}
+  .summary h3{margin:0 0 6px;font-size:16px}
+  table.sum{width:100%;border-collapse:collapse}
+  table.sum th, table.sum td{border:1px solid #000;padding:6px 8px}
+  table.sum th{text-align:left;background:#f3f3f3}
+  .sum-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+  .sum-2col .box{border:1px solid #000;padding:6px 8px}
+  @media (max-width: 620px){ .half{width:100%;margin-left:0 !important;display:block} .sum-2col{grid-template-columns:1fr} }
 
-  /* ===== PRINT: single A4 page, identical from phone & desktop ===== */
+  /* PRINT: force single A4 page, identical from mobile/desktop */
   @page { size: A4 portrait; margin: 12mm; }
   @media print{
     html, body { width: 210mm; }
@@ -51,25 +57,18 @@
     .wrap{max-width:none;width: 186mm; padding:0; margin:0 auto;}
     .note, .actions, .debug{display:none !important}
 
-    /* Enforce professional borders and avoid page breaks */
-    .fieldset, .card{border:1px solid #000;border-radius:0;page-break-inside:avoid}
-    .legend{font-size:16px}
-    label{font-size:12pt;margin:6px 0 4px}
-    input{border:1px solid #000;height:36px;font-size:12pt;line-height:20px}
-
-    /* Force two columns in header on print for identical look */
-    .row2{font-size:0}
-    .half{display:inline-block;vertical-align:top;width:49%;font-size:12pt !important}
-    .half + .half{margin-left:2%}
-
-    /* Keep everything on one page by compacting vertical rhythm */
-    .card label, .fieldset label{margin-top:6px;margin-bottom:4px}
-    .card{padding:12px}
-    .fieldset{padding:10px;margin-bottom:10px}
+    .fieldset, .card, .summary{border:1px solid #000;border-radius:0;page-break-inside:avoid}
+    .legend{font-size:14pt}
+    label{font-size:11pt;margin:4px 0 2px}
+    input{border:1px solid #000;height:32px;font-size:11pt;line-height:18px}
+    .card, .summary{padding:10px;margin-bottom:8px}
+    .fieldset{padding:10px;margin-bottom:8px}
     h1{font-size:16pt;margin:0}
     .header{margin-bottom:6px}
     .logo{height:28px}
     footer{color:#000;margin-top:6px;font-size:10pt}
+    .sum-2col{grid-template-columns:1fr 1fr}
+    table.sum th, table.sum td{font-size:11pt;padding:5px 6px}
   }
 </style>
 </head>
@@ -88,7 +87,7 @@
     </div>
   </div>
 
-  <div class="note"><b>Values update automatically.</b> Version v1.9.1 Pro • 2025-09-10</div>
+  <div class="note"><b>Values update automatically.</b> Version v1.11 Pro • 2025-09-10</div>
 
   <div class="fieldset">
     <div class="legend">Test Details</div>
@@ -151,14 +150,41 @@
     <div class="actions">
       <button id="clear" class="btn" type="button">Reset</button>
       <button id="pdf" class="btn primary" type="button">Save as PDF</button>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px">
+        <input id="optDetails" type="checkbox" checked> Include Test Details in summary
+      </label>
       <span class="muted">Works offline • Auto-calculates</span>
     </div>
     <div id="dbg" class="debug">Ready…</div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.9.1 Pro • 2025-09-10</footer>
+  <!-- Bottom Summary (on same page) -->
+  <div class="summary">
+    <h3>Calculation Summary</h3>
+    <div class="sum-2col" id="detailsRow">
+      <div class="box"><b>Project:</b> <span id="s_PRJ"></span></div>
+      <div class="box"><b>Location:</b> <span id="s_LOC"></span></div>
+      <div class="box"><b>Job/Contract:</b> <span id="s_JOB"></span></div>
+      <div class="box"><b>Quarry:</b> <span id="s_QRY"></span></div>
+      <div class="box"><b>Aggregate:</b> <span id="s_AGS"></span></div>
+      <div class="box"><b>Truck Rego:</b> <span id="s_TRK"></span></div>
+      <div class="box"><b>Tested by:</b> <span id="s_TB"></span></div>
+      <div class="box"><b>Date:</b> <span id="s_DT"></span></div>
+    </div>
+    <table class="sum">
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td id="s_M1"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td id="s_M2"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td id="s_A"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b> = (M1 − M2) / A</td><td id="s_R1"></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td id="s_DL"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b> = 1000 × DL / R1</td><td id="s_R2"></td></tr>
+    </table>
+  </div>
+
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.11 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=14"></script>
+<script src="app-legacy.js?v=16"></script>
 </body>
 </html>
