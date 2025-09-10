@@ -1,6 +1,6 @@
 {
-  "name": "Colas Mat Test \u2014 Triple Shared Header",
-  "short_name": "Mat Triple SH",
+  "name": "Colas Mat Test \u2014 Mobile Parity",
+  "short_name": "Mat Mobile",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Field Spread Rate of Cover Aggregate (Canvas Mat) — Colas</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffd400">
+<meta name="format-detection" content="telephone=no">
 <style>
-  html,body{margin:0;padding:0}
-  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif;-webkit-text-size-adjust:100%}
+  html,body{margin:0;padding:0;-webkit-text-size-adjust:100%}
+  body{background:#f7f7f9;color:#111;font-family:Segoe UI,Arial,sans-serif}
   .wrap{max-width:900px;margin:0 auto;padding:14px}
   .header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
   .logo{height:26px}
@@ -19,7 +20,7 @@
   .btn.primary{background:#ffd400;border-color:#ffd400}
   .muted{font-size:11px;color:#666}
 
-  .fieldset{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:8px;margin-bottom:8px}
+  .fieldset{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:8px;margin-bottom:8px;page-break-inside:avoid}
   .legend{font-size:13px;font-weight:700;margin:0 0 6px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:2px}
   .box{border:1px solid #000;padding:4px 6px;font-size:11px}
@@ -27,7 +28,7 @@
   .box input{border:none;border-bottom:1px dashed #bbb;width:100%;font-size:11px;padding:2px 0;outline:none;background:transparent}
   .box input[type="date"]{padding:2px 0}
 
-  .panel{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:6px;margin-bottom:8px}
+  .panel{background:#fff;border:1px solid #dcdce1;border-radius:10px;padding:6px;margin-bottom:8px;page-break-inside:avoid}
   .panel h3{margin:0 0 6px;font-size:12px}
   table.sum{width:100%;border-collapse:collapse;margin-top:2px}
   table.sum th,table.sum td{border:1px solid #000;padding:4px 5px;font-size:11px;vertical-align:middle}
@@ -38,21 +39,43 @@
 
   @media (max-width: 640px){ .grid2{grid-template-columns:1fr} }
 
-  /* PRINT */
+  /* PRINT — enforce exact A4 on mobile & desktop */
   @page { size: A4 portrait; margin: 8mm; }
   @media print{
-    html, body { width: 210mm; }
+    /* Make all measurements absolute for iOS Safari */
+    html, body { width: 210mm; min-height: 297mm; }
     body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* Fixed wrapper width equals page width minus margins (8mm each side) */
     .wrap{max-width:none;width:194mm;padding:0;margin:0 auto}
-    .actions{display:none}
-    .fieldset, .panel{border:1px solid #000;page-break-inside:avoid}
+
+    /* Keep two-column header grid on print, even on phones */
+    .grid2{grid-template-columns:1fr 1fr}
+
+    /* Sharper, consistent sizing */
     .logo{height:22px}
     h1{font-size:14pt}
     .legend{font-size:12pt}
     .panel h3{font-size:11pt}
     table.sum th,table.sum td{font-size:10pt;padding:3px 4px}
     .box, .box input, input.num, input.out{font-size:10pt}
-    footer{color:#000}
+
+    .actions{display:none !important}
+    .fieldset, .panel{border:1px solid #000;border-radius:0}
+  }
+
+  /* Fallback for browsers that ignore mm units (use px at 96dpi) */
+  @media print and (max-resolution: 96dpi){
+    html, body { width: 794px; }
+    .wrap{ width: 758px; }
+  }
+
+  /* iOS-specific print tweak */
+  @supports (-webkit-touch-callout: none) {
+    @media print {
+      html, body { zoom:1; }
+    }
   }
 
   footer{text-align:center;font-size:10px;color:#666;margin-top:6px}
@@ -68,10 +91,9 @@
   <div class="actions">
     <button id="pdf" class="btn primary">Save as PDF</button>
     <button id="resetAll" class="btn">Reset All</button>
-    <span class="muted">Works offline • Auto-calculates • v1.16 Pro • 2025-09-10</span>
+    <span class="muted">Works offline • Auto-calculates • v1.17 Pro • 2025-09-10</span>
   </div>
 
-  <!-- ONE shared info block -->
   <div class="fieldset">
     <div class="legend">Test Information (shared by all three tables)</div>
     <div class="grid2">
@@ -86,7 +108,7 @@
     </div>
   </div>
 
-  <!-- Three compact tables -->
+  <!-- Tables -->
   <div class="panel" id="P1">
     <h3>Calculation Table — Sheet 1</h3>
     <table class="sum">
@@ -129,9 +151,9 @@
     <div class="rowbtns"><button class="btn" onclick="resetPanel(3)">Reset Sheet 3</button></div>
   </div>
 
-  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.16 Pro • 2025-09-10</footer>
+  <footer>© Colas Mat Test — offline • Created by <b>J. Hugo</b> • v1.17 Pro • 2025-09-10</footer>
 </div>
 
-<script src="app-legacy.js?v=20"></script>
+<script src="app-legacy.js?v=21"></script>
 </body>
 </html>

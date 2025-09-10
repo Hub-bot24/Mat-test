@@ -30,7 +30,6 @@
     var ids=["M1","M2","A","DL","R1","R2"];
     for(var i=0;i<ids.length;i++){ var el=$(ids[i]+s); if(el) el.value=""; }
     $("M2"+s).value="0.85"; $("A"+s).value="0.97"; $("DL"+s).value="1.45";
-    var f=$("M1"+s); if(f) f.focus();
     calcOne(s);
   };
 
@@ -45,6 +44,5 @@
   }
   if(window.addEventListener){ window.addEventListener("load", wire, false); } else { window.attachEvent("onload", wire); }
 
-  // SW bump
-  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=20"); }catch(e){} }
+  if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("./service-worker.js?v=21"); }catch(e){} }
 })();
