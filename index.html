@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
-<title>Mat Test — Offline Calculator (v1.1)</title>
+<title>Mat Test — Offline Calculator (v1.2)</title>
 <style>
   :root{ --gap:14px; --pad:16px; --radius:14px; --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
   html, body { height:100%; background:#f7f7f9; color:#111; font-family: var(--font); margin:0; }
@@ -30,7 +30,7 @@
 <body>
 <div class="wrap">
   <h1>Field Spread Rate — Offline Calculator</h1>
-  <div class="note">If numbers don’t update instantly, press <strong>Calculate</strong>. Version v1.1 • 2025-09-10</div>
+  <div class="note">If numbers don’t update, press <strong>Calculate</strong>. Version v1.2 • 2025-09-10</div>
   <div class="card grid">
 
     <div class="row">
@@ -63,52 +63,14 @@
     <div class="actions">
       <button class="primary" id="calc">Calculate</button>
       <button id="clear">Clear</button>
-      <span class="muted">Live updates • Values saved locally • Up to 6 decimals</span>
+      <span class="muted">Live updates • Works offline • Up to 6 decimals</span>
     </div>
     <div class="debug" id="dbg">Ready…</div>
   </div>
 
-  <footer>© Mat Test Mobile — offline | Created by <strong>J. Hugo</strong> | v1.1 • 2025-09-10</footer>
+  <footer>© Mat Test Mobile — offline | Created by <strong>J. Hugo</strong> | v1.2 • 2025-09-10</footer>
 </div>
 
-<script>
-// Register service worker for offline
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js?v=3')); }
-
-(function(){
-  const $ = id => document.getElementById(id);
-  const fmt = v => (!isFinite(v) ? "" : (Math.round(v*1e6)/1e6).toString());
-  const n = v => (v==null || v==="") ? null : (isNaN(parseFloat((""+v).replace(",", "."))) ? null : parseFloat((""+v).replace(",", ".")));
-
-  if (!$("#M2").value) $("#M2").value = "0.85";
-  if (!$("#A").value) $("#A").value = "0.97";
-  if (!$("#DL").value) $("#DL").value = "1.45";
-  $("#M1").value = "";
-
-  function calc(){
-    const M1=n($("#M1").value), M2=n($("#M2").value), A=n($("#A").value), DL=n($("#DL").value);
-    let R1=null; if (M1!=null && M2!=null && A!=null && A!==0) R1=(M1-M2)/A;
-    let R2=null; if (DL!=null && R1!=null && R1!==0) R2=1000*DL/R1;
-
-    $("#R1").value = (R1==null? "" : fmt(R1));
-    $("#R2").value = (R2==null? "" : fmt(R2));
-
-    // debug line
-    $("#dbg").textContent = "M1=" + (M1??"") + " | M2=" + (M2??"") + " | A=" + (A??"") + " | DL=" + (DL??"") + " => R1=" + (R1==null?"":fmt(R1)) + ", R2=" + (R2==null?"":fmt(R2));
-  }
-
-  ["input","change","keyup","blur"].forEach(ev => ["M1","M2","A","DL"].forEach(id => document.getElementById(id).addEventListener(ev, calc)));
-  document.getElementById("calc").addEventListener("click", calc);
-  document.getElementById("clear").addEventListener("click", () => {
-    ["M1","M2","A","DL","R1","R2"].forEach(id => document.getElementById(id).value = "");
-    $("#M2").value = "0.85"; $("#A").value = "0.97"; $("#DL").value = "1.45"; $("#M1").focus(); calc();
-  });
-
-  // Failsafe: recalc every 300ms in case an environment swallows events
-  setInterval(calc, 300);
-
-  calc();
-})();
-</script>
+<script src="app.js?v=4"></script>
 </body>
 </html>
