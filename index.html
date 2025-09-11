@@ -9,7 +9,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f9; }
     #page { display:flex; flex-direction:column; justify-content:space-between;
-             width:210mm; height:297mm; margin:0 auto; background:#fff; }
+             max-width:210mm; margin:0 auto; background:#fff; min-height:100vh; }
     .wrap { padding:14px; flex:1; }
     .header { display:flex; align-items:center; border-bottom:2px solid #ccc; padding-bottom:6px; margin-bottom:10px; }
     .logo { height:50px; margin-right:12px; }
@@ -25,13 +25,13 @@
     .btn-pdf { background:#4CAF50; color:#fff; }
     .btn-reset { background:#f44336; color:#fff; }
     button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
-    footer { text-align:center; font-size:11px; color:#000; font-weight:bold; padding:6px; }
-    @page { size: A4 portrait; margin: 0; }
+    footer { text-align:center; font-size:10px; color:#000; font-weight:bold; padding:6px; }
+    @page { size: A4 portrait; margin: 10mm; }
     @media print {
-      body, #page { margin:0; padding:0; }
+      html, body { width:210mm; height:297mm; margin:0; padding:0; }
+      #page { min-height:297mm; max-height:297mm; overflow:hidden; }
       .actions { display:none; }
       * { -webkit-print-color-adjust: exact; }
-      #page { overflow:hidden; }
     }
   </style>
 </head>
@@ -61,13 +61,8 @@
 
     <div id="panels"></div>
   </div>
-  <footer>v2.0.1 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer>v2.0.2 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=201"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
+<script src="app.js?v=202"></script>
 </body>
 </html>

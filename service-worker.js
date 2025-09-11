@@ -1,4 +1,4 @@
-const VERSION = 'v201_' + Date.now();
+const VERSION = 'v202_' + Date.now();
 const CACHE = `mattest-cache-${VERSION}`;
 const ASSETS = ['./','./index.html','./app.js','./manifest.webmanifest'];
 
