@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat-test-v204-' + Date.now();
+const CACHE_NAME = 'mat-test-v202pro-' + Date.now();
 const FILES_TO_CACHE = [
   './',
   './index.html',
