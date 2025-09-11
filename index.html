@@ -8,7 +8,9 @@
   <meta name="theme-color" content="#ffd400">
   <style>
     body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f9; }
-    .wrap { max-width:900px; margin:0 auto; padding:14px; }
+    #page { display:flex; flex-direction:column; justify-content:space-between; 
+             width:210mm; height:297mm; margin:0 auto; background:#fff; }
+    .wrap { padding:14px; flex:1; }
     .header { display:flex; align-items:center; border-bottom:2px solid #ccc; padding-bottom:6px; margin-bottom:10px; }
     .logo { height:50px; margin-right:12px; }
     h1 { font-size:20px; margin:0; flex:1; }
@@ -23,45 +25,45 @@
     .btn-pdf { background:#4CAF50; color:#fff; }
     .btn-reset { background:#f44336; color:#fff; }
     button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
-    footer { text-align:center; font-size:11px; color:#000; font-weight:bold; margin-top:10px; }
-    @page { size: A4 portrait; margin: 10mm; }
+    footer { text-align:center; font-size:11px; color:#000; font-weight:bold; padding:6px; }
+    @page { size: A4 portrait; margin: 0; }
     @media print {
-      body { margin:0; padding:0; }
-      .wrap { width:210mm; height:297mm; transform: scale(0.9); transform-origin: top left; overflow:hidden; }
+      body, #page { margin:0; padding:0; }
       .actions { display:none; }
-      footer { position:absolute; bottom:5mm; width:100%; }
       * { -webkit-print-color-adjust: exact; }
+      #page { overflow:hidden; }
     }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <img src="colas-logo.png" class="logo" alt="Colas Logo">
-    <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
+<div id="page">
+  <div class="wrap">
+    <div class="header">
+      <img src="colas-logo.png" class="logo" alt="Colas Logo">
+      <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
+    </div>
+
+    <div class="info-grid">
+      <div><label>Project:</label><input></div>
+      <div><label>Location:</label><input></div>
+      <div><label>Job/Contract:</label><input></div>
+      <div><label>Quarry:</label><input></div>
+      <div><label>Aggregate:</label><input></div>
+      <div><label>Truck Rego:</label><input></div>
+      <div><label>Tested by:</label><input></div>
+      <div><label>Date:</label><input type="date" id="dateField"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-pdf" onclick="window.print()">PDF</button>
+      <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+
+    <div id="panels"></div>
   </div>
-
-  <div class="info-grid">
-    <div><label>Project:</label><input></div>
-    <div><label>Location:</label><input></div>
-    <div><label>Job/Contract:</label><input></div>
-    <div><label>Quarry:</label><input></div>
-    <div><label>Aggregate:</label><input></div>
-    <div><label>Truck Rego:</label><input></div>
-    <div><label>Tested by:</label><input></div>
-    <div><label>Date:</label><input type="date" id="dateField"></div>
-  </div>
-
-  <div class="actions">
-    <button class="btn-pdf" onclick="window.print()">PDF</button>
-    <button class="btn-reset" onclick="resetAll()">Reset All</button>
-  </div>
-
-  <div id="panels"></div>
-
-  <footer id="footerVersion">v1.9.7 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer>v1.9.8 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=40"></script>
+<script src="app.js?v=41"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
