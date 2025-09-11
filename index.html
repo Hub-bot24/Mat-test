@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#ffd400">
   <style>
     body { font-family: Arial, sans-serif; background:#f7f7f9; margin:0; padding:0; }
-    .wrap { max-width:900px; margin:0 auto; padding:14px; }
+    .wrap { position: relative; max-width:900px; margin:0 auto; padding:14px; min-height:100vh; box-sizing:border-box; }
     .header { display:flex; align-items:center; border-bottom:2px solid #ccc; padding-bottom:6px; margin-bottom:10px; }
     .logo { height:50px; margin-right:12px; }
     h1 { font-size:20px; margin:0; flex:1; }
@@ -23,15 +23,14 @@
     .btn-pdf { background:#4CAF50; color:#fff; }
     .btn-reset { background:#f44336; color:#fff; }
     button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
-    footer { text-align:center; font-size:11px; margin-top:6px; color:#000; font-weight:bold; }
+    footer { position:absolute; bottom:5mm; left:0; right:0; text-align:center; font-size:11px; color:#000; font-weight:bold; }
 
     /* Print styles */
     @page { size: A4 portrait; margin: 10mm; }
     @media print {
       body { margin:0; padding:0; }
-      .wrap { width:210mm; height:297mm; transform: scale(0.95); transform-origin: top left; overflow:hidden; }
+      .wrap { width:210mm; height:297mm; transform: scale(0.90); transform-origin: top left; overflow:hidden; }
       .actions { display:none; }
-      footer { position:fixed; bottom:0; width:100%; }
       * { -webkit-print-color-adjust: exact; }
     }
   </style>
@@ -61,8 +60,8 @@
 
   <div id="panels"></div>
 
-  <footer id="footerVersion">v1.9.3 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer id="footerVersion">v1.9.4 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=37"></script>
+<script src="app.js?v=38"></script>
 </body>
 </html>
