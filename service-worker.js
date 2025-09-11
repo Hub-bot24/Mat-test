@@ -1,5 +1,5 @@
 const VERSION = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
-const CACHE = `mattest-cache-v35-${VERSION}`;
+const CACHE = `mattest-cache-v36-${VERSION}`;
 const ASSETS = ['./','./index.html','./app.js','./manifest.webmanifest'];
 
 self.addEventListener('install',e=>{

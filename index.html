@@ -11,7 +11,7 @@
     .wrap { max-width:900px; margin:0 auto; padding:14px; }
     .header { display:flex; align-items:center; border-bottom:2px solid #ccc; padding-bottom:6px; margin-bottom:10px; }
     .logo { height:50px; margin-right:12px; }
-    h1 { font-size:20px; margin:0; }
+    h1 { font-size:20px; margin:0; flex:1; }
     .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:10px 0; }
     .info-grid label { font-weight:bold; font-size:12px; }
     .info-grid input { width:100%; border:1px solid #ccc; padding:4px; font-size:12px; }
@@ -24,10 +24,15 @@
     .btn-reset { background:#f44336; color:#fff; }
     button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
     footer { text-align:center; font-size:11px; margin-top:6px; color:#000; font-weight:bold; }
+
+    /* Print styles */
     @page { size: A4 portrait; margin: 10mm; }
     @media print {
-      body { zoom:0.90; }
+      body { margin:0; padding:0; }
+      .wrap { width:100%; max-width:100%; }
       .actions { display:none; }
+      footer { position:fixed; bottom:0; width:100%; }
+      * { -webkit-print-color-adjust: exact; }
     }
   </style>
 </head>
@@ -56,8 +61,8 @@
 
   <div id="panels"></div>
 
-  <footer id="footerVersion">v1.9.1 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer id="footerVersion">v1.9.2 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=35"></script>
+<script src="app.js?v=36"></script>
 </body>
 </html>
