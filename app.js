@@ -1,23 +1,4 @@
-function todayStr(){
-  const d=new Date();
-  return d.toISOString().split('T')[0];
-}
-function nowStr(){
-  const d=new Date();
-  return d.toISOString().replace('T',' ').slice(0,16);
-}
-
 document.getElementById('dateField').valueAsDate = new Date();
-
-function updateVersion(){
-  const today=todayStr();
-  const txt=`v1.6 Pro — ${today} — J. Hugo`;
-  document.getElementById('versionBanner').textContent=`Running ${txt}`;
-  document.getElementById('footerVersion').textContent=txt;
-  document.getElementById('watermarkVersion').textContent=txt;
-  document.getElementById('lastUpdated').textContent=`Last updated: ${nowStr()}`;
-}
-updateVersion();
 
 function createPanel(i){
   return `<div class="panel">
@@ -31,7 +12,7 @@ function createPanel(i){
       <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input class="dl-${i}" type="number" step="0.01" value="1.45"></td></tr>
       <tr><td><b>Spread Rate (m²/m³)</b></td><td><output class="r2-${i}"></output></td></tr>
     </table>
-    <div class="actions"><button onclick="resetPanel(${i})">Reset</button></div>
+    <div class="actions"><button class="btn-reset" onclick="resetPanel(${i})">Reset</button></div>
   </div>`;
 }
 

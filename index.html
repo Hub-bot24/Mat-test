@@ -20,10 +20,11 @@
     table { width:100%; border-collapse:collapse; font-size:12px; }
     th, td { border:1px solid #999; padding:4px; }
     th { background:#eee; text-align:left; }
-    .actions { margin:8px 0; display:flex; gap:8px; justify-content:center; }
-    button { padding:6px 10px; border:1px solid #999; border-radius:4px; cursor:pointer; }
+    .actions { margin:12px 0; display:flex; justify-content:space-between; }
+    .btn-pdf { background:#4CAF50; color:#fff; }
+    .btn-reset { background:#f44336; color:#fff; }
+    button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
     footer { text-align:center; font-size:11px; margin-top:6px; color:#000; font-weight:bold; }
-    .lastupdated { text-align:center; font-size:10px; color:#666; margin-top:2px; }
     @page { size: A4 portrait; margin: 10mm; }
     @media print {
       body { zoom: 0.9; }
@@ -35,10 +36,10 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <img src="icons/colas-logo.png" class="logo" alt="Colas Logo">
+    <img src="icons/colas-logo.svg" class="logo" alt="Colas Logo">
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
   </div>
-  <div class="banner" id="versionBanner"></div>
+  <div class="banner" id="versionBanner">Running v1.7 Pro — 2025-09-11</div>
 
   <div class="info-grid">
     <div><label>Project:</label><input></div>
@@ -52,16 +53,14 @@
   </div>
 
   <div class="actions">
-    <button onclick="window.print()">PDF</button>
-    <button onclick="resetAll()">Reset All</button>
+    <button class="btn-pdf" onclick="window.print()">PDF</button>
+    <button class="btn-reset" onclick="resetAll()">Reset All</button>
   </div>
 
   <div id="panels"></div>
 
-  <footer id="footerVersion"></footer>
-  <div class="lastupdated" id="lastUpdated"></div>
-  <div class="watermark" id="watermarkVersion"></div>
+  <footer id="footerVersion">v1.7 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=27"></script>
+<script src="app.js?v=28"></script>
 </body>
 </html>
