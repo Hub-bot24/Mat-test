@@ -1,9 +1,10 @@
+
 {
-  "name": "Colas Mat Test",
+  "name": "Mat Test Pro",
   "short_name": "MatTest",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ffd400",
+  "description": "Spray Seal QA Lot Pack – Cover Page",
   "icons": []
 }
