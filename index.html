@@ -61,8 +61,13 @@
 
     <div id="panels"></div>
   </div>
-  <footer>v2.0.3 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer>v2.0.4 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=203"></script>
+<script src="app.js?v=204"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
 </body>
 </html>
