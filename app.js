@@ -2,15 +2,20 @@ function todayStr(){
   const d=new Date();
   return d.toISOString().split('T')[0];
 }
+function nowStr(){
+  const d=new Date();
+  return d.toISOString().replace('T',' ').slice(0,16);
+}
 
 document.getElementById('dateField').valueAsDate = new Date();
 
 function updateVersion(){
   const today=todayStr();
-  const txt=`v1.4 Pro — ${today} — J. Hugo`;
+  const txt=`v1.6 Pro — ${today} — J. Hugo`;
   document.getElementById('versionBanner').textContent=`Running ${txt}`;
   document.getElementById('footerVersion').textContent=txt;
   document.getElementById('watermarkVersion').textContent=txt;
+  document.getElementById('lastUpdated').textContent=`Last updated: ${nowStr()}`;
 }
 updateVersion();
 
