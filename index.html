@@ -29,7 +29,7 @@
     @page { size: A4 portrait; margin: 10mm; }
     @media print {
       body { margin:0; padding:0; }
-      .wrap { width:100%; max-width:100%; }
+      .wrap { width:210mm; height:297mm; transform: scale(0.95); transform-origin: top left; overflow:hidden; }
       .actions { display:none; }
       footer { position:fixed; bottom:0; width:100%; }
       * { -webkit-print-color-adjust: exact; }
@@ -61,8 +61,8 @@
 
   <div id="panels"></div>
 
-  <footer id="footerVersion">v1.9.2 Pro — 2025-09-11 — J. Hugo</footer>
+  <footer id="footerVersion">v1.9.3 Pro — 2025-09-11 — J. Hugo</footer>
 </div>
-<script src="app.js?v=36"></script>
+<script src="app.js?v=37"></script>
 </body>
 </html>
