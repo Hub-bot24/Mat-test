@@ -1,6 +1,6 @@
 const VERSION = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
-const CACHE = `mattest-cache-v28-${VERSION}`;
-const ASSETS = ['./','./index.html','./app.js','./manifest.webmanifest','./icons/colas-logo.svg'];
+const CACHE = `mattest-cache-v30-${VERSION}`;
+const ASSETS = ['./','./index.html','./app.js','./manifest.webmanifest'];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
