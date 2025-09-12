@@ -1,10 +1,9 @@
-
 {
   "name": "Mat Test Pro",
   "short_name": "MatTest",
-  "start_url": "index.html",
+  "start_url": "cover.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "Spray Seal QA Lot Pack – Cover Page",
+  "description": "Mat Test Pro with Cover Page",
   "icons": []
 }

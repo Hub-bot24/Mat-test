@@ -1,16 +1,10 @@
-
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open('mattest-cache-v1').then(cache => {
-      return cache.addAll([
-        './index.html',
-        './style.css',
-        './app.js',
-        './page1-bg.png'
-      ]);
-    })
-  );
+  e.waitUntil(caches.open('mat-cache-v1').then(cache => cache.addAll([
+    './',
+    './cover.html',
+    './index.html'
+  ])));
 });
 self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
+  e.respondWith(caches.match(e.request).then(resp => resp || fetch(e.request)));
 });
