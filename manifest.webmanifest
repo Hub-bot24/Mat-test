@@ -1,9 +1,9 @@
 {
-  "name": "Mat Test Pro",
+  "name": "Colas Mat Test",
   "short_name": "MatTest",
-  "start_url": "cover.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "Mat Test Pro with Cover Page",
+  "theme_color": "#ffd400",
   "icons": []
 }
