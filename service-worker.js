@@ -1,5 +1,5 @@
 
-// Self-killing service worker v315: clears caches, unregisters, and lets the page load fresh.
+// SW killer v316: clears caches, unregisters, and reloads once.
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil((async () => {
@@ -10,12 +10,8 @@ self.addEventListener('activate', (e) => {
         await Promise.all(keys.map(k => caches.delete(k)));
       }
       const clientsArr = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-      for (const client of clientsArr) {
-        try { client.navigate(client.url); } catch(e) {}
-      }
-    } catch(e) {}
+      for (const client of clientsArr) { try { client.navigate(client.url); } catch(e){} }
+    } catch(e) { }
   })());
 });
-self.addEventListener('fetch', (e) => {
-  // pass-through until this SW is gone
-});
+self.addEventListener('fetch', (e) => { });

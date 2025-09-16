@@ -7,29 +7,16 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.css?v=315"/>
+<link rel="stylesheet" href="style.css?v=316"/>
 <script>
-// Client-side auto-cleaner: unregister any existing SW + clear caches, then continue.
-(async () => {
-  try {
-    if ('serviceWorker' in navigator) {
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (reg) { try { await reg.update(); } catch(e){} }
-      const regs = await navigator.serviceWorker.getRegistrations();
-      for (const r of regs) { try { await r.unregister(); } catch(e){} }
-    }
-    if ('caches' in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map(k => caches.delete(k)));
-    }
-  } catch(e) { /* ignore */ }
-})();
+// One-time auto-cleaner: unregister any old service worker and clear caches so updates show.
+(async()=>{try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs){try{await r.unregister()}catch(e){}}}if('caches'in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}}catch(e){}})();
 </script>
 </head>
 <body>
 <div class="wrapper">
   <div class="header">
-    <img src="icons/colas.svg?v=315" alt="Colas Logo"/>
+    <img src="icons/colas.svg?v=316" alt="Colas Logo"/>
     <div>
       <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
       <div class="version" id="appVersion">v2.6 Pro — 2025-09-16 — J. Hugo</div>
@@ -37,33 +24,41 @@
   </div>
 
   <form id="f" class="form" autocomplete="on">
-    <div class="label">Project:</div>               <input type="text" id="project" name="project"/>
+    <!-- Top row: Job first -->
     <div class="label">Job No.:</div>               <input type="text" id="jobNo"   name="jobNo"/>
+    <div class="label">Project Name:</div>          <input type="text" id="project" name="project"/>
 
     <div class="label">Lot:</div>                   <input type="text" id="lot" name="lot"/>
-    <div class="label">Description:</div>           <textarea id="desc" name="desc" class="row-span-4"></textarea>
-
     <div class="label">Area (m²):</div>             <input type="text" id="area" name="area"/>
+
     <div class="label">Bitumen:</div>               <input type="text" id="bitumen" name="bitumen"/>
-
     <div class="label">Grade:</div>                 <input type="text" id="grade" name="grade"/>
+
     <div class="label">Aggregate Size (mm):</div>   <input type="text" id="aggSize" name="aggSize"/>
-
     <div class="label">Kerosene:</div>              <input type="text" id="kerosene" name="kerosene"/>
+
     <div class="label">Additive:</div>              <input type="text" id="additive" name="additive"/>
-
     <div class="label">Total Litres:</div>          <input type="text" id="litres" name="litres"/>
+
     <div class="label">Work Start:</div>            <input type="date" id="workStart" name="workStart" value="2025-09-16"/>
-
     <div class="label">Work End:</div>              <input type="date" id="workEnd" name="workEnd"/>
-    <div class="label">Guaranteed:</div>            <input type="date" id="guaranteed" name="guaranteed"/>
 
+    <div class="label">Guaranteed:</div>            <input type="date" id="guaranteed" name="guaranteed"/>
     <div class="label">QA Conducted By:</div>       <input type="text" id="qaBy" name="qaBy"/>
+
     <div class="label">Conformed:</div>             <input type="text" id="conformed" name="conformed"/>
+    <div class="label">Conformed Date:</div>        <input type="date" id="conformedDate" name="conformedDate"/>
 
     <div class="label">Seal Designed By:</div>      <input type="text" id="sealBy" name="sealBy"/>
+    <div></div><div></div><div></div>
 
-    <!-- Attachments (tri-state) -->
+    <!-- Description as block, aligned left -->
+    <div class="block">
+      <div class="label">Description:</div>
+      <textarea id="desc" name="desc" style="min-height:80px"></textarea>
+    </div>
+
+    <!-- Attachments -->
     <div class="box-section">
       <div class="box-head">Attachments</div>
       <div class="box-grid">
@@ -72,7 +67,6 @@
         <label class="tri" data-name="aggResults"><span class="box"></span><span class="lbl">Agg Test Results</span><input type="hidden" id="aggResults"></label>
         <label class="tri" data-name="ballPen"><span class="box"></span><span class="lbl">Ball Penetration Test</span><input type="hidden" id="ballPen"></label>
         <label class="tri" data-name="sampleTins"><span class="box"></span><span class="lbl">Sample Tins</span><input type="hidden" id="sampleTins"></label>
-
         <label class="tri" data-name="spraySheet"><span class="box"></span><span class="lbl">Spray Sheet</span><input type="hidden" id="spraySheet"></label>
         <label class="tri" data-name="testReport"><span class="box"></span><span class="lbl">Test Report</span><input type="hidden" id="testReport"></label>
         <label class="tri" data-name="photos"><span class="box"></span><span class="lbl">Photos</span><input type="hidden" id="photos"></label>
@@ -103,13 +97,12 @@
   </div>
 </div>
 
-<script src="app.js?v=315" defer></script>
+<script src="app.js?v=316" defer></script>
 </body>
 </html>
 
 <script>
 if ('serviceWorker' in navigator) {
-  // Always try to install the killer SW so any old one is replaced, then it unregisters itself.
   navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
 }
 </script>
