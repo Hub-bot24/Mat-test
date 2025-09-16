@@ -1,16 +1,15 @@
 
-// Build 312
-const VERSION = 'v312';
+const VERSION = 'v313';
 const CACHE   = `mattest-${VERSION}`;
 const ASSETS  = [
   './',
-  './index.html',
-  './mat-test.html',
+  './index-v313.html',
+  './mat-test-v313.html',
   './style.css',
   './app.js',
   './manifest.webmanifest',
   './icons/colas.svg'
-].map(u => `${u}?v=312`);
+].map(u => `${u}?v=313`);
 
 self.addEventListener('install', e => {
   self.skipWaiting();

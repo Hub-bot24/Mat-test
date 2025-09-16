@@ -1,96 +1,19 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<link rel="manifest" href="manifest.webmanifest?v=312"/>
-<link rel="stylesheet" href="style.css?v=312"/>
-</head>
-<body>
-<div class="wrapper">
-  <div class="header">
-    <img src="icons/colas.svg?v=312" alt="Colas Logo"/>
-    <div>
-      <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
-      <div class="version" id="appVersion">v2.6 Pro — 2025-09-16 — J. Hugo</div>
-    </div>
-  </div>
-
-  <form id="f" class="form" autocomplete="on">
-    <div class="label">Project:</div>               <input type="text" id="project" name="project"/>
-    <div class="label">Job No.:</div>               <input type="text" id="jobNo"   name="jobNo"/>
-
-    <div class="label">Lot:</div>                   <input type="text" id="lot" name="lot"/>
-    <div class="label">Description:</div>           <textarea id="desc" name="desc" class="row-span-4"></textarea>
-
-    <div class="label">Area (m²):</div>             <input type="text" id="area" name="area"/>
-    <div class="label">Bitumen:</div>               <input type="text" id="bitumen" name="bitumen"/>
-
-    <div class="label">Grade:</div>                 <input type="text" id="grade" name="grade"/>
-    <div class="label">Aggregate Size (mm):</div>   <input type="text" id="aggSize" name="aggSize"/>
-
-    <div class="label">Kerosene:</div>              <input type="text" id="kerosene" name="kerosene"/>
-    <div class="label">Additive:</div>              <input type="text" id="additive" name="additive"/>
-
-    <div class="label">Total Litres:</div>          <input type="text" id="litres" name="litres"/>
-    <div class="label">Work Start:</div>            <input type="date" id="workStart" name="workStart" value="2025-09-16"/>
-
-    <div class="label">Work End:</div>              <input type="date" id="workEnd" name="workEnd"/>
-    <div class="label">Guaranteed:</div>            <input type="date" id="guaranteed" name="guaranteed"/>
-
-    <div class="label">QA Conducted By:</div>       <input type="text" id="qaBy" name="qaBy"/>
-    <div class="label">Conformed:</div>             <input type="text" id="conformed" name="conformed"/>
-
-    <div class="label">Seal Designed By:</div>      <input type="text" id="sealBy" name="sealBy"/>
-
-    <!-- Attachments -->
-    <div class="box-section">
-      <div class="box-head">Attachments</div>
-      <div class="box-grid">
-        <label class="tri" data-name="qvc"><span class="box"></span><span class="lbl">QVC Attached</span><input type="hidden" id="qvc"></label>
-        <label class="tri" data-name="siteMemo"><span class="box"></span><span class="lbl">Site Memo</span><input type="hidden" id="siteMemo"></label>
-        <label class="tri" data-name="aggResults"><span class="box"></span><span class="lbl">Agg Test Results</span><input type="hidden" id="aggResults"></label>
-        <label class="tri" data-name="ballPen"><span class="box"></span><span class="lbl">Ball Penetration Test</span><input type="hidden" id="ballPen"></label>
-        <label class="tri" data-name="sampleTins"><span class="box"></span><span class="lbl">Sample Tins</span><input type="hidden" id="sampleTins"></label>
-
-        <label class="tri" data-name="spraySheet"><span class="box"></span><span class="lbl">Spray Sheet</span><input type="hidden" id="spraySheet"></label>
-        <label class="tri" data-name="testReport"><span class="box"></span><span class="lbl">Test Report</span><input type="hidden" id="testReport"></label>
-        <label class="tri" data-name="photos"><span class="box"></span><span class="lbl">Photos</span><input type="hidden" id="photos"></label>
-        <label class="tri" data-name="delivery"><span class="box"></span><span class="lbl">Delivery Docket</span><input type="hidden" id="delivery"></label>
-        <label class="tri" data-name="ncrs"><span class="box"></span><span class="lbl">NCRs</span><input type="hidden" id="ncrs"></label>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="label">Notes:</div>
-      <textarea id="notes" name="notes"></textarea>
-    </div>
-
-    <div class="block">
-      <div class="label">Site Diagram:</div>
-      <textarea id="diagram" name="diagram" style="min-height:140px"></textarea>
-    </div>
-
-    <div class="actions">
-      <button type="button" class="btn pdf" id="pdfBtn">PDF</button>
-      <button type="button" class="btn reset" id="resetBtn">Reset All</button>
-    </div>
-  </form>
-
-  <div class="nav">
-    <a class="btn" href="./index.html">Page 1</a>
-    <a class="btn" href="./mat-test.html">Next Page →</a>
-  </div>
-</div>
-
-<script defer src="app.js?v=312"></script>
+<!doctype html><meta charset="utf-8"><title>Loading…</title>
 <script>
-if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./service-worker.js?ver=312').then(r=>r.update()).catch(()=>{}); }
+(async () => {
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) { try { await r.unregister(); } catch(e){} }
+    }
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+  } catch (e) { }
+  location.href = './index-v313.html?v=313&ts=' + Date.now();
+})();
 </script>
+<body style="font-family:system-ui,Arial;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">
+  <div>Refreshing…</div>
 </body>
-</html>

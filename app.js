@@ -4,10 +4,10 @@ const $ = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
 
 // PDF = print
-$('#pdfBtn').addEventListener('click', () => window.print());
+document.getElementById('pdfBtn').addEventListener('click', () => window.print());
 
 // Reset
-$('#resetBtn').addEventListener('click', () => {
+document.getElementById('resetBtn').addEventListener('click', () => {
   if (!confirm('Clear all fields?')) return;
   document.getElementById('f').reset();
   // Clear tri-state visual & values
