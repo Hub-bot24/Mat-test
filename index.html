@@ -1,102 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cover Page (Page 1)</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f7f7f9; margin:0; }
-    #page { max-width:210mm; margin:0 auto; background:#fff; min-height:100vh; display:flex; flex-direction:column; }
-    .wrap { padding:14px; flex:1; }
-    h1 { font-size:20px; margin:0 0 8px 0; text-align:center; }
-    .grid { display:grid; grid-template-columns: 150px 1fr 150px 1fr; grid-gap:6px; }
-    .grid label { font-weight:bold; font-size:12px; align-self:center; }
-    .grid input, .grid textarea { width:100%; border:1px solid #999; padding:4px; font-size:12px; }
-    .full { grid-column: 1 / -1; }
-    fieldset { border:1px solid #999; padding:6px; margin:8px 0; }
-    legend { font-size:12px; font-weight:bold; }
-    .checks { display:grid; grid-template-columns: 1fr 1fr; gap:4px; }
-    .actions { display:flex; justify-content:space-between; margin-top:12px; }
-    button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
-    .btn-pdf { background:#4CAF50; color:#fff; }
-    .btn-reset { background:#f44336; color:#fff; }
-    footer { text-align:center; font-size:10px; font-weight:bold; padding:6px; }
-    @page { size: A4 portrait; margin: 10mm; }
-    @media print {
-      html, body { width:210mm; height:297mm; margin:0; padding:0; }
-      #page { transform: scale(0.95); transform-origin: top left; width:105%; height:auto; }
-      .actions, nav { display:none; }
-      * { -webkit-print-color-adjust: exact; }
-    }
-    nav { text-align:center; margin:8px 0 14px; }
-    nav a { padding:8px 12px; background:#007bff; color:#fff; text-decoration:none; border-radius:4px; font-weight:bold; }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div id="page">
-  <div class="wrap">
-    <h1>Spray Seal QA Lot Pack – New Works & Reseal QA V1</h1>
-    <div class="grid">
-      <label>Project:</label><input type="text">
-      <label>Job No.:</label><input type="text">
-      <label>Lot:</label><input type="text">
-      <label>Seal Design Number:</label><input type="text">
-      <label class="full">Description:</label><textarea class="full" rows="2"></textarea>
-      <label>Area (m²):</label><input type="text">
-      <label>Bitumen:</label><input type="text">
-      <label>Grade:</label><input type="text">
-      <label>Aggregate Size (mm):</label><input type="text">
-      <label>Kerosene:</label><input type="text">
-      <label>Additive:</label><input type="text">
-      <label>Total Litres:</label><input type="text">
-      <label>Work Start:</label><input type="date" id="ws">
-      <label>Work End:</label><input type="date" id="we">
-      <label>Guaranteed:</label><input type="date" id="gd">
-      <label>QA Conducted By:</label><input type="text">
-      <label>Conformed:</label><input type="text">
-      <label>Seal Designed By:</label><input type="text">
+<div class="wrapper">
+  <div class="header">
+    <img src="icons/colas.svg" alt="Colas Logo"/>
+    <div>
+      <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
+      <div class="version">v2.2.3 Pro — 2025-09-16 — J. Hugo</div>
     </div>
-    <fieldset>
-      <legend>Attachments</legend>
-      <div class="checks">
-        <label><input type="checkbox"> QVC Attached</label>
-        <label><input type="checkbox"> Spray Sheet</label>
-        <label><input type="checkbox"> Site Memo</label>
-        <label><input type="checkbox"> Test Report</label>
-        <label><input type="checkbox"> Agg Test Results</label>
-        <label><input type="checkbox"> Photos</label>
-        <label><input type="checkbox"> Ball Penetration Test</label>
-        <label><input type="checkbox"> Delivery Docket</label>
-        <label><input type="checkbox"> Sample Tins</label>
-        <label><input type="checkbox"> NCRs</label>
-      </div>
-    </fieldset>
-    <div class="grid">
-      <label class="full">Notes:</label><textarea class="full" rows="3"></textarea>
-      <label class="full">Site Diagram:</label><textarea class="full" rows="6"></textarea>
-    </div>
-    <div class="actions">
-      <button class="btn-pdf" onclick="window.print()">PDF</button>
-      <button class="btn-reset" onclick="document.querySelectorAll('input,textarea').forEach(e=>{if(e.type!=='date')e.value=''; else e.value='';});">Reset All</button>
-    </div>
-    <nav><a href="mat-test.html">Next Page →</a></nav>
   </div>
-  <footer>v2.5 Pro — 2025-09-12 — J. Hugo</footer>
+
+  <form id="f" class="form" autocomplete="on">
+    <div class="label">Project:</div>               <input type="text" id="project" name="project"/>
+    <div class="label">Job No.:</div>               <input type="text" id="jobNo"   name="jobNo"/>
+
+    <div class="label">Lot:</div>                   <input type="text" id="lot" name="lot"/>
+    <div class="label">Description:</div>           <textarea id="desc" name="desc" class="row-span-4"></textarea>
+
+    <div class="label">Area (m²):</div>             <input type="text" id="area" name="area"/>
+    <div class="label">Bitumen:</div>               <input type="text" id="bitumen" name="bitumen"/>
+
+    <div class="label">Grade:</div>                 <input type="text" id="grade" name="grade"/>
+    <div class="label">Aggregate Size (mm):</div>   <input type="text" id="aggSize" name="aggSize"/>
+
+    <div class="label">Kerosene:</div>              <input type="text" id="kerosene" name="kerosene"/>
+    <div class="label">Additive:</div>              <input type="text" id="additive" name="additive"/>
+
+    <div class="label">Total Litres:</div>          <input type="text" id="litres" name="litres"/>
+    <div class="label">Work Start:</div>            <input type="date" id="workStart" name="workStart" value="2025-09-16"/>
+
+    <div class="label">Work End:</div>              <input type="date" id="workEnd" name="workEnd"/>
+    <div class="label">Guaranteed:</div>            <input type="date" id="guaranteed" name="guaranteed"/>
+
+    <div class="label">QA Conducted By:</div>       <input type="text" id="qaBy" name="qaBy"/>
+    <div class="label">Conformed:</div>             <input type="text" id="conformed" name="conformed"/>
+
+    <div class="label">Seal Designed By:</div>      <input type="text" id="sealBy" name="sealBy"/>
+    
+    <!-- Attachments -->
+    <div class="box-section">
+      <div class="box-head">Attachments</div>
+      <div class="box-grid">
+        <label class="tri" data-name="qvc"><span class="box"></span><span class="lbl">QVC Attached</span><input type="hidden" id="qvc"></label>
+        <label class="tri" data-name="siteMemo"><span class="box"></span><span class="lbl">Site Memo</span><input type="hidden" id="siteMemo"></label>
+        <label class="tri" data-name="aggResults"><span class="box"></span><span class="lbl">Agg Test Results</span><input type="hidden" id="aggResults"></label>
+        <label class="tri" data-name="ballPen"><span class="box"></span><span class="lbl">Ball Penetration Test</span><input type="hidden" id="ballPen"></label>
+        <label class="tri" data-name="sampleTins"><span class="box"></span><span class="lbl">Sample Tins</span><input type="hidden" id="sampleTins"></label>
+
+        <label class="tri" data-name="spraySheet"><span class="box"></span><span class="lbl">Spray Sheet</span><input type="hidden" id="spraySheet"></label>
+        <label class="tri" data-name="testReport"><span class="box"></span><span class="lbl">Test Report</span><input type="hidden" id="testReport"></label>
+        <label class="tri" data-name="photos"><span class="box"></span><span class="lbl">Photos</span><input type="hidden" id="photos"></label>
+        <label class="tri" data-name="delivery"><span class="box"></span><span class="lbl">Delivery Docket</span><input type="hidden" id="delivery"></label>
+        <label class="tri" data-name="ncrs"><span class="box"></span><span class="lbl">NCRs</span><input type="hidden" id="ncrs"></label>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Notes:</div>
+      <textarea id="notes" name="notes"></textarea>
+    </div>
+
+    <div class="block">
+      <div class="label">Site Diagram:</div>
+      <textarea id="diagram" name="diagram" style="min-height:140px"></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn pdf" id="pdfBtn">PDF</button>
+      <button type="button" class="btn reset" id="resetBtn">Reset All</button>
+    </div>
+  </form>
+
+  <div class="nav">
+    <button class="btn" type="button" id="page1">Page 1</button>
+    <button class="btn" type="button" id="page6">Page 6</button>
+  </div>
 </div>
-<script>
-  // Auto-fill today's date for convenience (editable)
-  const t = new Date().toISOString().split('T')[0];
-  ['ws','we','gd'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value = t; });
-</script>
 
+<script src="app.js"></script>
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js?ver=53').then(reg => {
-    reg.update();
-  });
-}
-</script>
-
-</body>
+if ('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').catch(()=>{});}
+</script></body>
 </html>

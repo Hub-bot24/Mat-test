@@ -1,1 +1,55 @@
-/* styling for identical PDF look */
+
+:root{
+  --fg:#222; --muted:#666; --line:#cfcfcf; --accent:#0a7d31; --danger:#e74c3c;
+  --bg:#fff; --field:#fff; --box:18px;
+  --font: Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#f7f7f9;color:var(--fg);font-family:var(--font);}
+.wrapper{max-width:1100px;margin:20px auto;padding:16px 18px;background:var(--bg);border:1px solid #e7e7ea;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.header{display:flex;gap:16px;align-items:center;margin-bottom:8px}
+.header img{height:42px;width:auto}
+.title{font-size:20px;font-weight:700;margin:0 0 10px}
+.version{font-size:12px;color:var(--muted);margin-top:2px}
+
+.form{display:grid;grid-template-columns:220px 1fr 220px 1fr;gap:10px 12px;margin-top:10px}
+.form .label{align-self:center;color:#333;font-weight:600}
+.form input[type="text"],
+.form input[type="date"],
+.form input[type="number"],
+.form textarea{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--field);
+  font-size:14px;min-height:36px
+}
+.form textarea{min-height:60px;resize:vertical}
+
+/* Full-width rows */
+.row-span-4{grid-column:2 / span 3}
+.row-span-2{grid-column:2 / span 1}
+
+/* Attachments grid */
+.box-section{grid-column:1 / -1;border:1px solid var(--line);border-radius:8px;padding:10px}
+.box-head{font-weight:700;margin-bottom:6px}
+.box-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+label.tri{display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+label.tri .box{width:var(--box);height:var(--box);border:2px solid #444;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+label.tri .box.state-1::after{content:"✓"}
+label.tri .box.state-2::after{content:"✗"}
+label.tri .lbl{position:relative;top:-1px}
+
+/* Notes & Site Diagram */
+.block{grid-column:1 / -1;display:grid;grid-template-columns:220px 1fr;gap:10px;align-items:start}
+.actions{display:flex;gap:10px;margin-top:12px}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
+.btn.pdf{background:var(--accent);color:#fff}
+.btn.reset{background:var(--danger);color:#fff}
+.nav{margin-top:6px;display:flex;gap:8px}
+.nav .btn{background:#0a5bd7;color:#fff}
+
+/* Print */
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  .wrapper{box-shadow:none;border:0;margin:0;max-width:100%}
+  .actions,.nav{display:none}
+}
