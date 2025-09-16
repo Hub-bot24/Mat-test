@@ -1,84 +1,68 @@
 
-// Helper: number from input (treat blank/invalid as 0)
-function nval(el){ const v = (el.value||'').trim(); const x = Number(v); return isFinite(x) ? x : 0; }
-
-// --- KEY DATES ---
-(function(){
-  const start = document.getElementById('workStart');
-  const end   = document.getElementById('workEnd');
-  const guar  = document.getElementById('guaranteed');
-  const conf  = document.getElementById('conformed');
-
-  if(start){
-    start.addEventListener('change', ()=>{
-      // Only auto-fill End & Guaranteed if they are blank
-      if(end && !end.value) end.value = start.value;
-      if(guar && !guar.value) guar.value = start.value;
-      // Conformed stays blank unless set by the user
-    });
-  }
-})();
-
-// --- TOTAL LITRES = Bitumen + Kerosene + Additive ---
-(function(){
-  const bit = document.getElementById('bitumen');
-  const ker = document.getElementById('kerosene');
-  const add = document.getElementById('additive');
-  const tot = document.getElementById('totalLitres');
-
-  function recalc(){
-    if(!(bit && ker && add && tot)) return;
-    const s = nval(bit) + nval(ker) + nval(add);
-    tot.value = s ? (Math.round(s*100)/100).toString() : '';
-  }
-  ['input','change','blur'].forEach(ev=>{
-    [bit,ker,add].forEach(el=> el && el.addEventListener(ev,recalc));
+// ===== Tri-state pills (blank -> tick -> cross) =====
+const STATES = ['blank','tick','cross'];
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    const i = STATES.indexOf(p.dataset.state);
+    p.dataset.state = STATES[(i+1)%STATES.length];
+    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
+    save();
   });
-  recalc();
-})();
+});
 
-// --- TRI-STATE attachments (blank -> check -> cross -> blank) ---
-(function(){
-  document.querySelectorAll('.tri').forEach(item=>{
-    item.addEventListener('click',()=>{
-      const state = item.getAttribute('data-state') || '';
-      const next = state === '' ? 'check' : (state === 'check' ? 'cross' : '');
-      item.setAttribute('data-state', next);
-      const hidden = item.querySelector('input[type="hidden"]');
-      if(hidden) hidden.value = next; // store "check" or "cross" or ""
-    });
-  });
-})();
+// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
+const start = document.getElementById('dateStart');
+const end   = document.getElementById('dateEnd');
+const guar  = document.getElementById('dateGuaranteed');
+const conf  = document.getElementById('dateConformed');
 
-// --- Nav between pages ---
-function goPage(p){ location.href = p; }
+start.addEventListener('change', () => {
+  if(!end.value) end.value = start.value;
+  if(!guar.value) guar.value = start.value;
+  save();
+});
+[end,guar,conf].forEach(el=>el.addEventListener('change', save));
 
-// --- Simple print ---
-function pdf(){ window.print(); }
+// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
+const bitumen  = document.getElementById('bitumen');
+const kerosene = document.getElementById('kerosene');
+const additive = document.getElementById('additive');
+const total    = document.getElementById('totalLitres');
 
-// --- PAGE 6 logic (Mat Test) ---
-function two(n){ return (Math.round(n*100)/100).toFixed(2); }
-function calcSpread(){
-  const m1 = Number(document.getElementById('m1').value || 0);
-  const m2 = Number(document.getElementById('m2').value || 0);
-  const a  = Number(document.getElementById('area').value || 0);
-  const dl = Number(document.getElementById('dl').value || 0);
-  const r1El = document.getElementById('r1');
-  const r2El = document.getElementById('r2');
-
-  if(!m1 && !m2 && !a){ r1El.value=''; r2El.value=''; return; }
-  if(a<=0){ r1El.value=''; r2El.value=''; return; }
-
-  const r1 = (m1 - m2) / a; // kg/m²
-  if(!isFinite(r1) || r1<=0){ r1El.value=''; r2El.value=''; return; }
-  r1El.value = two(r1);
-
-  const r2 = 1000 * dl / r1; // m²/m³
-  r2El.value = isFinite(r2) ? two(r2) : '';
+function calcTotal(){
+  const b = parseFloat(bitumen.value)  || 0;
+  const k = parseFloat(kerosene.value) || 0;
+  const a = parseFloat(additive.value) || 0;
+  const sum = b+k+a;
+  total.value = sum>0 ? sum.toFixed(2) : '';
 }
-function resetCalc(){
-  ['m1','m2','area','dl','r1','r2'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.value='';
-  });
+[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
+
+// ===== Persistence (localStorage) =====
+const ids = ['jobNo','projectName','lotNumber','description',
+             'dateStart','dateEnd','dateGuaranteed','dateConformed',
+             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
+
+function save(){
+  const data = {};
+  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
+  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
+  localStorage.setItem('coverSheet', JSON.stringify(data));
 }
+function load(){
+  try{
+    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
+    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
+    document.querySelectorAll('.pill').forEach(p => {
+      const s = data['pill_'+p.dataset.key] || 'blank';
+      p.dataset.state = s;
+      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
+    });
+    calcTotal();
+  }catch(e){ /* ignore */ }
+}
+load();
+
+// ===== PDF (print) =====
+function doPDF(){ window.print(); }
+function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
