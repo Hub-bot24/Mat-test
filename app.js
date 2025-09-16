@@ -4,24 +4,27 @@ const $ = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
 
 // PDF = print
-document.getElementById('pdfBtn').addEventListener('click', () => window.print());
+document.addEventListener('DOMContentLoaded', () => {
+  const pdfBtn = document.getElementById('pdfBtn');
+  if (pdfBtn) pdfBtn.addEventListener('click', () => window.print());
 
-// Reset
-document.getElementById('resetBtn').addEventListener('click', () => {
-  if (!confirm('Clear all fields?')) return;
-  document.getElementById('f').reset();
-  // Clear tri-state visual & values
-  $$('.tri').forEach(l => {
-    const box = l.querySelector('.box');
-    const input = l.querySelector('input[type="hidden"]');
-    box.classList.remove('state-1','state-2');
-    input.value = '';
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.addEventListener('click', () => {
+    if (!confirm('Clear all fields?')) return;
+    document.getElementById('f').reset();
+    $$('.tri').forEach(l => {
+      const box = l.querySelector('.box');
+      const input = l.querySelector('input[type="hidden"]');
+      box.classList.remove('state-1','state-2');
+      input.value = '';
+    });
   });
 });
 
 // Auto-fill End/Guaranteed from Start (still editable after)
 (function autoFillDates(){
   const start = $('#workStart'), end = $('#workEnd'), guar = $('#guaranteed');
+  if (!start || !end || !guar) return;
   const mark = el => el.dataset.autofill = '1';
   const unmark = el => delete el.dataset.autofill;
   const isAuto = el => el.dataset.autofill === '1';

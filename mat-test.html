@@ -34,6 +34,7 @@
       * { -webkit-print-color-adjust: exact; }
     }
   </style>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 <div id="page">
@@ -70,10 +71,15 @@
   }
 </script>
 
-<!-- Back to Page 1 (injected) -->
+<!-- Injected Back + safety CSS -->
 <style>
 #backToP1{position:fixed;right:16px;bottom:16px;z-index:9999;background:#0a5bd7;color:#fff;border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 @media print{#backToP1{display:none}}
+/* Safety patch: ensure entire page shows and prints one A4 page */
+html,body{height:auto!important;overflow:auto!important;background:#fff;}
+.print-page,.page,.wrapper,.container{height:auto!important;min-height:auto!important;overflow:visible!important;}
+table{page-break-inside:avoid}
+@media print{@page{size:A4;margin:12mm}body{zoom:0.92}}
 </style>
 <a id="backToP1" href="./index.html">← Back to Page 1</a>
 

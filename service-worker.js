@@ -1,5 +1,5 @@
 
-// SW killer v316: clears caches, unregisters, and reloads once.
+// SW killer v317: clears caches, unregisters, and reloads once.
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil((async () => {
