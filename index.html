@@ -1,160 +1,118 @@
+
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QVC – Page 1 (Cover)</title>
-<link rel="stylesheet" href="style.css">
-<script defer src="app.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spray Seal QA – Cover</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <section id="cover" class="page print-scale">
     <div class="header">
-      <img class="logo" src="colas-logo.svg" alt="Colas Logo">
+      <img src="colas-logo.svg" alt="Colas" style="height:40px;">
       <div>
-        <h1 class="h1">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-        <div class="version js-version">v3.18 Pro — 2025-09-16 — J. Hugo</div>
+        <h1>Spray Seal QA Lot Pack — New Works & Reseal QA V1</h1>
+        <div class="sub">Cover Sheet</div>
       </div>
     </div>
 
-    <!-- Section 1 (left) -->
-    <div class="grid-1">
+    <div class="grid">
       <div>
-        <div class="grid-label">Job No.</div>
-        <input class="input" id="jobNo" autocomplete="off">
+        <label>Job No.</label>
+        <input type="text" id="jobno">
       </div>
       <div>
-        <div class="grid-label">Project Name</div>
-        <input class="input" id="projectName" autocomplete="off">
+        <label>Project Name</label>
+        <input type="text" id="project">
       </div>
       <div>
-        <div class="grid-label">Lot Number</div>
-        <input class="input" id="lotNumber" autocomplete="off">
+        <label>Lot Number</label>
+        <input type="text" id="lot">
       </div>
       <div>
-        <div class="grid-label">Description</div>
-        <textarea class="input" id="description"></textarea>
-      </div>
-    </div>
-
-    <hr class="sep">
-
-    <div class="section-title">KEY DATES:</div>
-    <div class="row">
-      <div>
-        <div class="grid-label">Work Start</div>
-        <input class="input" type="date" id="workStart">
-      </div>
-      <div>
-        <div class="grid-label">Work End</div>
-        <input class="input" type="date" id="workEnd">
-      </div>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <div>
-        <div class="grid-label">Guaranteed</div>
-        <input class="input" type="date" id="guaranteed">
-      </div>
-      <div>
-        <div class="grid-label">Conformed</div>
-        <input class="input" type="date" id="conformed" placeholder="">
+        <label>Description</label>
+        <textarea id="desc"></textarea>
       </div>
     </div>
 
-    <hr class="sep">
-
-    <div class="row">
+    <div class="group-title">KEY DATES:</div>
+    <div class="grid">
       <div>
-        <div class="grid-label">Grade</div>
-        <input class="input" id="grade">
+        <label>Work Start</label>
+        <input type="date" id="dStart">
       </div>
       <div>
-        <div class="grid-label">Total Litres</div>
-        <input class="input" id="totalLitres">
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <div class="grid-label">Aggregate Size (mm)</div>
-        <input class="input" id="aggSize">
+        <label>Work End</label>
+        <input type="date" id="dEnd">
       </div>
       <div>
-        <div class="grid-label">Bitumen</div>
-        <input class="input" id="bitumen">
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <div class="grid-label">m³</div>
-        <input class="input" id="m3">
+        <label>Guaranteed</label>
+        <input type="date" id="dGuarantee">
       </div>
       <div>
-        <div class="grid-label">Kerosene</div>
-        <input class="input" id="kerosene">
+        <label>Conformed</label>
+        <input type="date" id="dConformed" placeholder="">
       </div>
     </div>
-    <div class="row">
+
+    <div class="grid">
       <div>
-        <div class="grid-label">Additive</div>
-        <input class="input" id="additive">
+        <label>Grade</label>
+        <input type="text" id="grade">
       </div>
-      <div></div>
+      <div>
+        <label>Aggregate Size (mm)</label>
+        <input type="text" id="agg">
+      </div>
+      <div>
+        <label>m³</label>
+        <input type="number" id="m3" step="0.01">
+      </div>
+
+      <div>
+        <label>Total Litres</label>
+        <input type="text" id="litres" readonly>
+      </div>
+      <div>
+        <label>Bitumen</label>
+        <input type="number" id="bitumen" step="0.01">
+      </div>
+      <div>
+        <label>Kerosene</label>
+        <input type="number" id="kerosene" step="0.01">
+      </div>
+
+      <div class="empty"></div>
+      <div>
+        <label>Additive</label>
+        <input type="number" id="additive" step="0.01">
+      </div>
     </div>
 
-    <hr class="sep">
+    <style>.empty{visibility:hidden;height:0;margin:0;padding:0}</style>
 
-    <div class="section-title">Attachments</div>
-    <div class="attach-grid" id="attachGrid">
-      <!-- Left column -->
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>QVC Attached</span></div>
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Site Memo</span></div>
-
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Agg Test Results</span></div>
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Ball Penetration Test</span></div>
-
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Sample Tins</span></div>
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Spray Sheet</span></div>
-
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Test Report</span></div>
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Photos</span></div>
-
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Delivery Docket</span></div>
-      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>NCRs</span></div>
+    <div class="group-title">Attachments</div>
+    <div class="tri" id="attachments">
+      <div class="item" data-key="qvc"     tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>QVC Attached</div>
+      <div class="item" data-key="agg"     tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Agg Test Results</div>
+      <div class="item" data-key="samples" tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Sample Tins</div>
+      <div class="item" data-key="report"  tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Test Report</div>
+      <div class="item" data-key="docket"  tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Delivery Docket</div>
+      <div class="item" data-key="memo"    tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Site Memo</div>
+      <div class="item" data-key="bpt"     tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Ball Penetration Test</div>
+      <div class="item" data-key="sheet"   tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Spray Sheet</div>
+      <div class="item" data-key="photos"  tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>Photos</div>
+      <div class="item" data-key="ncr"     tabindex="0" role="checkbox" aria-checked="mixed"><div class="box" aria-hidden="true"></div>NCRs</div>
     </div>
 
-    <div class="actions">
-      <button class="btn btn-primary" onclick="window.print()">PDF</button>
-      <button class="btn btn-warn" id="resetBtn">Reset All</button>
+    <div class="actions no-print">
+      <button class="btn green" id="btnPdf">PDF</button>
+      <button class="btn red" id="btnReset">Reset All</button>
+      <a class="btn blue" href="page6.html">Page 6</a>
     </div>
+  </section>
 
-    <div class="nav actions">
-      <button class="btn btn-outline" data-nav="page6.html">Go to Page 6</button>
-    </div>
-
-    <div class="footer"><span class="js-version">v3.18 Pro — 2025-09-16 — J. Hugo</span></div>
-  </div>
-
-<script>
-// Link dates: Work Start auto-copies into Work End & Guaranteed if those are empty or identical to previous auto-set
-(function(){
-  const s = document.getElementById('workStart');
-  const e = document.getElementById('workEnd');
-  const g = document.getElementById('guaranteed');
-  let lastAutoE = "", lastAutoG = "";
-  s.addEventListener('change', () => {
-    if(!e.value || e.value===lastAutoE){ e.value = s.value; lastAutoE = s.value; }
-    if(!g.value || g.value===lastAutoG){ g.value = s.value; lastAutoG = s.value; }
-  });
-})();
-
-// Reset
-document.getElementById('resetBtn').addEventListener('click', ()=>{
-  document.querySelectorAll('.input').forEach(el=>el.value='');
-  document.querySelectorAll('.tri').forEach(b=>{ b.setAttribute('data-state','0'); b.textContent=''; b.classList.remove('ok','bad'); });
-});
-
-// Tri-state setup
-setupTriState(document);
-</script>
+  <script src="app.js"></script>
 </body>
 </html>
