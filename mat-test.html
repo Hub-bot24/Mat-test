@@ -69,5 +69,13 @@
     navigator.serviceWorker.register('service-worker.js');
   }
 </script>
+
+<!-- Injected Back to Page 1 -->
+<style>
+#backToP1{position:fixed;right:16px;bottom:16px;z-index:9999;background:#0a5bd7;color:#fff;border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+@media print{#backToP1{display:none}}
+</style>
+<a id="backToP1" href="./index.html">← Back to Page 1</a>
+
 </body>
 </html>

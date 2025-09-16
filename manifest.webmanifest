@@ -1,9 +1,1 @@
-{
-  "name": "Colas Mat Test",
-  "short_name": "MatTest",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffd400",
-  "icons": []
-}
+{"name": "Mat Test Pro", "short_name": "MatTest", "start_url": "./index.html?v=312", "display": "standalone", "background_color": "#ffffff", "theme_color": "#0a7d31", "icons": [{"src": "icons/colas.svg?v=312", "sizes": "any", "type": "image/svg+xml"}]}
