@@ -7,12 +7,29 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.css?v=314"/>
+<link rel="stylesheet" href="style.css?v=315"/>
+<script>
+// Client-side auto-cleaner: unregister any existing SW + clear caches, then continue.
+(async () => {
+  try {
+    if ('serviceWorker' in navigator) {
+      const reg = await navigator.serviceWorker.getRegistration();
+      if (reg) { try { await reg.update(); } catch(e){} }
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) { try { await r.unregister(); } catch(e){} }
+    }
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+  } catch(e) { /* ignore */ }
+})();
+</script>
 </head>
 <body>
 <div class="wrapper">
   <div class="header">
-    <img src="icons/colas.svg?v=314" alt="Colas Logo"/>
+    <img src="icons/colas.svg?v=315" alt="Colas Logo"/>
     <div>
       <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
       <div class="version" id="appVersion">v2.6 Pro — 2025-09-16 — J. Hugo</div>
@@ -46,7 +63,7 @@
 
     <div class="label">Seal Designed By:</div>      <input type="text" id="sealBy" name="sealBy"/>
 
-    <!-- Attachments -->
+    <!-- Attachments (tri-state) -->
     <div class="box-section">
       <div class="box-head">Attachments</div>
       <div class="box-grid">
@@ -86,6 +103,13 @@
   </div>
 </div>
 
-<script src="app.js?v=314" defer></script>
+<script src="app.js?v=315" defer></script>
 </body>
 </html>
+
+<script>
+if ('serviceWorker' in navigator) {
+  // Always try to install the killer SW so any old one is replaced, then it unregisters itself.
+  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+}
+</script>
