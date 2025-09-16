@@ -1,1 +1,1 @@
-// logic for forms and navigation
+// app logic placeholder

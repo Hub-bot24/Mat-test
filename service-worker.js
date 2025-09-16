@@ -1,1 +1,1 @@
-// offline support
+// service worker placeholder
