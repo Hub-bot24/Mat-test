@@ -1,68 +1,51 @@
+document.getElementById('dateField').valueAsDate = new Date();
 
-// ===== Tri-state pills (blank -> tick -> cross) =====
-const STATES = ['blank','tick','cross'];
-document.querySelectorAll('.pill').forEach(p => {
-  p.addEventListener('click', () => {
-    const i = STATES.indexOf(p.dataset.state);
-    p.dataset.state = STATES[(i+1)%STATES.length];
-    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
-    save();
-  });
-});
-
-// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
-const start = document.getElementById('dateStart');
-const end   = document.getElementById('dateEnd');
-const guar  = document.getElementById('dateGuaranteed');
-const conf  = document.getElementById('dateConformed');
-
-start.addEventListener('change', () => {
-  if(!end.value) end.value = start.value;
-  if(!guar.value) guar.value = start.value;
-  save();
-});
-[end,guar,conf].forEach(el=>el.addEventListener('change', save));
-
-// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
-const bitumen  = document.getElementById('bitumen');
-const kerosene = document.getElementById('kerosene');
-const additive = document.getElementById('additive');
-const total    = document.getElementById('totalLitres');
-
-function calcTotal(){
-  const b = parseFloat(bitumen.value)  || 0;
-  const k = parseFloat(kerosene.value) || 0;
-  const a = parseFloat(additive.value) || 0;
-  const sum = b+k+a;
-  total.value = sum>0 ? sum.toFixed(2) : '';
+function createPanel(i){
+  return `<div class="panel">
+    <h3>Calculation Sheet ${i}</h3>
+    <table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input class="m1-${i}" type="number" step="0.01"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input class="m2-${i}" type="number" step="0.01" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input class="a-${i}" type="number" step="0.01" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><output class="r1-${i}"></output></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input class="dl-${i}" type="number" step="0.01" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><output class="r2-${i}"></output></td></tr>
+    </table>
+    <div class="actions"><button class="btn-reset" onclick="resetPanel(${i})">Reset</button></div>
+  </div>`;
 }
-[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
 
-// ===== Persistence (localStorage) =====
-const ids = ['jobNo','projectName','lotNumber','description',
-             'dateStart','dateEnd','dateGuaranteed','dateConformed',
-             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
+document.getElementById('panels').innerHTML=[1,2,3].map(i=>createPanel(i)).join('');
 
-function save(){
-  const data = {};
-  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
-  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
-  localStorage.setItem('coverSheet', JSON.stringify(data));
+function calc(i){
+  const m1Field=document.querySelector('.m1-'+i);
+  const m1=parseFloat(m1Field.value);
+  if(isNaN(m1)){
+    document.querySelector('.r1-'+i).textContent='';
+    document.querySelector('.r2-'+i).textContent='';
+    return;
+  }
+  const m2=parseFloat(document.querySelector('.m2-'+i).value)||0;
+  const a=parseFloat(document.querySelector('.a-'+i).value)||0;
+  const dl=parseFloat(document.querySelector('.dl-'+i).value)||0;
+  let r1='',r2='';
+  if(a>0){r1=((m1-m2)/a).toFixed(2);}
+  if(r1 && dl>0){r2=(1000*dl/parseFloat(r1)).toFixed(2);}
+  document.querySelector('.r1-'+i).textContent=r1;
+  document.querySelector('.r2-'+i).textContent=r2;
 }
-function load(){
-  try{
-    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
-    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    document.querySelectorAll('.pill').forEach(p => {
-      const s = data['pill_'+p.dataset.key] || 'blank';
-      p.dataset.state = s;
-      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
-    });
-    calcTotal();
-  }catch(e){ /* ignore */ }
+function resetPanel(i){
+  document.querySelector('.m1-'+i).value='';
+  document.querySelector('.m2-'+i).value='0.85';
+  document.querySelector('.a-'+i).value='0.97';
+  document.querySelector('.dl-'+i).value='1.45';
+  document.querySelector('.r1-'+i).textContent='';
+  document.querySelector('.r2-'+i).textContent='';
 }
-load();
-
-// ===== PDF (print) =====
-function doPDF(){ window.print(); }
-function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
+function resetAll(){
+  document.querySelectorAll('.info-grid input').forEach(inp=>inp.value='');
+  document.getElementById('dateField').valueAsDate = new Date();
+  [1,2,3].forEach(resetPanel);
+}
+setInterval(()=>[1,2,3].forEach(calc),500);
