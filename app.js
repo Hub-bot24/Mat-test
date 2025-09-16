@@ -1,70 +1,84 @@
 
-/* Auto-fill Work End & Guaranteed from Start (Conformed stays blank) */
-const dStart = document.getElementById('dStart');
-const dEnd = document.getElementById('dEnd');
-const dGuarantee = document.getElementById('dGuarantee');
-dStart?.addEventListener('change', () => {
-  if (dEnd && !dEnd.value) dEnd.value = dStart.value || '';
-  if (dGuarantee && !dGuarantee.value) dGuarantee.value = dStart.value || '';
-});
+// Helper: number from input (treat blank/invalid as 0)
+function nval(el){ const v = (el.value||'').trim(); const x = Number(v); return isFinite(x) ? x : 0; }
 
-/* Total Litres = Bitumen + Kerosene + Additive */
-const fBit = document.getElementById('bitumen');
-const fKer = document.getElementById('kerosene');
-const fAdd = document.getElementById('additive');
-const fLit = document.getElementById('litres');
-function asNum(x){ const n = parseFloat(x); return isFinite(n)? n : 0; }
-function calcLitres(){
-  const sum = asNum(fBit?.value) + asNum(fKer?.value) + asNum(fAdd?.value);
-  fLit.value = sum>0 ? sum.toFixed(2) : '';
+// --- KEY DATES ---
+(function(){
+  const start = document.getElementById('workStart');
+  const end   = document.getElementById('workEnd');
+  const guar  = document.getElementById('guaranteed');
+  const conf  = document.getElementById('conformed');
+
+  if(start){
+    start.addEventListener('change', ()=>{
+      // Only auto-fill End & Guaranteed if they are blank
+      if(end && !end.value) end.value = start.value;
+      if(guar && !guar.value) guar.value = start.value;
+      // Conformed stays blank unless set by the user
+    });
+  }
+})();
+
+// --- TOTAL LITRES = Bitumen + Kerosene + Additive ---
+(function(){
+  const bit = document.getElementById('bitumen');
+  const ker = document.getElementById('kerosene');
+  const add = document.getElementById('additive');
+  const tot = document.getElementById('totalLitres');
+
+  function recalc(){
+    if(!(bit && ker && add && tot)) return;
+    const s = nval(bit) + nval(ker) + nval(add);
+    tot.value = s ? (Math.round(s*100)/100).toString() : '';
+  }
+  ['input','change','blur'].forEach(ev=>{
+    [bit,ker,add].forEach(el=> el && el.addEventListener(ev,recalc));
+  });
+  recalc();
+})();
+
+// --- TRI-STATE attachments (blank -> check -> cross -> blank) ---
+(function(){
+  document.querySelectorAll('.tri').forEach(item=>{
+    item.addEventListener('click',()=>{
+      const state = item.getAttribute('data-state') || '';
+      const next = state === '' ? 'check' : (state === 'check' ? 'cross' : '');
+      item.setAttribute('data-state', next);
+      const hidden = item.querySelector('input[type="hidden"]');
+      if(hidden) hidden.value = next; // store "check" or "cross" or ""
+    });
+  });
+})();
+
+// --- Nav between pages ---
+function goPage(p){ location.href = p; }
+
+// --- Simple print ---
+function pdf(){ window.print(); }
+
+// --- PAGE 6 logic (Mat Test) ---
+function two(n){ return (Math.round(n*100)/100).toFixed(2); }
+function calcSpread(){
+  const m1 = Number(document.getElementById('m1').value || 0);
+  const m2 = Number(document.getElementById('m2').value || 0);
+  const a  = Number(document.getElementById('area').value || 0);
+  const dl = Number(document.getElementById('dl').value || 0);
+  const r1El = document.getElementById('r1');
+  const r2El = document.getElementById('r2');
+
+  if(!m1 && !m2 && !a){ r1El.value=''; r2El.value=''; return; }
+  if(a<=0){ r1El.value=''; r2El.value=''; return; }
+
+  const r1 = (m1 - m2) / a; // kg/m²
+  if(!isFinite(r1) || r1<=0){ r1El.value=''; r2El.value=''; return; }
+  r1El.value = two(r1);
+
+  const r2 = 1000 * dl / r1; // m²/m³
+  r2El.value = isFinite(r2) ? two(r2) : '';
 }
-[fBit,fKer,fAdd].forEach(el => el?.addEventListener('input', calcLitres));
-
-/* Tri-state: blank -> ✓ -> ✕ -> blank */
-const mapState = { '': 'tick', 'tick': 'cross', 'cross': '' };
-document.querySelectorAll('#attachments .item').forEach(it=>{
-  const box = it.querySelector('.box');
-  function paint(s){
-    box.classList.remove('tick','cross');
-    box.textContent = '';
-    if (s==='tick'){ box.classList.add('tick'); box.textContent='✓'; }
-    if (s==='cross'){ box.classList.add('cross'); box.textContent='✕'; }
-  }
-  paint(''); // init
-  function toggle(){
-    const s = box.dataset.state || '';
-    const ns = mapState[s];
-    box.dataset.state = ns;
-    paint(ns);
-  }
-  it.addEventListener('click', toggle);
-  it.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); } });
-});
-
-/* Prepare one-page print for Page 1 */
-function preparePrintFit(){
-  const page = document.querySelector('.page');
-  if(!page) return;
-  const prevTransform = page.style.transform;
-  if (getComputedStyle(page).transform !== 'none' && window.innerWidth < 980){
-    page.style.transform = 'none';
-  }
-  const contentH = page.scrollHeight;
-  const targetPx = 1122;
-  let scale = 1;
-  if (contentH > targetPx){
-    scale = (targetPx / contentH) * 0.98;
-    if (scale < 0.7) scale = 0.7;
-  }
-  document.documentElement.style.setProperty('--print-scale', String(scale));
-  page.style.transform = prevTransform || '';
+function resetCalc(){
+  ['m1','m2','area','dl','r1','r2'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value='';
+  });
 }
-document.getElementById('btnPdf')?.addEventListener('click', ()=>{
-  preparePrintFit(); setTimeout(()=>window.print(), 20);
-});
-document.getElementById('btnReset')?.addEventListener('click', ()=>{
-  document.querySelectorAll('input[type=text],input[type=number],input[type=date],textarea')
-    .forEach(el => { if(!['dStart','dEnd','dGuarantee'].includes(el.id)) el.value=''; });
-  document.querySelectorAll('#attachments .box').forEach(b=>{ b.dataset.state=''; b.classList.remove('tick','cross'); b.textContent=''; });
-  calcLitres();
-});
