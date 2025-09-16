@@ -1,49 +1,38 @@
-
-const VERSION = 'v313';
-const CACHE   = `mattest-${VERSION}`;
-const ASSETS  = [
+const CACHE_NAME = 'mat-test-v202pro-' + Date.now();
+const FILES_TO_CACHE = [
   './',
-  './index-v313.html',
-  './mat-test-v313.html',
-  './style.css',
+  './index.html',
   './app.js',
   './manifest.webmanifest',
-  './icons/colas.svg'
-].map(u => `${u}?v=313`);
+  './service-worker.js'
+];
 
-self.addEventListener('install', e => {
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
+    })
+  );
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
-    await self.clients.claim();
-  })());
-});
-
-self.addEventListener('fetch', e => {
-  const req = e.request;
-  const accept = req.headers.get('accept') || '';
-  const isHTML = accept.includes('text/html');
-
-  if (isHTML) {
-    e.respondWith(
-      fetch(req).then(r => {
-        const copy = r.clone();
-        caches.open(CACHE).then(c => c.put(req, copy)).catch(()=>{});
-        return r;
-      }).catch(() => caches.match(req))
-    );
-  } else {
-    e.respondWith(
-      caches.match(req).then(res => res || fetch(req).then(r => {
-        const copy = r.clone();
-        caches.open(CACHE).then(c => c.put(req, copy)).catch(()=>{});
-        return r;
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keyList) =>
+      Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) {
+          return caches.delete(key);
+        }
       }))
-    );
-  }
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });

@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8"><title>Fix Update</title>
+<style>body{font-family:system-ui,Arial;padding:24px}</style>
+<h1>Fix Update</h1>
+<p>Click the button below to remove any old offline cache and refresh.</p>
+<button id="go" style="padding:10px 14px;font-weight:700">Clear Cache & Reload</button>
+<script>
+document.getElementById('go').onclick = async () => {
+  try{
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) { try { await r.unregister(); } catch(e){} }
+    }
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+  }finally{
+    location.href = './index.html?v=' + Date.now();
+  }
+};
+</script>
