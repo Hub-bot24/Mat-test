@@ -1,1 +1,93 @@
-<!-- Page 1 + Page 6 merged, simplified version -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cover Page (Page 1)</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    body { font-family: Arial, sans-serif; background:#f7f7f9; margin:0; }
+    #page { max-width:210mm; margin:0 auto; background:#fff; min-height:100vh; display:flex; flex-direction:column; }
+    .wrap { padding:14px; flex:1; }
+    h1 { font-size:20px; margin:0 0 8px 0; text-align:center; }
+    .grid { display:grid; grid-template-columns: 150px 1fr 150px 1fr; grid-gap:6px; }
+    .grid label { font-weight:bold; font-size:12px; align-self:center; }
+    .grid input, .grid textarea { width:100%; border:1px solid #999; padding:4px; font-size:12px; }
+    .full { grid-column: 1 / -1; }
+    fieldset { border:1px solid #999; padding:6px; margin:8px 0; }
+    legend { font-size:12px; font-weight:bold; }
+    .checks { display:grid; grid-template-columns: 1fr 1fr; gap:4px; }
+    .actions { display:flex; justify-content:space-between; margin-top:12px; }
+    button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
+    .btn-pdf { background:#4CAF50; color:#fff; }
+    .btn-reset { background:#f44336; color:#fff; }
+    footer { text-align:center; font-size:10px; font-weight:bold; padding:6px; }
+    @page { size: A4 portrait; margin: 10mm; }
+    @media print {
+      html, body { width:210mm; height:297mm; margin:0; padding:0; }
+      #page { transform: scale(0.95); transform-origin: top left; width:105%; height:auto; }
+      .actions, nav { display:none; }
+      * { -webkit-print-color-adjust: exact; }
+    }
+    nav { text-align:center; margin:8px 0 14px; }
+    nav a { padding:8px 12px; background:#007bff; color:#fff; text-decoration:none; border-radius:4px; font-weight:bold; }
+  </style>
+</head>
+<body>
+<div id="page">
+  <div class="wrap">
+    <h1>Spray Seal QA Lot Pack – New Works & Reseal QA V1</h1>
+    <div class="grid">
+      <label>Project:</label><input type="text">
+      <label>Job No.:</label><input type="text">
+      <label>Lot:</label><input type="text">
+      <label>Seal Design Number:</label><input type="text">
+      <label class="full">Description:</label><textarea class="full" rows="2"></textarea>
+      <label>Area (m²):</label><input type="text">
+      <label>Bitumen:</label><input type="text">
+      <label>Grade:</label><input type="text">
+      <label>Aggregate Size (mm):</label><input type="text">
+      <label>Kerosene:</label><input type="text">
+      <label>Additive:</label><input type="text">
+      <label>Total Litres:</label><input type="text">
+      <label>Work Start:</label><input type="date" id="ws">
+      <label>Work End:</label><input type="date" id="we">
+      <label>Guaranteed:</label><input type="date" id="gd">
+      <label>QA Conducted By:</label><input type="text">
+      <label>Conformed:</label><input type="text">
+      <label>Seal Designed By:</label><input type="text">
+    </div>
+    <fieldset>
+      <legend>Attachments</legend>
+      <div class="checks">
+        <label><input type="checkbox"> QVC Attached</label>
+        <label><input type="checkbox"> Spray Sheet</label>
+        <label><input type="checkbox"> Site Memo</label>
+        <label><input type="checkbox"> Test Report</label>
+        <label><input type="checkbox"> Agg Test Results</label>
+        <label><input type="checkbox"> Photos</label>
+        <label><input type="checkbox"> Ball Penetration Test</label>
+        <label><input type="checkbox"> Delivery Docket</label>
+        <label><input type="checkbox"> Sample Tins</label>
+        <label><input type="checkbox"> NCRs</label>
+      </div>
+    </fieldset>
+    <div class="grid">
+      <label class="full">Notes:</label><textarea class="full" rows="3"></textarea>
+      <label class="full">Site Diagram:</label><textarea class="full" rows="6"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn-pdf" onclick="window.print()">PDF</button>
+      <button class="btn-reset" onclick="document.querySelectorAll('input,textarea').forEach(e=>{if(e.type!=='date')e.value=''; else e.value='';});">Reset All</button>
+    </div>
+    <nav><a href="mat-test.html">Next Page →</a></nav>
+  </div>
+  <footer>v2.5 Pro — 2025-09-12 — J. Hugo</footer>
+</div>
+<script>
+  // Auto-fill today's date for convenience (editable)
+  const t = new Date().toISOString().split('T')[0];
+  ['ws','we','gd'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value = t; });
+</script>
+</body>
+</html>

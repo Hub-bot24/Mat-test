@@ -1,1 +1,9 @@
-{ "name": "Mat Test Pro", "short_name": "MatTest" }
+{
+  "name": "Colas Mat Test",
+  "short_name": "MatTest",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffd400",
+  "icons": []
+}
