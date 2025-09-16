@@ -1,76 +1,51 @@
+document.getElementById('dateField').valueAsDate = new Date();
 
-// helpers
-const $ = sel => document.querySelector(sel);
-const $$ = sel => Array.from(document.querySelectorAll(sel));
+function createPanel(i){
+  return `<div class="panel">
+    <h3>Calculation Sheet ${i}</h3>
+    <table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Mass of Canvas Mat & Aggregate (kg)</td><td><input class="m1-${i}" type="number" step="0.01"></td></tr>
+      <tr><td>Mass of Canvas Mat (kg)</td><td><input class="m2-${i}" type="number" step="0.01" value="0.85"></td></tr>
+      <tr><td>Area of Canvas Mat (m²)</td><td><input class="a-${i}" type="number" step="0.01" value="0.97"></td></tr>
+      <tr><td><b>Spread Rate (kg/m²)</b></td><td><output class="r1-${i}"></output></td></tr>
+      <tr><td>Loose Unit Mass of Screenings (t/m³)</td><td><input class="dl-${i}" type="number" step="0.01" value="1.45"></td></tr>
+      <tr><td><b>Spread Rate (m²/m³)</b></td><td><output class="r2-${i}"></output></td></tr>
+    </table>
+    <div class="actions"><button class="btn-reset" onclick="resetPanel(${i})">Reset</button></div>
+  </div>`;
+}
 
-// PDF = print
-$('#pdfBtn').addEventListener('click', () => window.print());
+document.getElementById('panels').innerHTML=[1,2,3].map(i=>createPanel(i)).join('');
 
-// Reset
-$('#resetBtn').addEventListener('click', () => {
-  if (!confirm('Clear all fields?')) return;
-  document.getElementById('f').reset();
-  // Clear tri-state visual & values
-  $$('.tri').forEach(l => {
-    const box = l.querySelector('.box');
-    const input = l.querySelector('input[type="hidden"]');
-    box.classList.remove('state-1','state-2');
-    input.value = '';
-  });
-});
-
-// Auto-fill End/Guaranteed from Start (still editable after)
-(function autoFillDates(){
-  const start = $('#workStart'), end = $('#workEnd'), guar = $('#guaranteed');
-  const mark = el => el.dataset.autofill = '1';
-  const unmark = el => delete el.dataset.autofill;
-  const isAuto = el => el.dataset.autofill === '1';
-
-  ['change','input'].forEach(evt => {
-    end.addEventListener(evt, () => unmark(end));
-    guar.addEventListener(evt, () => unmark(guar));
-  });
-
-  start.addEventListener('change', () => {
-    if (start.value) {
-      if (!end.value || isAuto(end))  { end.value  = start.value; mark(end); }
-      if (!guar.value || isAuto(guar)) { guar.value = start.value; mark(guar); }
-    }
-  });
-
-  window.addEventListener('load', () => {
-    if (start.value) {
-      if (!end.value)  { end.value  = start.value; mark(end); }
-      if (!guar.value) { guar.value = start.value; mark(guar); }
-    }
-  });
-})();
-
-// Tri-state controls
-(function triState(){
-  $$('.tri').forEach(label => {
-    const box = label.querySelector('.box');
-    const input = label.querySelector('input[type="hidden"]');
-    const values = ["", "yes", "no"]; // blank, tick, cross
-    let state = 0;
-    if (input.value === 'yes') state = 1;
-    else if (input.value === 'no') state = 2;
-    const apply = () => {
-      box.classList.remove('state-1','state-2');
-      if (state === 1) box.classList.add('state-1');
-      if (state === 2) box.classList.add('state-2');
-      input.value = values[state];
-    };
-    apply();
-    label.addEventListener('click', e => {
-      if (!e.target.closest('a,button,input,textarea,select')) {
-        state = (state + 1) % 3;
-        apply();
-      }
-    });
-  });
-})();
-
-// Simple navigation placeholders
-$('#page1').addEventListener('click', () => alert('Already on Page 1'));
-$('#page6').addEventListener('click', () => alert('Page 6 link goes here (integrate when ready).'));
+function calc(i){
+  const m1Field=document.querySelector('.m1-'+i);
+  const m1=parseFloat(m1Field.value);
+  if(isNaN(m1)){
+    document.querySelector('.r1-'+i).textContent='';
+    document.querySelector('.r2-'+i).textContent='';
+    return;
+  }
+  const m2=parseFloat(document.querySelector('.m2-'+i).value)||0;
+  const a=parseFloat(document.querySelector('.a-'+i).value)||0;
+  const dl=parseFloat(document.querySelector('.dl-'+i).value)||0;
+  let r1='',r2='';
+  if(a>0){r1=((m1-m2)/a).toFixed(2);}
+  if(r1 && dl>0){r2=(1000*dl/parseFloat(r1)).toFixed(2);}
+  document.querySelector('.r1-'+i).textContent=r1;
+  document.querySelector('.r2-'+i).textContent=r2;
+}
+function resetPanel(i){
+  document.querySelector('.m1-'+i).value='';
+  document.querySelector('.m2-'+i).value='0.85';
+  document.querySelector('.a-'+i).value='0.97';
+  document.querySelector('.dl-'+i).value='1.45';
+  document.querySelector('.r1-'+i).textContent='';
+  document.querySelector('.r2-'+i).textContent='';
+}
+function resetAll(){
+  document.querySelectorAll('.info-grid input').forEach(inp=>inp.value='');
+  document.getElementById('dateField').valueAsDate = new Date();
+  [1,2,3].forEach(resetPanel);
+}
+setInterval(()=>[1,2,3].forEach(calc),500);
