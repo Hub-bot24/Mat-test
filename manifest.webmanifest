@@ -1,1 +1,9 @@
-{ "name": "MatTestPro", "display": "standalone" }
+{
+  "name": "Mat Test Pro",
+  "short_name": "MatTest",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Mat Test Pro v2.2.2",
+  "icons": []
+}
