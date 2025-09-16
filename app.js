@@ -1,68 +1,23 @@
 
-// ===== Tri-state pills (blank -> tick -> cross) =====
-const STATES = ['blank','tick','cross'];
-document.querySelectorAll('.pill').forEach(p => {
-  p.addEventListener('click', () => {
-    const i = STATES.indexOf(p.dataset.state);
-    p.dataset.state = STATES[(i+1)%STATES.length];
-    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
-    save();
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+document.addEventListener('DOMContentLoaded',()=>{
+  const p=$('#pdfBtn'); if(p) p.addEventListener('click',()=>window.print());
+  const r=$('#resetBtn'); if(r) r.addEventListener('click',()=>{
+    if(!confirm('Clear all fields?')) return;
+    document.getElementById('f').reset();
+    $$('.tri').forEach(l=>{const b=l.querySelector('.box'),i=l.querySelector('input[type="hidden"]'); b.classList.remove('state-1','state-2'); i.value='';});
   });
 });
-
-// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
-const start = document.getElementById('dateStart');
-const end   = document.getElementById('dateEnd');
-const guar  = document.getElementById('dateGuaranteed');
-const conf  = document.getElementById('dateConformed');
-
-start.addEventListener('change', () => {
-  if(!end.value) end.value = start.value;
-  if(!guar.value) guar.value = start.value;
-  save();
-});
-[end,guar,conf].forEach(el=>el.addEventListener('change', save));
-
-// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
-const bitumen  = document.getElementById('bitumen');
-const kerosene = document.getElementById('kerosene');
-const additive = document.getElementById('additive');
-const total    = document.getElementById('totalLitres');
-
-function calcTotal(){
-  const b = parseFloat(bitumen.value)  || 0;
-  const k = parseFloat(kerosene.value) || 0;
-  const a = parseFloat(additive.value) || 0;
-  const sum = b+k+a;
-  total.value = sum>0 ? sum.toFixed(2) : '';
-}
-[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
-
-// ===== Persistence (localStorage) =====
-const ids = ['jobNo','projectName','lotNumber','description',
-             'dateStart','dateEnd','dateGuaranteed','dateConformed',
-             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
-
-function save(){
-  const data = {};
-  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
-  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
-  localStorage.setItem('coverSheet', JSON.stringify(data));
-}
-function load(){
-  try{
-    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
-    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    document.querySelectorAll('.pill').forEach(p => {
-      const s = data['pill_'+p.dataset.key] || 'blank';
-      p.dataset.state = s;
-      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
-    });
-    calcTotal();
-  }catch(e){ /* ignore */ }
-}
-load();
-
-// ===== PDF (print) =====
-function doPDF(){ window.print(); }
-function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
+(function autoFillDates(){
+  const s=$('#workStart'), e=$('#workEnd'), g=$('#guaranteed'); if(!s||!e||!g) return;
+  const mark=el=>el.dataset.autofill='1', un=el=>delete el.dataset.autofill, isA=el=>el.dataset.autofill==='1';
+  ['change','input'].forEach(evt=>{ e.addEventListener(evt,()=>un(e)); g.addEventListener(evt,()=>un(g)); });
+  s.addEventListener('change',()=>{ if(s.value){ if(!e.value||isA(e)){e.value=s.value;mark(e)} if(!g.value||isA(g)){g.value=s.value;mark(g)} } });
+  window.addEventListener('load',()=>{ if(s.value){ if(!e.value){e.value=s.value;mark(e)} if(!g.value){g.value=s.value;mark(g)} } });
+})();
+(function tri(){
+  $$('.tri').forEach(l=>{ const b=l.querySelector('.box'), i=l.querySelector('input[type="hidden"]'); const vals=['','yes','no']; let st= i.value==='yes'?1:(i.value==='no'?2:0);
+    const apply=()=>{ b.classList.remove('state-1','state-2'); if(st===1)b.classList.add('state-1'); if(st===2)b.classList.add('state-2'); i.value=vals[st]; };
+    apply(); l.addEventListener('click',e=>{ if(!e.target.closest('a,button,input,textarea,select')){ st=(st+1)%3; apply(); } });
+  });
+})();

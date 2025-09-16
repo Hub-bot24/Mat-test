@@ -1,117 +1,51 @@
-
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Spray Seal QA Lot Pack — Cover Sheet</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <img src="colas-logo.svg" alt="Colas"/>
-      <h1 class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-    </div>
-
-    <div class="grid">
-      <div class="label">Job No.:</div>
-      <input id="jobNo" class="input" autocomplete="off"/>
-
-      <div class="label">Project Name:</div>
-      <input id="projectName" class="input" autocomplete="off"/>
-
-      <div class="label">Lot Number:</div>
-      <input id="lotNumber" class="input" autocomplete="off"/>
-
-      <div class="label">Description:</div>
-      <textarea id="description" class="input"></textarea>
-
-      <div class="grid-full section-title">KEY DATES:</div>
-
-      <div class="label">Work Start:</div>
-      <div class="date-field">
-        <input id="dateStart" class="input" type="date"/>
-      </div>
-
-      <div class="label">Work End:</div>
-      <div class="date-field">
-        <input id="dateEnd" class="input" type="date"/>
-      </div>
-
-      <div class="label">Guaranteed:</div>
-      <div class="date-field">
-        <input id="dateGuaranteed" class="input" type="date"/>
-      </div>
-
-      <div class="label">Conformed:</div>
-      <div class="date-field">
-        <input id="dateConformed" class="input" type="date" placeholder="(optional)"/>
-      </div>
-
-      <div class="grid-full section-title">MATERIALS &amp; QUANTITIES</div>
-    </div>
-
-    <div class="metrics">
-      <div class="pair">
-        <div class="label">Grade:</div>
-        <input id="grade" class="input"/>
-      </div>
-      <div class="pair">
-        <div class="label">Total Litres:</div>
-        <input id="totalLitres" class="input mini" readonly/>
-      </div>
-
-      <div class="pair">
-        <div class="label">Aggregate Size (mm):</div>
-        <input id="aggSize" class="input mini"/>
-      </div>
-      <div class="pair">
-        <div class="label">Bitumen:</div>
-        <input id="bitumen" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label">m³:</div>
-        <input id="m3" class="input mini" inputmode="decimal"/>
-      </div>
-      <div class="pair">
-        <div class="label">Kerosene:</div>
-        <input id="kerosene" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label"></div>
-        <div></div>
-      </div>
-      <div class="pair">
-        <div class="label">Additive:</div>
-        <input id="additive" class="input mini" inputmode="decimal"/>
-      </div>
-    </div>
-
-    <div class="section-title" style="margin-top:14px;">Attachments</div>
-    <div class="attachments">
-      <label class="attachment"><span class="pill" data-state="blank" data-key="qvc">—</span> QVC Attached</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="site">—</span> Site Memo</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="agg">—</span> Agg Test Results</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ball">—</span> Ball Penetration Test</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="spray">—</span> Spray Sheet</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="photos">—</span> Photos</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="docket">—</span> Delivery Docket</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ncrs">—</span> NCRs</label>
-    </div>
-
-    <div class="actions">
-      <button class="btn-primary" onclick="doPDF()">PDF</button>
-      <button class="btn-danger" onclick="doReset()">Reset All</button>
-    </div>
-
-    <div class="nav">
-      <a href="page6.html">Page 6</a>
-    </div>
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1">
+<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
+<link rel=stylesheet href="style.css?v=316a">
+<div class=wrapper>
+  <div class=header>
+    <img src="icons/colas.svg?v=316a" alt="Colas Logo">
+    <div><div class=title>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
+    <div class=version>v2.6 Pro — 2025-09-16 — J. Hugo</div></div>
   </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+  <form id=f class=form autocomplete=on>
+    <div class=label>Job No.:</div>               <input type=text id=jobNo name=jobNo>
+    <div class=label>Project Name:</div>           <input type=text id=projectName name=projectName>
+    <div class=label>Lot:</div>                    <input type=text id=lot name=lot>
+    <div class=label>Description:</div>            <textarea id=desc name=desc></textarea>
+    <div class=label>Area (m²):</div>              <input type=text id=area name=area>
+    <div class=label>Bitumen:</div>                <input type=text id=bitumen name=bitumen>
+    <div class=label>Grade:</div>                  <input type=text id=grade name=grade>
+    <div class=label>Aggregate Size (mm):</div>    <input type=text id=aggSize name=aggSize>
+    <div class=label>Kerosene:</div>               <input type=text id=kerosene name=kerosene>
+    <div class=label>Additive:</div>               <input type=text id=additive name=additive>
+    <div class=label>Total Litres:</div>           <input type=text id=litres name=litres>
+    <div class=label>Work Start:</div>             <input type=date id=workStart name=workStart value="2025-09-16">
+    <div class=label>Work End:</div>               <input type=date id=workEnd name=workEnd>
+    <div class=label>Guaranteed:</div>             <input type=date id=guaranteed name=guaranteed>
+    <div class=label>QA Conducted By:</div>        <input type=text id=qaBy name=qaBy>
+    <div class=label>Conformed:</div>              <input type=text id=conformed name=conformed placeholder="Name / status">
+    <div class=label>Conformed Date:</div>         <input type=date id=conformedDate name=conformedDate>
+    <div class=label>Seal Designed By:</div>       <input type=text id=sealBy name=sealBy>
+    <div class=box-section>
+      <div class=box-head>Attachments</div>
+      <div class=box-grid>
+        <label class=tri data-name=qvc><span class=box></span><span class=lbl>QVC Attached</span><input type=hidden id=qvc></label>
+        <label class=tri data-name=siteMemo><span class=box></span><span class=lbl>Site Memo</span><input type=hidden id=siteMemo></label>
+        <label class=tri data-name=aggResults><span class=box></span><span class=lbl>Agg Test Results</span><input type=hidden id=aggResults></label>
+        <label class=tri data-name=ballPen><span class=box></span><span class=lbl>Ball Penetration Test</span><input type=hidden id=ballPen></label>
+        <label class=tri data-name=sampleTins><span class=box></span><span class=lbl>Sample Tins</span><input type=hidden id=sampleTins></label>
+        <label class=tri data-name=spraySheet><span class=box></span><span class=lbl>Spray Sheet</span><input type=hidden id=spraySheet></label>
+        <label class=tri data-name=testReport><span class=box></span><span class=lbl>Test Report</span><input type=hidden id=testReport></label>
+        <label class=tri data-name=photos><span class=box></span><span class=lbl>Photos</span><input type=hidden id=photos></label>
+        <label class=tri data-name=delivery><span class=box></span><span class=lbl>Delivery Docket</span><input type=hidden id=delivery></label>
+        <label class=tri data-name=ncrs><span class=box></span><span class=lbl>NCRs</span><input type=hidden id=ncrs></label>
+      </div>
+    </div>
+    <div class=actions>
+      <button type=button class="btn pdf" id=pdfBtn>PDF</button>
+      <button type=button class="btn reset" id=resetBtn>Reset All</button>
+    </div>
+  </form>
+  <div class=nav><a class=btn href="./index.html">Page 1</a><a class=btn href="./mat-test.html">Next Page →</a></div>
+</div>
+<script src="app.js?v=316a" defer></script>
