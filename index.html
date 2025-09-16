@@ -1,110 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.css?v=317"/>
-<script>
-// One-time cleaner to avoid old-cache issues
-(async()=>{try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs){try{await r.unregister()}catch(e){}}}if('caches'in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}}catch(e){}})();
-</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QVC – Page 1 (Cover)</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="app.js"></script>
 </head>
 <body>
-<div class="wrapper">
-  <div class="header">
-    <img src="icons/colas.svg?v=317" alt="Colas Logo"/>
-    <div>
-      <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
-      <div class="version" id="appVersion">v2.6 Pro — 2025-09-16 — J. Hugo</div>
-    </div>
-  </div>
-
-  <form id="f" class="form" autocomplete="on">
-    <!-- Row 1 -->
-    <div class="label">Job No.:</div>               <input type="text" id="jobNo"   name="jobNo"/>
-    <div class="label">Project Name:</div>          <input type="text" id="project" name="project"/>
-
-    <!-- Row 2 -->
-    <div class="label">Lot Number:</div>            <input type="text" id="lot" name="lot"/>
-    <div class="label">Description:</div>           <textarea id="desc" name="desc" style="min-height:60px"></textarea>
-
-    <!-- Gap of one text height (approx via spacer row) -->
-    <div class="fullrow" style="height:36px"></div>
-
-    <!-- KEY DATES header -->
-    <div class="hdr">KEY DATES:</div>
-
-    <!-- Dates Row 1: Work Start (left) | Work End (right) -->
-    <div class="label">Work Start:</div>            <input type="date" id="workStart" name="workStart" value="2025-09-16"/>
-    <div class="label">Work End:</div>              <input type="date" id="workEnd" name="workEnd"/>
-
-    <!-- Dates Row 2: Guaranteed (left) | Conformed (right) -->
-    <div class="label">Guaranteed:</div>            <input type="date" id="guaranteed" name="guaranteed"/>
-    <div class="label">Conformed:</div>             <input type="date" id="conformedDate" name="conformedDate"/>
-
-    <!-- Gap line -->
-    <div class="fullrow" style="height:36px"></div>
-
-    <!-- Remaining fields -->
-    <div class="label">Grade:</div>                 <input type="text" id="grade" name="grade"/>
-    <div class="label">Aggregate Size (mm):</div>   <input type="text" id="aggSize" name="aggSize"/>
-
-    <div class="label">Bitumen:</div>               <input type="text" id="bitumen" name="bitumen"/>
-    <div class="label">Kerosene:</div>              <input type="text" id="kerosene" name="kerosene"/>
-
-    <div class="label">Additive:</div>              <input type="text" id="additive" name="additive"/>
-    <div class="label">Total Litres:</div>          <input type="text" id="litres" name="litres"/>
-
-    <div class="label">QA Conducted By:</div>       <input type="text" id="qaBy" name="qaBy"/>
-    <div class="label">Seal Designed By:</div>      <input type="text" id="sealBy" name="sealBy"/>
-
-    <!-- Attachments -->
-    <div class="box-section">
-      <div class="box-head">Attachments</div>
-      <div class="box-grid">
-        <label class="tri" data-name="qvc"><span class="box"></span><span class="lbl">QVC Attached</span><input type="hidden" id="qvc"></label>
-        <label class="tri" data-name="siteMemo"><span class="box"></span><span class="lbl">Site Memo</span><input type="hidden" id="siteMemo"></label>
-        <label class="tri" data-name="aggResults"><span class="box"></span><span class="lbl">Agg Test Results</span><input type="hidden" id="aggResults"></label>
-        <label class="tri" data-name="ballPen"><span class="box"></span><span class="lbl">Ball Penetration Test</span><input type="hidden" id="ballPen"></label>
-        <label class="tri" data-name="sampleTins"><span class="box"></span><span class="lbl">Sample Tins</span><input type="hidden" id="sampleTins"></label>
-        <label class="tri" data-name="spraySheet"><span class="box"></span><span class="lbl">Spray Sheet</span><input type="hidden" id="spraySheet"></label>
-        <label class="tri" data-name="testReport"><span class="box"></span><span class="lbl">Test Report</span><input type="hidden" id="testReport"></label>
-        <label class="tri" data-name="photos"><span class="box"></span><span class="lbl">Photos</span><input type="hidden" id="photos"></label>
-        <label class="tri" data-name="delivery"><span class="box"></span><span class="lbl">Delivery Docket</span><input type="hidden" id="delivery"></label>
-        <label class="tri" data-name="ncrs"><span class="box"></span><span class="lbl">NCRs</span><input type="hidden" id="ncrs"></label>
+  <div class="container">
+    <div class="header">
+      <img class="logo" src="colas-logo.svg" alt="Colas Logo">
+      <div>
+        <h1 class="h1">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
+        <div class="version js-version">v3.18 Pro — 2025-09-16 — J. Hugo</div>
       </div>
     </div>
 
-    <div class="fullrow"></div>
-
-    <div class="label">Notes:</div>
-    <textarea id="notes" name="notes" class="fullrow" style="min-height:80px"></textarea>
-
-    <div class="label">Site Diagram:</div>
-    <textarea id="diagram" name="diagram" class="fullrow" style="min-height:140px"></textarea>
-
-    <div class="actions fullrow">
-      <button type="button" class="btn pdf" id="pdfBtn">PDF</button>
-      <button type="button" class="btn reset" id="resetBtn">Reset All</button>
+    <!-- Section 1 (left) -->
+    <div class="grid-1">
+      <div>
+        <div class="grid-label">Job No.</div>
+        <input class="input" id="jobNo" autocomplete="off">
+      </div>
+      <div>
+        <div class="grid-label">Project Name</div>
+        <input class="input" id="projectName" autocomplete="off">
+      </div>
+      <div>
+        <div class="grid-label">Lot Number</div>
+        <input class="input" id="lotNumber" autocomplete="off">
+      </div>
+      <div>
+        <div class="grid-label">Description</div>
+        <textarea class="input" id="description"></textarea>
+      </div>
     </div>
-  </form>
 
-  <div class="nav">
-    <a class="btn" href="./index.html">Page 1</a>
-    <a class="btn" href="./mat-test.html">Next Page →</a>
+    <hr class="sep">
+
+    <div class="section-title">KEY DATES:</div>
+    <div class="row">
+      <div>
+        <div class="grid-label">Work Start</div>
+        <input class="input" type="date" id="workStart">
+      </div>
+      <div>
+        <div class="grid-label">Work End</div>
+        <input class="input" type="date" id="workEnd">
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div>
+        <div class="grid-label">Guaranteed</div>
+        <input class="input" type="date" id="guaranteed">
+      </div>
+      <div>
+        <div class="grid-label">Conformed</div>
+        <input class="input" type="date" id="conformed" placeholder="">
+      </div>
+    </div>
+
+    <hr class="sep">
+
+    <div class="row">
+      <div>
+        <div class="grid-label">Grade</div>
+        <input class="input" id="grade">
+      </div>
+      <div>
+        <div class="grid-label">Total Litres</div>
+        <input class="input" id="totalLitres">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="grid-label">Aggregate Size (mm)</div>
+        <input class="input" id="aggSize">
+      </div>
+      <div>
+        <div class="grid-label">Bitumen</div>
+        <input class="input" id="bitumen">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="grid-label">m³</div>
+        <input class="input" id="m3">
+      </div>
+      <div>
+        <div class="grid-label">Kerosene</div>
+        <input class="input" id="kerosene">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="grid-label">Additive</div>
+        <input class="input" id="additive">
+      </div>
+      <div></div>
+    </div>
+
+    <hr class="sep">
+
+    <div class="section-title">Attachments</div>
+    <div class="attach-grid" id="attachGrid">
+      <!-- Left column -->
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>QVC Attached</span></div>
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Site Memo</span></div>
+
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Agg Test Results</span></div>
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Ball Penetration Test</span></div>
+
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Sample Tins</span></div>
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Spray Sheet</span></div>
+
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Test Report</span></div>
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Photos</span></div>
+
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>Delivery Docket</span></div>
+      <div class="tri-wrap"><button class="tri" data-state="0"></button><input type="hidden" value="0"><span>NCRs</span></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="window.print()">PDF</button>
+      <button class="btn btn-warn" id="resetBtn">Reset All</button>
+    </div>
+
+    <div class="nav actions">
+      <button class="btn btn-outline" data-nav="page6.html">Go to Page 6</button>
+    </div>
+
+    <div class="footer"><span class="js-version">v3.18 Pro — 2025-09-16 — J. Hugo</span></div>
   </div>
-</div>
-
-<script src="app.js?v=317" defer></script>
-</body>
-</html>
 
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
-}
+// Link dates: Work Start auto-copies into Work End & Guaranteed if those are empty or identical to previous auto-set
+(function(){
+  const s = document.getElementById('workStart');
+  const e = document.getElementById('workEnd');
+  const g = document.getElementById('guaranteed');
+  let lastAutoE = "", lastAutoG = "";
+  s.addEventListener('change', () => {
+    if(!e.value || e.value===lastAutoE){ e.value = s.value; lastAutoE = s.value; }
+    if(!g.value || g.value===lastAutoG){ g.value = s.value; lastAutoG = s.value; }
+  });
+})();
+
+// Reset
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.input').forEach(el=>el.value='');
+  document.querySelectorAll('.tri').forEach(b=>{ b.setAttribute('data-state','0'); b.textContent=''; b.classList.remove('ok','bad'); });
+});
+
+// Tri-state setup
+setupTriState(document);
 </script>
+</body>
+</html>
