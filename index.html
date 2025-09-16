@@ -1,51 +1,122 @@
-<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1">
-<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
-<link rel=stylesheet href="style.css?v=316a">
-<div class=wrapper>
-  <div class=header>
-    <img src="icons/colas.svg?v=316a" alt="Colas Logo">
-    <div><div class=title>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
-    <div class=version>v2.6 Pro — 2025-09-16 — J. Hugo</div></div>
-  </div>
-  <form id=f class=form autocomplete=on>
-    <div class=label>Job No.:</div>               <input type=text id=jobNo name=jobNo>
-    <div class=label>Project Name:</div>           <input type=text id=projectName name=projectName>
-    <div class=label>Lot:</div>                    <input type=text id=lot name=lot>
-    <div class=label>Description:</div>            <textarea id=desc name=desc></textarea>
-    <div class=label>Area (m²):</div>              <input type=text id=area name=area>
-    <div class=label>Bitumen:</div>                <input type=text id=bitumen name=bitumen>
-    <div class=label>Grade:</div>                  <input type=text id=grade name=grade>
-    <div class=label>Aggregate Size (mm):</div>    <input type=text id=aggSize name=aggSize>
-    <div class=label>Kerosene:</div>               <input type=text id=kerosene name=kerosene>
-    <div class=label>Additive:</div>               <input type=text id=additive name=additive>
-    <div class=label>Total Litres:</div>           <input type=text id=litres name=litres>
-    <div class=label>Work Start:</div>             <input type=date id=workStart name=workStart value="2025-09-16">
-    <div class=label>Work End:</div>               <input type=date id=workEnd name=workEnd>
-    <div class=label>Guaranteed:</div>             <input type=date id=guaranteed name=guaranteed>
-    <div class=label>QA Conducted By:</div>        <input type=text id=qaBy name=qaBy>
-    <div class=label>Conformed:</div>              <input type=text id=conformed name=conformed placeholder="Name / status">
-    <div class=label>Conformed Date:</div>         <input type=date id=conformedDate name=conformedDate>
-    <div class=label>Seal Designed By:</div>       <input type=text id=sealBy name=sealBy>
-    <div class=box-section>
-      <div class=box-head>Attachments</div>
-      <div class=box-grid>
-        <label class=tri data-name=qvc><span class=box></span><span class=lbl>QVC Attached</span><input type=hidden id=qvc></label>
-        <label class=tri data-name=siteMemo><span class=box></span><span class=lbl>Site Memo</span><input type=hidden id=siteMemo></label>
-        <label class=tri data-name=aggResults><span class=box></span><span class=lbl>Agg Test Results</span><input type=hidden id=aggResults></label>
-        <label class=tri data-name=ballPen><span class=box></span><span class=lbl>Ball Penetration Test</span><input type=hidden id=ballPen></label>
-        <label class=tri data-name=sampleTins><span class=box></span><span class=lbl>Sample Tins</span><input type=hidden id=sampleTins></label>
-        <label class=tri data-name=spraySheet><span class=box></span><span class=lbl>Spray Sheet</span><input type=hidden id=spraySheet></label>
-        <label class=tri data-name=testReport><span class=box></span><span class=lbl>Test Report</span><input type=hidden id=testReport></label>
-        <label class=tri data-name=photos><span class=box></span><span class=lbl>Photos</span><input type=hidden id=photos></label>
-        <label class=tri data-name=delivery><span class=box></span><span class=lbl>Delivery Docket</span><input type=hidden id=delivery></label>
-        <label class=tri data-name=ncrs><span class=box></span><span class=lbl>NCRs</span><input type=hidden id=ncrs></label>
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cover Page — QA Lot Pack</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas Logo">
+      <h1>Spray Seal QA Lot Pack — New Works & Reseal QA V1</h1>
+    </div>
+    <hr>
+
+    <!-- Top block: left aligned in order -->
+    <div class="grid2">
+      <div>
+        <label>Job No.</label>
+        <input type="text" id="jobNo">
+      </div>
+      <div>
+        <label>Project Name</label>
+        <input type="text" id="projectName">
+      </div>
+
+      <div>
+        <label>Lot Number</label>
+        <input type="text" id="lotNo">
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea id="description"></textarea>
       </div>
     </div>
-    <div class=actions>
-      <button type=button class="btn pdf" id=pdfBtn>PDF</button>
-      <button type=button class="btn reset" id=resetBtn>Reset All</button>
+
+    <div class="section-title">KEY DATES:</div>
+    <div class="grid2">
+      <div>
+        <label>Work Start</label>
+        <input type="date" id="workStart">
+      </div>
+      <div>
+        <label>Work End</label>
+        <input type="date" id="workEnd">
+      </div>
+      <div>
+        <label>Guaranteed</label>
+        <input type="date" id="guaranteed">
+      </div>
+      <div>
+        <label>Conformed</label>
+        <input type="date" id="conformed" placeholder="">
+      </div>
     </div>
-  </form>
-  <div class=nav><a class=btn href="./index.html">Page 1</a><a class=btn href="./mat-test.html">Next Page →</a></div>
-</div>
-<script src="app.js?v=316a" defer></script>
+
+    <hr>
+
+    <!-- Next block -->
+    <div class="grid2">
+      <div>
+        <label>Grade</label>
+        <input type="text" id="grade">
+      </div>
+      <div>
+        <label>Total Litres</label>
+        <input type="number" step="0.01" id="totalLitres" placeholder="Auto = Bitumen + Kerosene + Additive">
+      </div>
+
+      <div>
+        <label>Aggregate Size (mm)</label>
+        <input type="text" id="aggSize">
+      </div>
+      <div>
+        <label>Bitumen</label>
+        <input type="number" step="0.01" id="bitumen">
+      </div>
+
+      <div>
+        <label>m³</label>
+        <input type="number" step="0.01" id="m3">
+      </div>
+      <div>
+        <label>Kerosene</label>
+        <input type="number" step="0.01" id="kerosene">
+      </div>
+
+      <div></div>
+      <div>
+        <label>Additive</label>
+        <input type="number" step="0.01" id="additive">
+      </div>
+    </div>
+
+    <div class="section-title">Attachments</div>
+    <div class="attachments">
+      <label class="tri" data-state=""><span class="tri-box"></span><span>QVC Attached</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Site Memo</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Agg Test Results</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Ball Penetration Test</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Spray Sheet</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Photos</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Delivery Docket</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Sample Tins</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>NCRs</span><input type="hidden"></label>
+    </div>
+
+    <div class="actions no-print">
+      <button class="btn btn-primary" onclick="pdf()">PDF</button>
+      <button class="btn btn-danger" onclick="location.reload()">Reset All</button>
+    </div>
+
+    <nav class="pages no-print">
+      <button class="btn" onclick="goPage('index.html')">Page 1</button>
+      <button class="btn" onclick="goPage('page6.html')">Page 6</button>
+    </nav>
+  </div>
+</body>
+</html>
