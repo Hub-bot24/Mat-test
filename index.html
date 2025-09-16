@@ -89,5 +89,14 @@
   const t = new Date().toISOString().split('T')[0];
   ['ws','we','gd'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value = t; });
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js?ver=53').then(reg => {
+    reg.update();
+  });
+}
+</script>
+
 </body>
 </html>
