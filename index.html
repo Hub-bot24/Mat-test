@@ -1,142 +1,122 @@
 
 <!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover — exact layout overlay</title>
-<link rel="stylesheet" href="style.css?v=317_overlay">
-<div class="wrapper">
-  <div class="toolbar">
-    <button class="btn pdf" id="pdfBtn">PDF</button>
-    <a class="btn nav" href="./mat-test.html">Next Page →</a>
-    <button class="btn reset" id="resetBtn">Reset All</button>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cover Page — QA Lot Pack</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas Logo">
+      <h1>Spray Seal QA Lot Pack — New Works & Reseal QA V1</h1>
+    </div>
+    <hr>
+
+    <!-- Top block: left aligned in order -->
+    <div class="grid2">
+      <div>
+        <label>Job No.</label>
+        <input type="text" id="jobNo">
+      </div>
+      <div>
+        <label>Project Name</label>
+        <input type="text" id="projectName">
+      </div>
+
+      <div>
+        <label>Lot Number</label>
+        <input type="text" id="lotNo">
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea id="description"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">KEY DATES:</div>
+    <div class="grid2">
+      <div>
+        <label>Work Start</label>
+        <input type="date" id="workStart">
+      </div>
+      <div>
+        <label>Work End</label>
+        <input type="date" id="workEnd">
+      </div>
+      <div>
+        <label>Guaranteed</label>
+        <input type="date" id="guaranteed">
+      </div>
+      <div>
+        <label>Conformed</label>
+        <input type="date" id="conformed" placeholder="">
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Next block -->
+    <div class="grid2">
+      <div>
+        <label>Grade</label>
+        <input type="text" id="grade">
+      </div>
+      <div>
+        <label>Total Litres</label>
+        <input type="number" step="0.01" id="totalLitres" placeholder="Auto = Bitumen + Kerosene + Additive">
+      </div>
+
+      <div>
+        <label>Aggregate Size (mm)</label>
+        <input type="text" id="aggSize">
+      </div>
+      <div>
+        <label>Bitumen</label>
+        <input type="number" step="0.01" id="bitumen">
+      </div>
+
+      <div>
+        <label>m³</label>
+        <input type="number" step="0.01" id="m3">
+      </div>
+      <div>
+        <label>Kerosene</label>
+        <input type="number" step="0.01" id="kerosene">
+      </div>
+
+      <div></div>
+      <div>
+        <label>Additive</label>
+        <input type="number" step="0.01" id="additive">
+      </div>
+    </div>
+
+    <div class="section-title">Attachments</div>
+    <div class="attachments">
+      <label class="tri" data-state=""><span class="tri-box"></span><span>QVC Attached</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Site Memo</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Agg Test Results</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Ball Penetration Test</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Spray Sheet</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Photos</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Delivery Docket</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Sample Tins</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>NCRs</span><input type="hidden"></label>
+    </div>
+
+    <div class="actions no-print">
+      <button class="btn btn-primary" onclick="pdf()">PDF</button>
+      <button class="btn btn-danger" onclick="location.reload()">Reset All</button>
+    </div>
+
+    <nav class="pages no-print">
+      <button class="btn" onclick="goPage('index.html')">Page 1</button>
+      <button class="btn" onclick="goPage('page6.html')">Page 6</button>
+    </nav>
   </div>
-
-  <div class="page" id="page">
-    <div class="field" style="left:24%;top:13%;width:30%"><input type="text" id="jobNo" placeholder="Job No."></div>
-    <div class="field" style="left:72%;top:13%;width:40%"><input type="text" id="projectName" placeholder="Project Name"></div>
-    <div class="field" style="left:20%;top:20%;width:18%"><input type="text" id="lot" placeholder="Lot"></div>
-    <div class="field" style="left:65%;top:21%;width:55%"><textarea id="desc" placeholder="Description"></textarea></div>
-    <div class="field" style="left:20%;top:28%;width:18%"><input type="text" id="area" placeholder="Area (m²)"></div>
-    <div class="field" style="left:65%;top:28%;width:25%"><input type="text" id="bitumen" placeholder="Bitumen"></div>
-    <div class="field" style="left:20%;top:35%;width:18%"><input type="text" id="grade" placeholder="Grade"></div>
-    <div class="field" style="left:65%;top:35%;width:25%"><input type="text" id="aggSize" placeholder="Aggregate Size (mm)"></div>
-    <div class="field" style="left:20%;top:42%;width:18%"><input type="text" id="kerosene" placeholder="Kerosene"></div>
-    <div class="field" style="left:65%;top:42%;width:25%"><input type="text" id="additive" placeholder="Additive"></div>
-    <div class="field" style="left:20%;top:49%;width:18%"><input type="text" id="litres" placeholder="Total Litres"></div>
-    <div class="field" style="left:65%;top:49%;width:25%"><input type="date" id="workStart"></div>
-    <div class="field" style="left:20%;top:56%;width:18%"><input type="date" id="workEnd"></div>
-    <div class="field" style="left:65%;top:56%;width:25%"><input type="date" id="guaranteed"></div>
-    <div class="field" style="left:20%;top:63%;width:35%"><input type="text" id="qaBy" placeholder="QA Conducted By"></div>
-    <div class="field" style="left:65%;top:63%;width:25%"><input type="text" id="conformed" placeholder="Conformed"></div>
-    <div class="field" style="left:88%;top:63%;width:18%"><input type="date" id="conformedDate"></div>
-    <div class="field" style="left:20%;top:70%;width:35%"><input type="text" id="sealBy" placeholder="Seal Designed By"></div>
-    <div class="field" style="left:20%;top:78%;width:70%"><textarea id="notes" placeholder="Notes"></textarea></div>
-    <div class="field" style="left:20%;top:90%;width:70%"><textarea id="diagram" placeholder="Site Diagram"></textarea></div>
-    <div class="tri" id="qvc" style="left:20%;top:75%"></div>
-    <div class="tri" id="siteMemo" style="left:30%;top:75%"></div>
-    <div class="tri" id="aggResults" style="left:40%;top:75%"></div>
-    <div class="tri" id="ballPen" style="left:50%;top:75%"></div>
-    <div class="tri" id="sampleTins" style="left:60%;top:75%"></div>
-    <div class="tri" id="spraySheet" style="left:20%;top:82%"></div>
-    <div class="tri" id="testReport" style="left:30%;top:82%"></div>
-    <div class="tri" id="photos" style="left:40%;top:82%"></div>
-    <div class="tri" id="delivery" style="left:50%;top:82%"></div>
-    <div class="tri" id="ncrs" style="left:60%;top:82%"></div>
-  </div>
-</div>
-<script>
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-$('#pdfBtn').addEventListener('click',()=>window.print());
-$('#resetBtn').addEventListener('click',()=>{ if(!confirm('Clear all fields?')) return; localStorage.removeItem('coverData'); location.reload(); });
-
-function save(){
-  const data={};
-  if(document.getElementById('jobNo')) data['jobNo']=document.getElementById('jobNo').value;
-  if(document.getElementById('projectName')) data['projectName']=document.getElementById('projectName').value;
-  if(document.getElementById('lot')) data['lot']=document.getElementById('lot').value;
-  if(document.getElementById('desc')) data['desc']=document.getElementById('desc').value;
-  if(document.getElementById('area')) data['area']=document.getElementById('area').value;
-  if(document.getElementById('bitumen')) data['bitumen']=document.getElementById('bitumen').value;
-  if(document.getElementById('grade')) data['grade']=document.getElementById('grade').value;
-  if(document.getElementById('aggSize')) data['aggSize']=document.getElementById('aggSize').value;
-  if(document.getElementById('kerosene')) data['kerosene']=document.getElementById('kerosene').value;
-  if(document.getElementById('additive')) data['additive']=document.getElementById('additive').value;
-  if(document.getElementById('litres')) data['litres']=document.getElementById('litres').value;
-  if(document.getElementById('workStart')) data['workStart']=document.getElementById('workStart').value;
-  if(document.getElementById('workEnd')) data['workEnd']=document.getElementById('workEnd').value;
-  if(document.getElementById('guaranteed')) data['guaranteed']=document.getElementById('guaranteed').value;
-  if(document.getElementById('qaBy')) data['qaBy']=document.getElementById('qaBy').value;
-  if(document.getElementById('conformed')) data['conformed']=document.getElementById('conformed').value;
-  if(document.getElementById('conformedDate')) data['conformedDate']=document.getElementById('conformedDate').value;
-  if(document.getElementById('sealBy')) data['sealBy']=document.getElementById('sealBy').value;
-  if(document.getElementById('notes')) data['notes']=document.getElementById('notes').value;
-  if(document.getElementById('diagram')) data['diagram']=document.getElementById('diagram').value;
-  if(document.getElementById('qvc')) data['qvc']=document.getElementById('qvc').dataset.state||'0';
-  if(document.getElementById('siteMemo')) data['siteMemo']=document.getElementById('siteMemo').dataset.state||'0';
-  if(document.getElementById('aggResults')) data['aggResults']=document.getElementById('aggResults').dataset.state||'0';
-  if(document.getElementById('ballPen')) data['ballPen']=document.getElementById('ballPen').dataset.state||'0';
-  if(document.getElementById('sampleTins')) data['sampleTins']=document.getElementById('sampleTins').dataset.state||'0';
-  if(document.getElementById('spraySheet')) data['spraySheet']=document.getElementById('spraySheet').dataset.state||'0';
-  if(document.getElementById('testReport')) data['testReport']=document.getElementById('testReport').dataset.state||'0';
-  if(document.getElementById('photos')) data['photos']=document.getElementById('photos').dataset.state||'0';
-  if(document.getElementById('delivery')) data['delivery']=document.getElementById('delivery').dataset.state||'0';
-  if(document.getElementById('ncrs')) data['ncrs']=document.getElementById('ncrs').dataset.state||'0';
-  localStorage.setItem('coverData', JSON.stringify(data));
-}
-function load(){
-  try{ const data = JSON.parse(localStorage.getItem('coverData')||'{}');
-    if(data['jobNo']!==undefined && document.getElementById('jobNo')) document.getElementById('jobNo').value=data['jobNo'];
-  if(data['projectName']!==undefined && document.getElementById('projectName')) document.getElementById('projectName').value=data['projectName'];
-  if(data['lot']!==undefined && document.getElementById('lot')) document.getElementById('lot').value=data['lot'];
-  if(data['desc']!==undefined && document.getElementById('desc')) document.getElementById('desc').value=data['desc'];
-  if(data['area']!==undefined && document.getElementById('area')) document.getElementById('area').value=data['area'];
-  if(data['bitumen']!==undefined && document.getElementById('bitumen')) document.getElementById('bitumen').value=data['bitumen'];
-  if(data['grade']!==undefined && document.getElementById('grade')) document.getElementById('grade').value=data['grade'];
-  if(data['aggSize']!==undefined && document.getElementById('aggSize')) document.getElementById('aggSize').value=data['aggSize'];
-  if(data['kerosene']!==undefined && document.getElementById('kerosene')) document.getElementById('kerosene').value=data['kerosene'];
-  if(data['additive']!==undefined && document.getElementById('additive')) document.getElementById('additive').value=data['additive'];
-  if(data['litres']!==undefined && document.getElementById('litres')) document.getElementById('litres').value=data['litres'];
-  if(data['workStart']!==undefined && document.getElementById('workStart')) document.getElementById('workStart').value=data['workStart'];
-  if(data['workEnd']!==undefined && document.getElementById('workEnd')) document.getElementById('workEnd').value=data['workEnd'];
-  if(data['guaranteed']!==undefined && document.getElementById('guaranteed')) document.getElementById('guaranteed').value=data['guaranteed'];
-  if(data['qaBy']!==undefined && document.getElementById('qaBy')) document.getElementById('qaBy').value=data['qaBy'];
-  if(data['conformed']!==undefined && document.getElementById('conformed')) document.getElementById('conformed').value=data['conformed'];
-  if(data['conformedDate']!==undefined && document.getElementById('conformedDate')) document.getElementById('conformedDate').value=data['conformedDate'];
-  if(data['sealBy']!==undefined && document.getElementById('sealBy')) document.getElementById('sealBy').value=data['sealBy'];
-  if(data['notes']!==undefined && document.getElementById('notes')) document.getElementById('notes').value=data['notes'];
-  if(data['diagram']!==undefined && document.getElementById('diagram')) document.getElementById('diagram').value=data['diagram'];
-    if(document.getElementById('qvc') && data['qvc']) setTri(document.getElementById('qvc'), parseInt(data['qvc']));
-  if(document.getElementById('siteMemo') && data['siteMemo']) setTri(document.getElementById('siteMemo'), parseInt(data['siteMemo']));
-  if(document.getElementById('aggResults') && data['aggResults']) setTri(document.getElementById('aggResults'), parseInt(data['aggResults']));
-  if(document.getElementById('ballPen') && data['ballPen']) setTri(document.getElementById('ballPen'), parseInt(data['ballPen']));
-  if(document.getElementById('sampleTins') && data['sampleTins']) setTri(document.getElementById('sampleTins'), parseInt(data['sampleTins']));
-  if(document.getElementById('spraySheet') && data['spraySheet']) setTri(document.getElementById('spraySheet'), parseInt(data['spraySheet']));
-  if(document.getElementById('testReport') && data['testReport']) setTri(document.getElementById('testReport'), parseInt(data['testReport']));
-  if(document.getElementById('photos') && data['photos']) setTri(document.getElementById('photos'), parseInt(data['photos']));
-  if(document.getElementById('delivery') && data['delivery']) setTri(document.getElementById('delivery'), parseInt(data['delivery']));
-  if(document.getElementById('ncrs') && data['ncrs']) setTri(document.getElementById('ncrs'), parseInt(data['ncrs']));
-  }catch(_){}
-}
-function setTri(el, state){ el.dataset.state = state; el.classList.remove('state-1','state-2'); if(state===1) el.classList.add('state-1'); if(state===2) el.classList.add('state-2'); }
-$$('.tri').forEach(el=>{ setTri(el,0); el.addEventListener('click',()=>{ let s=parseInt(el.dataset.state||'0'); s=(s+1)%3; setTri(el,s); save(); }); });
-
-const start=$('#workStart'), end=$('#workEnd'), guar=$('#guaranteed');
-if(start && end && guar){
-  const mark = el => el.dataset.auto='1';
-  const un   = el => delete el.dataset.auto;
-  ['change','input'].forEach(evt=>{ end.addEventListener(evt,()=>un(end)); guar.addEventListener(evt,()=>un(guar)); });
-  start.addEventListener('change',()=>{
-    if(start.value){
-      if(!end.value || end.dataset.auto==='1'){ end.value=start.value; mark(end); }
-      if(!guar.value || guar.dataset.auto==='1'){ guar.value=start.value; mark(guar); }
-    }
-    save();
-  });
-}
-// Init today's date for Work Start only (editable)
-if(start && !start.value) start.value='2025-09-16';
-// Save on input
-$$('input,textarea').forEach(el=>el.addEventListener('input', save));
-// Load at end
-load();
-</script>
+</body>
+</html>
