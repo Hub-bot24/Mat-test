@@ -26,46 +26,46 @@ if ('serviceWorker' in navigator) {
 <main>
   <section class="card">
     <div class="row two">
-      <label>Job No.<input id="jobNo" type="text"></label>
-      <label>Project Name<input id="projectName" type="text"></label>
+      <label>Job No.<input id="jobNo" type="text" autocomplete="off"></label>
+      <label>Project Name<input id="projectName" type="text" autocomplete="off"></label>
     </div>
 
     <div class="row two">
-      <label>Lot Number<input id="lotNumber" type="text"></label>
+      <label>Lot Number<input id="lotNumber" type="text" autocomplete="off"></label>
       <label></label>
     </div>
 
     <div class="row one">
-      <label>Description<textarea id="description" rows="2"></textarea></label>
+      <label>Description<textarea id="description" rows="2" autocomplete="off"></textarea></label>
     </div>
   </section>
 
   <section class="card">
     <h3>Key Dates</h3>
     <div class="row two">
-      <label>Work Start<input id="workStart" type="date"></label>
-      <label>Guaranteed<input id="guaranteed" type="date"></label>
+      <label>Work Start<input id="workStart" type="date" autocomplete="off"></label>
+      <label>Guaranteed<input id="guaranteed" type="date" autocomplete="off"></label>
     </div>
     <div class="row two">
-      <label>Work End<input id="workEnd" type="date"></label>
-      <label>Conformed<input id="conformed" type="date" placeholder=""/></label>
+      <label>Work End<input id="workEnd" type="date" autocomplete="off"></label>
+      <label>Conformed<input id="conformed" type="date" placeholder=""/ autocomplete="off"></label>
     </div>
   </section>
 
   <section class="card">
     <h3>Materials &amp; Quantities</h3>
     <div class="row two">
-      <label>Grade<input id="grade" type="text"></label>
-      <label>Total Litres<input id="totalLitres" type="text" readonly class="ro"></label>
+      <label>Grade<input id="grade" type="text" autocomplete="off"></label>
+      <label>Total Litres<input id="totalLitres" type="text" readonly class="ro" autocomplete="off"></label>
     </div>
     <div class="row three">
-      <label>Aggregate Size (mm)<input id="aggSize" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Bitumen<input id="bitumen" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Kerosene<input id="kerosene" type="number" step="0.01" inputmode="decimal"></label>
+      <label>Aggregate Size (mm)<input id="aggSize" type="number" step="0.01" inputmode="decimal" autocomplete="off"></label>
+      <label>Bitumen<input id="bitumen" type="number" step="0.01" inputmode="decimal" autocomplete="off"></label>
+      <label>Kerosene<input id="kerosene" type="number" step="0.01" inputmode="decimal" autocomplete="off"></label>
     </div>
     <div class="row two">
-      <label>m³<input id="m3" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Additive<input id="additive" type="number" step="0.01" inputmode="decimal"></label>
+      <label>m³<input id="m3" type="number" step="0.01" inputmode="decimal" autocomplete="off"></label>
+      <label>Additive<input id="additive" type="number" step="0.01" inputmode="decimal" autocomplete="off"></label>
     </div>
   </section>
 
@@ -85,7 +85,7 @@ if ('serviceWorker' in navigator) {
 
   <section class="card">
     <h3>Notes</h3>
-    <textarea id="notes" rows="3"></textarea>
+    <textarea id="notes" rows="3" autocomplete="off"></textarea>
   </section>
 
   <div class="actions no-print">
