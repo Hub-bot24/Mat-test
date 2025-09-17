@@ -1,22 +1,54 @@
-
-const CACHE = 'mattest-cache-v333';
+const CACHE_NAME = "tristate-cache-v3"; // bump version each update
 const ASSETS = [
-  './',
-  './index.html?v=333',
-  './style.css?v=333',
-  './app.js?v=333',
-  './icons/colas-logo.svg',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './manifest.webmanifest?v=333',
+  "/",
+  "/index.html",
+  "/style.css",
+  "/app.js",
+  "/manifest.webmanifest",
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
+  "/icons/colas-logo.svg"
 ];
 
-self.addEventListener('install', e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
+// Install SW and cache assets
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS);
+    })
+  );
+  self.skipWaiting(); // activate worker immediately
 });
-self.addEventListener('activate', e=>{
-  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+
+// Activate SW and remove old caches
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_NAME) {
+          return caches.delete(key);
+        }
+      }))
+    )
+  );
+  self.clients.claim();
 });
-self.addEventListener('fetch', e=>{
-  e.respondWith(caches.match(e.request).then(r=> r || fetch(e.request)));
+
+// Fetch handler
+self.addEventListener("fetch", event => {
+  if (event.request.mode === "navigate") {
+    // Always try network first for HTML pages
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match("/index.html")
+      )
+    );
+  } else {
+    // Cache-first for other assets
+    event.respondWith(
+      caches.match(event.request).then(response =>
+        response || fetch(event.request)
+      )
+    );
+  }
 });

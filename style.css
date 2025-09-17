@@ -61,3 +61,5 @@ label>input:focus,label>textarea:focus{border-color:#8fb3ff;box-shadow:0 0 0 3px
   main{margin:0;max-width:100%}
   .card{page-break-inside:avoid}
 }
+
+#notes { width: 100%; min-height: 120px; display:block; }
