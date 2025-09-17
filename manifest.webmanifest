@@ -1,9 +1,1 @@
-{
-  "name": "Mat Test",
-  "short_name": "Mat Test",
-  "start_url": "./?v=331",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffd400",
-  "icons": []
-}
+{"name": "Mat Test Pro", "short_name": "MatTest", "start_url": "index.html?v=333", "display": "standalone", "background_color": "#ffffff", "theme_color": "#ffd400", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"}]}

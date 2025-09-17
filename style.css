@@ -1,41 +1,63 @@
 
-:root{ --b:#222; --g:#666; --bd:#e1e5ea; --bg:#f8fafc; --white:#fff; }
+:root{
+  --pad:12px;
+  --gap:10px;
+  --radius:10px;
+  --accent:#ffd400;
+  --ink:#111;
+}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:#111;font:14px/1.35 system-ui,Segoe UI,Arial}
-.top{display:flex;align-items:center;gap:16px;padding:16px 18px 0}
-.logo{width:90px;height:34px;display:grid;place-items:center;background:#ffd400;border:2px solid #000;border-radius:6px;font-weight:800}
-h1{font-size:22px;margin:0;padding:0 0 8px 0}
-.sheet{max-width:980px;margin:0 auto;padding:12px 18px 24px}
-h2{font-size:16px;margin:18px 0 8px 0;color:#333}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  margin:0;background:#f6f7f9;
+}
+.page-header{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 18px;border-bottom:1px solid #e6e6e6;background:#fff;
+  position:sticky;top:0;z-index:2;
+}
+.logo{height:38px}
+.title{font-weight:700;font-size:18px}
+main{max-width:980px;margin:20px auto;padding:0 14px}
+.card{
+  background:#fff;border:1px solid #e7e7e7;border-radius:var(--radius);
+  padding:var(--pad);margin-bottom:14px;box-shadow:0 1px 0 rgba(0,0,0,.03)
+}
+.card h3{margin:2px 0 10px 2px;font-size:15px}
+.row{display:grid;gap:var(--gap);margin:8px 0}
+.row.one{grid-template-columns:1fr}
+.row.two{grid-template-columns:1fr 1fr}
+.row.three{grid-template-columns:1fr 1fr 1fr}
+label{display:flex;align-items:center;gap:8px}
+label>input,label>textarea{
+  flex:1;min-height:34px;padding:8px;border:1px solid #cdd4da;border-radius:8px;
+  outline:none;background:#fff;transition:border .15s ease;
+}
+label>textarea{resize:vertical}
+label>input:focus,label>textarea:focus{border-color:#8fb3ff;box-shadow:0 0 0 3px rgba(143,179,255,.3)}
+.ro{background:#fafafa;color:#333}
+.attach-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tri{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border:1px solid #cdd4da;border-radius:8px;
+  padding:10px 12px;cursor:pointer;font:inherit;
+}
+.tri::after{content:"";width:16px;text-align:center}
+.tri.tick::after{content:"✓";color:#000}
+.tri.cross::after{content:"✗";color:#000}
 
-.block{background:var(--white);border:1px solid var(--bd);border-radius:10px;padding:12px 12px;margin-bottom:10px}
-.row1{display:grid;grid-template-columns:150px 1fr;gap:10px 14px;align-items:center}
-.row2{display:grid;grid-template-columns:150px 1fr 150px 1fr;gap:10px 14px;align-items:center}
-.row4{display:grid;grid-template-columns:150px minmax(220px,1fr) 150px minmax(220px,1fr);gap:10px 14px;align-items:center}
+.actions{display:flex;align-items:center;gap:10px;justify-content:flex-start;padding:8px 0 28px}
+.btn{background:#27ae60;color:#fff;border:none;border-radius:8px;padding:10px 16px;cursor:pointer}
+.btn:hover{filter:brightness(.95)}
+.danger{background:#e74c3c}
+.ver{margin-left:auto;color:#666;font-size:12px}
 
-label{color:#111}
-input,textarea{border:1px solid var(--bd);border-radius:8px;padding:8px 10px;background:#fff;box-shadow:inset 0 1px 0 rgba(0,0,0,.02)}
-input{height:36px}
-textarea{resize:vertical}
-
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
-.attach-item{display:flex;align-items:center;gap:10px;margin:6px 0}
-.tri{width:18px;height:18px;border:2px solid #222;display:inline-grid;place-items:center;cursor:pointer;user-select:none;line-height:1;font-weight:700;color:#000;font-family:ui-monospace, Menlo, Consolas, 'Courier New', monospace}
-.tri[data-state="tick"]::after{content:'✓';font-size:15px}
-.tri[data-state="cross"]::after{content:'✗';font-size:15px}
-.attach-label{color:#222}
-
-.actions{display:flex;gap:12px;margin:12px 0 4px}
-.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:#fff;cursor:pointer;font-weight:600}
-.btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
-.btn.warn{background:#ef4444;color:#fff;border-color:#ef4444}
-
-.foot{color:#333;text-align:center;margin-top:8px;font-size:12px}
-
+/* Print: single A4 fit */
 @media print{
+  @page{size:A4;margin:12mm}
+  .no-print{display:none !important}
   body{background:#fff}
-  .top,.actions,.foot{display:none}
-  .sheet{padding:0}
-  .block{border:1px solid #000;border-radius:0}
-  .tri{border:2px solid #000}
+  main{margin:0;max-width:100%}
+  .card{page-break-inside:avoid}
 }
