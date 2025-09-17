@@ -1,117 +1,59 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Spray Seal QA Lot Pack — Cover Sheet</title>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Field Spread Rate of Cover Aggregate (Canvas Mat)</title>
+<link rel="manifest" href="manifest.webmanifest?v=322">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css?v=322">
+<meta name="theme-color" content="#ffd400">
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="colas-logo.svg" alt="Colas"/>
-      <h1 class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-    </div>
-
-    <div class="grid">
-      <div class="label">Job No.:</div>
-      <input id="jobNo" class="input" autocomplete="off"/>
-
-      <div class="label">Project Name:</div>
-      <input id="projectName" class="input" autocomplete="off"/>
-
-      <div class="label">Lot Number:</div>
-      <input id="lotNumber" class="input" autocomplete="off"/>
-
-      <div class="label">Description:</div>
-      <textarea id="description" class="input"></textarea>
-
-      <div class="grid-full section-title">KEY DATES:</div>
-
-      <div class="label">Work Start:</div>
-      <div class="date-field">
-        <input id="dateStart" class="input" type="date"/>
-      </div>
-
-      <div class="label">Work End:</div>
-      <div class="date-field">
-        <input id="dateEnd" class="input" type="date"/>
-      </div>
-
-      <div class="label">Guaranteed:</div>
-      <div class="date-field">
-        <input id="dateGuaranteed" class="input" type="date"/>
-      </div>
-
-      <div class="label">Conformed:</div>
-      <div class="date-field">
-        <input id="dateConformed" class="input" type="date" placeholder="(optional)"/>
-      </div>
-
-      <div class="grid-full section-title">MATERIALS &amp; QUANTITIES</div>
-    </div>
-
-    <div class="metrics">
-      <div class="pair">
-        <div class="label">Grade:</div>
-        <input id="grade" class="input"/>
-      </div>
-      <div class="pair">
-        <div class="label">Total Litres:</div>
-        <input id="totalLitres" class="input mini" readonly/>
-      </div>
-
-      <div class="pair">
-        <div class="label">Aggregate Size (mm):</div>
-        <input id="aggSize" class="input mini"/>
-      </div>
-      <div class="pair">
-        <div class="label">Bitumen:</div>
-        <input id="bitumen" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label">m³:</div>
-        <input id="m3" class="input mini" inputmode="decimal"/>
-      </div>
-      <div class="pair">
-        <div class="label">Kerosene:</div>
-        <input id="kerosene" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label"></div>
-        <div></div>
-      </div>
-      <div class="pair">
-        <div class="label">Additive:</div>
-        <input id="additive" class="input mini" inputmode="decimal"/>
-      </div>
-    </div>
-
-    <div class="section-title" style="margin-top:14px;">Attachments</div>
-    <div class="attachments">
-      <label class="attachment"><span class="pill" data-state="blank" data-key="qvc">—</span> QVC Attached</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="site">—</span> Site Memo</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="agg">—</span> Agg Test Results</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ball">—</span> Ball Penetration Test</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="spray">—</span> Spray Sheet</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="photos">—</span> Photos</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="docket">—</span> Delivery Docket</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ncrs">—</span> NCRs</label>
-    </div>
-
-    <div class="actions">
-      <button class="btn-primary" onclick="doPDF()">PDF</button>
-      <button class="btn-danger" onclick="doReset()">Reset All</button>
-    </div>
-
-    <div class="nav">
-      <a href="page6.html">Page 6</a>
-    </div>
+<header class="brand">
+  <img class="logo" src="logo.png" alt="COLAS">
+  <div class="titles">
+    <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
+    <div class="muted">v3.22 • 2025-09-17</div>
   </div>
+</header>
 
-  <script src="app.js"></script>
+<main class="wrap">
+  <section class="grid two">
+    <label>Project<input id="project" type="text" autocomplete="on"></label>
+    <label>Job No.<input id="job" type="text" autocomplete="on"></label>
+  </section>
+
+  <section class="grid two">
+    <label>Mass of Canvas Mat &amp; Aggregate (kg)<input id="m1" type="number" step="0.000001" inputmode="decimal"></label>
+    <label>Mass of Canvas Mat (kg)<input id="m2" type="number" step="0.000001" inputmode="decimal"></label>
+  </section>
+
+  <section class="grid two">
+    <label>Area of Canvas Mat (m²)<input id="a" type="number" step="0.000001" inputmode="decimal"></label>
+    <label>Spread Rate (kg/m²) = (M1 − M2) / A<input id="r1" class="out" type="text" readonly></label>
+  </section>
+
+  <section class="grid two">
+    <label>Loose Unit Mass of Screenings (t/m³)<input id="dl" type="number" step="0.000001" inputmode="decimal"></label>
+    <label>Spread Rate (m²/m³) = 1000 × DL / R1<input id="r2" class="out" type="text" readonly></label>
+  </section>
+
+  <footer class="actions">
+    <div class="left">
+      <button id="calc" class="btn primary">Calculate</button>
+      <button id="clear" class="btn danger">Reset All</button>
+    </div>
+    <div class="right">
+      <button id="pdf" class="btn">PDF</button>
+      <a id="kill" class="btn ghost" href="sw-kill.html">Force Update</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+  window.APP_VERSION = "v3.22";
+</script>
+<script src="app.js?v=322" defer></script>
 </body>
 </html>

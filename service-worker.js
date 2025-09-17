@@ -1,5 +1,59 @@
-const CACHE='mattest-cache-v40';
-const ASSETS=['./','./index.html?v=40','./page6.html?v=40','./style.css?v=40','./app.js?v=40','./manifest.webmanifest?v=40','./icons/icon-192.png','./icons/icon-512.png','./icons/colas-logo.png'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting()});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
-self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
+
+const VERSION = '322';
+const CACHE = 'mattest-v' + VERSION;
+
+// Core assets
+const CORE = [
+  './',
+  './index.html?v='+VERSION,
+  './style.css?v='+VERSION,
+  './app.js?v='+VERSION,
+  './manifest.webmanifest?v='+VERSION,
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './logo.png'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil((async () => {
+    const c = await caches.open(CACHE);
+    await c.addAll(CORE);
+    self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => (k !== CACHE ? caches.delete(k) : null)));
+    self.clients.claim();
+  })());
+});
+
+// Network-first strategy for HTML/CSS/JS so updates reach desktop instantly
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  const url = new URL(req.url);
+  if (url.origin === location.origin && (req.destination === 'document' || req.destination === 'script' || req.destination === 'style')) {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, {cache:'no-store'});
+        const cache = await caches.open(CACHE);
+        cache.put(req, fresh.clone());
+        return fresh;
+      } catch (e) {
+        const cached = await caches.match(req);
+        return cached || fetch(req);
+      }
+    })());
+    return;
+  }
+  // otherwise: cache-first
+  event.respondWith(caches.match(req).then(res => res || fetch(req)));
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});

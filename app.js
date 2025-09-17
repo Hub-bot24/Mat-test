@@ -1,68 +1,66 @@
 
-// ===== Tri-state pills (blank -> tick -> cross) =====
-const STATES = ['blank','tick','cross'];
-document.querySelectorAll('.pill').forEach(p => {
-  p.addEventListener('click', () => {
-    const i = STATES.indexOf(p.dataset.state);
-    p.dataset.state = STATES[(i+1)%STATES.length];
-    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
-    save();
+// ===== Auto-update service worker (network-first for HTML/CSS/JS) =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./service-worker.js?v=322', {updateViaCache:'none'});
+      // If a new SW is waiting, activate and reload
+      if (reg.waiting) { reg.waiting.postMessage({type:'SKIP_WAITING'}); }
+      reg.addEventListener('updatefound', () => {
+        const sw = reg.installing;
+        if (!sw) return;
+        sw.addEventListener('statechange', () => {
+          if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+            sw.postMessage({type:'SKIP_WAITING'});
+          }
+        });
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
+    } catch(e){ /* ignore */ }
   });
-});
-
-// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
-const start = document.getElementById('dateStart');
-const end   = document.getElementById('dateEnd');
-const guar  = document.getElementById('dateGuaranteed');
-const conf  = document.getElementById('dateConformed');
-
-start.addEventListener('change', () => {
-  if(!end.value) end.value = start.value;
-  if(!guar.value) guar.value = start.value;
-  save();
-});
-[end,guar,conf].forEach(el=>el.addEventListener('change', save));
-
-// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
-const bitumen  = document.getElementById('bitumen');
-const kerosene = document.getElementById('kerosene');
-const additive = document.getElementById('additive');
-const total    = document.getElementById('totalLitres');
-
-function calcTotal(){
-  const b = parseFloat(bitumen.value)  || 0;
-  const k = parseFloat(kerosene.value) || 0;
-  const a = parseFloat(additive.value) || 0;
-  const sum = b+k+a;
-  total.value = sum>0 ? sum.toFixed(2) : '';
 }
-[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
 
-// ===== Persistence (localStorage) =====
-const ids = ['jobNo','projectName','lotNumber','description',
-             'dateStart','dateEnd','dateGuaranteed','dateConformed',
-             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
+// ===== Storage helpers =====
+const KEYS = ['project','job','m1','m2','a','dl'];
+function getVal(id){ const v = document.getElementById(id).value.trim(); return v === '' ? null : parseFloat(v); }
+function fmt2(n){ return (Math.round(n*100)/100).toFixed(2); }
 
-function save(){
-  const data = {};
-  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
-  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
-  localStorage.setItem('coverSheet', JSON.stringify(data));
+function calc(){
+  const m1 = getVal('m1'), m2 = getVal('m2'), a = getVal('a'), dl = getVal('dl');
+  let r1 = '', r2 = '';
+  if (m1!=null && m2!=null && a!=null && a>0) {
+    r1 = fmt2( (m1 - m2) / a );
+  }
+  document.getElementById('r1').value = r1;
+  if (dl!=null && r1 && parseFloat(r1)>0) {
+    r2 = fmt2( 1000 * dl / parseFloat(r1) );
+  }
+  document.getElementById('r2').value = r2;
+}
+
+function save(e){
+  const id = e.target.id;
+  localStorage.setItem('mt_' + id, e.target.value);
 }
 function load(){
-  try{
-    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
-    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    document.querySelectorAll('.pill').forEach(p => {
-      const s = data['pill_'+p.dataset.key] || 'blank';
-      p.dataset.state = s;
-      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
-    });
-    calcTotal();
-  }catch(e){ /* ignore */ }
+  KEYS.forEach(id => {
+    const v = localStorage.getItem('mt_' + id);
+    if (v !== null) document.getElementById(id).value = v;
+  });
+  calc();
 }
-load();
 
-// ===== PDF (print) =====
-function doPDF(){ window.print(); }
-function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calc').addEventListener('click', calc);
+  document.getElementById('clear').addEventListener('click', () => {
+    KEYS.forEach(id => { localStorage.removeItem('mt_' + id); const el = document.getElementById(id); if (el) el.value=''; });
+    document.getElementById('r1').value=''; document.getElementById('r2').value='';
+  });
+  document.getElementById('pdf').addEventListener('click', () => window.print());
+  KEYS.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', save);
+    el.addEventListener('change', calc);
+  });
+  load();
+});

@@ -1,19 +1,19 @@
-<!DOCTYPE html><meta charset="utf-8"><title>SW Reset</title>
-<style>body{font-family:system-ui;margin:2rem}button{padding:.7rem 1rem}</style>
-<h1>Clear Cache & Reload</h1>
-<p>If your browser is stuck on an old version, click the button below.</p>
-<button id="go">Clear now</button>
+<!doctype html><meta charset="utf-8"><title>Force Update</title>
+<style>body{font:16px/1.4 system-ui;padding:24px}button{padding:10px 14px}</style>
+<h2>Force Update (clear service worker & cache)</h2>
+<button id="go">Clear & Reload</button>
 <pre id="out"></pre>
 <script>
-document.getElementById('go').onclick=async()=>{
-  const out = id=>s=>document.getElementById('out').textContent+=s+'\n';
+document.getElementById('go').onclick = async () => {
+  const out = s => document.getElementById('out').textContent += s + '\n';
   try{
-    (await caches.keys()).forEach(async k=>{await caches.delete(k)});
-    if(navigator.serviceWorker){
+    if ('serviceWorker' in navigator){
       const regs = await navigator.serviceWorker.getRegistrations();
-      for (const r of regs) await r.unregister();
+      for (const r of regs) {{ await r.unregister(); out('Unregistered SW'); }}
     }
-    location.reload(true);
-  }catch(e){out('')(String(e))}
+    const keys = await caches.keys();
+    for (const k of keys) {{ await caches.delete(k); out('Deleted cache '+k); }}
+    out('Done. Reloading…'); setTimeout(()=>location.reload(true), 400);
+  }catch(e){ out('Error: '+e); }
 };
 </script>
