@@ -1,2 +1,33 @@
 
-(function(){function t(e){return(e.textContent||e.innerText||"").trim()}function n(e,n){const o=e.querySelectorAll("label,.label,.form-label,.field-label,.row>span,.row>div"),r=n.toLowerCase();for(const n of o){const o=t(n).toLowerCase();if(o.startsWith(r))return n}return null}function o(t){if(!t)return null;let n=t;for(let t=0;t<4&&n;t++){if(n=n.nextElementSibling,!n)break;if(n.matches&&n.matches("input,select,textarea"))return n;const t=n.querySelector&&n.querySelector("input,select,textarea");if(t)return t}return null}function r(){const t=document.body,r=n(t,"aggregate size"),c=o(r),u=n(t,"grade"),a=o(u);if(c&&a){const t=Math.round(c.getBoundingClientRect().width);t>40&&t<1200&&(a.style.width=t+"px")}}window.addEventListener("DOMContentLoaded",function(){r(),setTimeout(r,150)}),window.addEventListener("resize",r)})();
+/* Mat Test spacing hotfix v334 — Grade width == Aggregate Size (mm) */
+(function() {
+  function txt(el){ return (el.textContent||el.innerText||'').trim().toLowerCase(); }
+  function findStarts(root, s){
+    const nodes = root.querySelectorAll('label,.label,.form-label,.field-label,.row>span,.row>div');
+    s = s.toLowerCase();
+    for (const n of nodes){ if (txt(n).startsWith(s)) return n; }
+    return null;
+  }
+  function nextInput(n){
+    if(!n) return null;
+    let el=n;
+    for(let i=0;i<4&&el;i++){
+      el = el.nextElementSibling;
+      if(!el) break;
+      if(el.matches && el.matches('input,select,textarea')) return el;
+      const inner = el.querySelector && el.querySelector('input,select,textarea');
+      if(inner) return inner;
+    }
+    return null;
+  }
+  function sync(){
+    const agg = nextInput(findStarts(document.body,'aggregate size'));
+    const grd = nextInput(findStarts(document.body,'grade'));
+    if(agg && grd){
+      const w = Math.round(agg.getBoundingClientRect().width);
+      if(w>40 && w<1200) grd.style.width = w+'px';
+    }
+  }
+  window.addEventListener('DOMContentLoaded', function(){ sync(); setTimeout(sync, 150); });
+  window.addEventListener('resize', sync);
+})();

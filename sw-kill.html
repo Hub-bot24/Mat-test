@@ -1,9 +1,10 @@
-<!doctype html><meta charset="utf-8"><title>Clear Cache</title>
+<!doctype html>
+<meta charset="utf-8"><title>Clear Cache</title>
 <button id=go>Clear cache & reload</button>
 <script>
-(async()=>{const b=document.getElementById('go');b.onclick=async()=>{
-if('serviceWorker' in navigator){for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister();}
-if('caches' in window){for (const k of await caches.keys()) await caches.delete(k);}
+(async()=>{document.getElementById('go').onclick=async()=>{
+if('serviceWorker'in navigator){for(const r of await navigator.serviceWorker.getRegistrations()) await r.unregister();}
+if('caches'in window){for(const k of await caches.keys()) await caches.delete(k);}
 location.replace('./');
 };})();
 </script>
