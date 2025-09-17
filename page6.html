@@ -1,57 +1,59 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mat Test — Field Spread Rate</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Mat Test — Page 6</title>
+<link rel="manifest" href="manifest.webmanifest?v=40">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css?v=40">
+<script>window.MTP_VER="v2.3 Pro — 2025-09-12 — J. Hugo";</script>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="colas-logo.svg" alt="Colas Logo">
-      <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
-    </div>
-    <hr>
+<header class="brand">
+  <img src="icons/colas-logo.png" alt="Colas Logo" class="logo">
+  <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
+</header>
 
-    <div class="grid2">
-      <div>
-        <label>Mass of Canvas Mat & Aggregate (kg)</label>
-        <input type="number" step="0.01" id="m1">
-      </div>
-      <div>
-        <label>Mass of Canvas Mat (kg)</label>
-        <input type="number" step="0.01" id="m2">
-      </div>
-      <div>
-        <label>Area of Canvas Mat (m²)</label>
-        <input type="number" step="0.01" id="area">
-      </div>
-      <div>
-        <label>Spread Rate (kg/m²) = (M1 − M2) / A</label>
-        <input type="text" id="r1" readonly>
-      </div>
-      <div>
-        <label>Loose Unit Mass of Screenings (t/m³)</label>
-        <input type="number" step="0.01" id="dl">
-      </div>
-      <div>
-        <label>Spread Rate (m²/m³) = 1000 × DL / R1</label>
-        <input type="text" id="r2" readonly>
-      </div>
-    </div>
+<main class="page">
+  <section class="grid two light">
+    <label>Project<input id="p6_project" type="text"></label>
+    <label>Job No.<input id="p6_job" type="text"></label>
+  </section>
 
-    <div class="actions no-print">
-      <button class="btn btn-primary" onclick="calcSpread()">Calculate</button>
-      <button class="btn btn-danger" onclick="resetCalc()">Clear</button>
-      <button class="btn" onclick="pdf()">PDF</button>
-    </div>
+  <section class="grid one">
+    <label>Mass of Canvas Mat &amp; Aggregate (kg)<input id="m1" type="number" step="0.000001"></label>
+  </section>
+  <section class="grid one">
+    <label>Mass of Canvas Mat (kg)<input id="m2" type="number" step="0.000001"></label>
+  </section>
+  <section class="grid one">
+    <label>Area of Canvas Mat (m²)<input id="a" type="number" step="0.000001"></label>
+  </section>
+  <section class="grid one">
+    <label>Spread Rate (kg/m²) = (M1 − M2) / A<input id="r1" type="text" readonly></label>
+  </section>
+  <section class="grid one">
+    <label>Loose Unit Mass of Screenings (t/m³)<input id="dl" type="number" step="0.000001"></label>
+  </section>
+  <section class="grid one">
+    <label>Spread Rate (m²/m³) = 1000 × DL / R1<input id="r2" type="text" readonly></label>
+  </section>
 
-    <nav class="pages no-print">
-      <button class="btn" onclick="goPage('index.html')">Back to Page 1</button>
-    </nav>
-  </div>
+  <footer class="actions">
+    <button id="calc" class="btn">Calculate</button>
+    <button id="clear" class="btn danger">Clear</button>
+    <div class="nav">
+      <span class="ver" id="ver"></span>
+      <a class="btn" href="index.html">⬅ Back</a>
+      <button id="pdf" class="btn primary">PDF</button>
+    </div>
+  </footer>
+</main>
+
+<script src="app.js?v=40"></script>
+<script>
+document.getElementById('ver').textContent = window.MTP_VER;
+</script>
 </body>
 </html>

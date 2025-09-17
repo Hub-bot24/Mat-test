@@ -1,84 +1,137 @@
+// Simple storage helpers
+const SKEY = 'mtp_page_data_v3';
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(SKEY) || '{}'); } catch(e){ return {}; } },
+  set(d) { localStorage.setItem(SKEY, JSON.stringify(d)); }
+};
 
-// Helper: number from input (treat blank/invalid as 0)
-function nval(el){ const v = (el.value||'').trim(); const x = Number(v); return isFinite(x) ? x : 0; }
-
-// --- KEY DATES ---
-(function(){
-  const start = document.getElementById('workStart');
-  const end   = document.getElementById('workEnd');
-  const guar  = document.getElementById('guaranteed');
-  const conf  = document.getElementById('conformed');
-
-  if(start){
-    start.addEventListener('change', ()=>{
-      // Only auto-fill End & Guaranteed if they are blank
-      if(end && !end.value) end.value = start.value;
-      if(guar && !guar.value) guar.value = start.value;
-      // Conformed stays blank unless set by the user
-    });
-  }
-})();
-
-// --- TOTAL LITRES = Bitumen + Kerosene + Additive ---
-(function(){
-  const bit = document.getElementById('bitumen');
-  const ker = document.getElementById('kerosene');
-  const add = document.getElementById('additive');
-  const tot = document.getElementById('totalLitres');
-
-  function recalc(){
-    if(!(bit && ker && add && tot)) return;
-    const s = nval(bit) + nval(ker) + nval(add);
-    tot.value = s ? (Math.round(s*100)/100).toString() : '';
-  }
-  ['input','change','blur'].forEach(ev=>{
-    [bit,ker,add].forEach(el=> el && el.addEventListener(ev,recalc));
+// Register SW
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try { await navigator.serviceWorker.register('service-worker.js?v=40'); } catch(e){}
   });
-  recalc();
-})();
-
-// --- TRI-STATE attachments (blank -> check -> cross -> blank) ---
-(function(){
-  document.querySelectorAll('.tri').forEach(item=>{
-    item.addEventListener('click',()=>{
-      const state = item.getAttribute('data-state') || '';
-      const next = state === '' ? 'check' : (state === 'check' ? 'cross' : '');
-      item.setAttribute('data-state', next);
-      const hidden = item.querySelector('input[type="hidden"]');
-      if(hidden) hidden.value = next; // store "check" or "cross" or ""
-    });
-  });
-})();
-
-// --- Nav between pages ---
-function goPage(p){ location.href = p; }
-
-// --- Simple print ---
-function pdf(){ window.print(); }
-
-// --- PAGE 6 logic (Mat Test) ---
-function two(n){ return (Math.round(n*100)/100).toFixed(2); }
-function calcSpread(){
-  const m1 = Number(document.getElementById('m1').value || 0);
-  const m2 = Number(document.getElementById('m2').value || 0);
-  const a  = Number(document.getElementById('area').value || 0);
-  const dl = Number(document.getElementById('dl').value || 0);
-  const r1El = document.getElementById('r1');
-  const r2El = document.getElementById('r2');
-
-  if(!m1 && !m2 && !a){ r1El.value=''; r2El.value=''; return; }
-  if(a<=0){ r1El.value=''; r2El.value=''; return; }
-
-  const r1 = (m1 - m2) / a; // kg/m²
-  if(!isFinite(r1) || r1<=0){ r1El.value=''; r2El.value=''; return; }
-  r1El.value = two(r1);
-
-  const r2 = 1000 * dl / r1; // m²/m³
-  r2El.value = isFinite(r2) ? two(r2) : '';
 }
-function resetCalc(){
-  ['m1','m2','area','dl','r1','r2'].forEach(id=>{
+
+// Page detection
+const isPage6 = location.pathname.endsWith('page6.html');
+
+// Tri-state buttons on Page 1
+function initTri() {
+  document.querySelectorAll('.tri').forEach(btn => {
+    const key = 'tri_' + btn.dataset.key;
+    let state = (store.get()[key] ?? 0) | 0; // 0 blank, 1 tick, 2 cross
+    applyTri(btn, state);
+    btn.addEventListener('click', () => {
+      state = (state + 1) % 3;
+      applyTri(btn, state);
+      const data = store.get(); data[key] = state; store.set(data);
+    });
+  });
+}
+function applyTri(btn, s){
+  btn.classList.remove('tick','cross');
+  if (s === 1) { btn.textContent = '✔'; btn.classList.add('tick'); }
+  else if (s === 2) { btn.textContent = '✖'; btn.classList.add('cross'); }
+  else { btn.textContent = '□'; }
+}
+
+// Sync inputs to storage
+function bindInputs(map){
+  const data = store.get();
+  for (const [id, def] of map) {
     const el = document.getElementById(id);
-    if(el) el.value='';
+    if (!el) continue;
+    if (data[id] != null) el.value = data[id];
+    el.addEventListener('input', () => { const d = store.get(); d[id]=el.value; store.set(d); });
+  }
+}
+
+// Autofill logic for dates: WorkStart copies to WorkEnd + Guaranteed if empty
+function initDates(){
+  const ws = document.getElementById('workStart');
+  const we = document.getElementById('workEnd');
+  const gu = document.getElementById('guaranteed');
+  if (ws && we && gu) {
+    ws.addEventListener('change', () => {
+      if (!we.value) we.value = ws.value;
+      if (!gu.value) gu.value = ws.value;
+      const d = store.get(); d['workEnd']=we.value; d['guaranteed']=gu.value; d['workStart']=ws.value; store.set(d);
+    });
+  }
+}
+
+// PDF (print) handler
+function initPDF(btnId='pdf'){
+  const b = document.getElementById(btnId);
+  if (!b) return;
+  b.addEventListener('click', () => window.print());
+}
+
+// Clear / Reset
+function initReset(){
+  const r = document.getElementById('reset');
+  if (!r) return;
+  r.addEventListener('click', () => {
+    if (!confirm('Clear all saved values?')) return;
+    localStorage.removeItem(SKEY);
+    location.reload();
   });
 }
+
+// Page 6 calculations
+function calcR1R2(){
+  const m1 = parseFloat(document.getElementById('m1').value);
+  const m2 = parseFloat(document.getElementById('m2').value);
+  const a  = parseFloat(document.getElementById('a').value);
+  const dl = parseFloat(document.getElementById('dl').value);
+  let r1 = '', r2 = '';
+  if (isFinite(m1) && isFinite(m2) && isFinite(a) && a>0) {
+    r1 = ( (m1-m2) / a );
+    r1 = isFinite(r1) ? r1.toFixed(2) : '';
+  }
+  if (r1 && parseFloat(r1)>0 && isFinite(dl)) {
+    r2 = (1000 * dl / parseFloat(r1)).toFixed(2);
+  } else {
+    r2 = '';
+  }
+  document.getElementById('r1').value = r1;
+  document.getElementById('r2').value = r2;
+}
+
+function initPage1(){
+  initTri();
+  bindInputs([
+    ['jobNo',''],['projectName',''],['lot',''],['area',''],['bitumen',''],
+    ['grade',''],['aggSize',''],['kerosene',''],['additive',''],['totalLitres',''],
+    ['description',''],['qaBy',''],['conformedBy',''],['sealBy',''],
+    ['workStart',''],['workEnd',''],['guaranteed',''],['notes','']
+  ]);
+  initDates();
+  initPDF();
+  initReset();
+}
+
+function initPage6(){
+  // Prefill job/project from Page1
+  const d = store.get();
+  const pj = document.getElementById('p6_project');
+  const jb = document.getElementById('p6_job');
+  if (pj && d.projectName) pj.value = d.projectName;
+  if (jb && d.jobNo) jb.value = d.jobNo;
+  // values
+  bindInputs([['m1',''],['m2',''],['a',''],['dl','']]);
+  document.getElementById('calc').addEventListener('click', calcR1R2);
+  document.getElementById('clear').addEventListener('click', () => {
+    ['m1','m2','a','dl','r1','r2'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    const saved = store.get();
+    ['m1','m2','a','dl'].forEach(k=> delete saved[k]);
+    store.set(saved);
+  });
+  initPDF();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (isPage6) initPage6(); else initPage1();
+});
