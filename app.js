@@ -1,70 +1,68 @@
 
-/* Auto-fill Work End & Guaranteed from Start (Conformed stays blank) */
-const dStart = document.getElementById('dStart');
-const dEnd = document.getElementById('dEnd');
-const dGuarantee = document.getElementById('dGuarantee');
-dStart?.addEventListener('change', () => {
-  if (dEnd && !dEnd.value) dEnd.value = dStart.value || '';
-  if (dGuarantee && !dGuarantee.value) dGuarantee.value = dStart.value || '';
+// ===== Tri-state pills (blank -> tick -> cross) =====
+const STATES = ['blank','tick','cross'];
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    const i = STATES.indexOf(p.dataset.state);
+    p.dataset.state = STATES[(i+1)%STATES.length];
+    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
+    save();
+  });
 });
 
-/* Total Litres = Bitumen + Kerosene + Additive */
-const fBit = document.getElementById('bitumen');
-const fKer = document.getElementById('kerosene');
-const fAdd = document.getElementById('additive');
-const fLit = document.getElementById('litres');
-function asNum(x){ const n = parseFloat(x); return isFinite(n)? n : 0; }
-function calcLitres(){
-  const sum = asNum(fBit?.value) + asNum(fKer?.value) + asNum(fAdd?.value);
-  fLit.value = sum>0 ? sum.toFixed(2) : '';
+// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
+const start = document.getElementById('dateStart');
+const end   = document.getElementById('dateEnd');
+const guar  = document.getElementById('dateGuaranteed');
+const conf  = document.getElementById('dateConformed');
+
+start.addEventListener('change', () => {
+  if(!end.value) end.value = start.value;
+  if(!guar.value) guar.value = start.value;
+  save();
+});
+[end,guar,conf].forEach(el=>el.addEventListener('change', save));
+
+// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
+const bitumen  = document.getElementById('bitumen');
+const kerosene = document.getElementById('kerosene');
+const additive = document.getElementById('additive');
+const total    = document.getElementById('totalLitres');
+
+function calcTotal(){
+  const b = parseFloat(bitumen.value)  || 0;
+  const k = parseFloat(kerosene.value) || 0;
+  const a = parseFloat(additive.value) || 0;
+  const sum = b+k+a;
+  total.value = sum>0 ? sum.toFixed(2) : '';
 }
-[fBit,fKer,fAdd].forEach(el => el?.addEventListener('input', calcLitres));
+[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
 
-/* Tri-state: blank -> ✓ -> ✕ -> blank */
-const mapState = { '': 'tick', 'tick': 'cross', 'cross': '' };
-document.querySelectorAll('#attachments .item').forEach(it=>{
-  const box = it.querySelector('.box');
-  function paint(s){
-    box.classList.remove('tick','cross');
-    box.textContent = '';
-    if (s==='tick'){ box.classList.add('tick'); box.textContent='✓'; }
-    if (s==='cross'){ box.classList.add('cross'); box.textContent='✕'; }
-  }
-  paint(''); // init
-  function toggle(){
-    const s = box.dataset.state || '';
-    const ns = mapState[s];
-    box.dataset.state = ns;
-    paint(ns);
-  }
-  it.addEventListener('click', toggle);
-  it.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); } });
-});
+// ===== Persistence (localStorage) =====
+const ids = ['jobNo','projectName','lotNumber','description',
+             'dateStart','dateEnd','dateGuaranteed','dateConformed',
+             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
 
-/* Prepare one-page print for Page 1 */
-function preparePrintFit(){
-  const page = document.querySelector('.page');
-  if(!page) return;
-  const prevTransform = page.style.transform;
-  if (getComputedStyle(page).transform !== 'none' && window.innerWidth < 980){
-    page.style.transform = 'none';
-  }
-  const contentH = page.scrollHeight;
-  const targetPx = 1122;
-  let scale = 1;
-  if (contentH > targetPx){
-    scale = (targetPx / contentH) * 0.98;
-    if (scale < 0.7) scale = 0.7;
-  }
-  document.documentElement.style.setProperty('--print-scale', String(scale));
-  page.style.transform = prevTransform || '';
+function save(){
+  const data = {};
+  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
+  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
+  localStorage.setItem('coverSheet', JSON.stringify(data));
 }
-document.getElementById('btnPdf')?.addEventListener('click', ()=>{
-  preparePrintFit(); setTimeout(()=>window.print(), 20);
-});
-document.getElementById('btnReset')?.addEventListener('click', ()=>{
-  document.querySelectorAll('input[type=text],input[type=number],input[type=date],textarea')
-    .forEach(el => { if(!['dStart','dEnd','dGuarantee'].includes(el.id)) el.value=''; });
-  document.querySelectorAll('#attachments .box').forEach(b=>{ b.dataset.state=''; b.classList.remove('tick','cross'); b.textContent=''; });
-  calcLitres();
-});
+function load(){
+  try{
+    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
+    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
+    document.querySelectorAll('.pill').forEach(p => {
+      const s = data['pill_'+p.dataset.key] || 'blank';
+      p.dataset.state = s;
+      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
+    });
+    calcTotal();
+  }catch(e){ /* ignore */ }
+}
+load();
+
+// ===== PDF (print) =====
+function doPDF(){ window.print(); }
+function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
