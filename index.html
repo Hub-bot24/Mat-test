@@ -1,132 +1,122 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="manifest.webmanifest?v=31">
-<link rel="stylesheet" href="style.css?v=31">
-<meta name="theme-color" content="#ffe100">
-<title>Field Spread Rate of Cover Aggregate (Canvas Mat)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cover Page — QA Lot Pack</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <img class="logo" src="data:image/png;base64,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" alt="Colas">
-    <div>
-      <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
-      <div class="badge">If numbers don’t update, press <strong>Calculate</strong>. Version v3.1 • 2025-09-17</div>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas Logo">
+      <h1>Spray Seal QA Lot Pack — New Works & Reseal QA V1</h1>
     </div>
+    <hr>
+
+    <!-- Top block: left aligned in order -->
+    <div class="grid2">
+      <div>
+        <label>Job No.</label>
+        <input type="text" id="jobNo">
+      </div>
+      <div>
+        <label>Project Name</label>
+        <input type="text" id="projectName">
+      </div>
+
+      <div>
+        <label>Lot Number</label>
+        <input type="text" id="lotNo">
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea id="description"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">KEY DATES:</div>
+    <div class="grid2">
+      <div>
+        <label>Work Start</label>
+        <input type="date" id="workStart">
+      </div>
+      <div>
+        <label>Work End</label>
+        <input type="date" id="workEnd">
+      </div>
+      <div>
+        <label>Guaranteed</label>
+        <input type="date" id="guaranteed">
+      </div>
+      <div>
+        <label>Conformed</label>
+        <input type="date" id="conformed" placeholder="">
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Next block -->
+    <div class="grid2">
+      <div>
+        <label>Grade</label>
+        <input type="text" id="grade">
+      </div>
+      <div>
+        <label>Total Litres</label>
+        <input type="number" step="0.01" id="totalLitres" placeholder="Auto = Bitumen + Kerosene + Additive">
+      </div>
+
+      <div>
+        <label>Aggregate Size (mm)</label>
+        <input type="text" id="aggSize">
+      </div>
+      <div>
+        <label>Bitumen</label>
+        <input type="number" step="0.01" id="bitumen">
+      </div>
+
+      <div>
+        <label>m³</label>
+        <input type="number" step="0.01" id="m3">
+      </div>
+      <div>
+        <label>Kerosene</label>
+        <input type="number" step="0.01" id="kerosene">
+      </div>
+
+      <div></div>
+      <div>
+        <label>Additive</label>
+        <input type="number" step="0.01" id="additive">
+      </div>
+    </div>
+
+    <div class="section-title">Attachments</div>
+    <div class="attachments">
+      <label class="tri" data-state=""><span class="tri-box"></span><span>QVC Attached</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Site Memo</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Agg Test Results</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Ball Penetration Test</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Spray Sheet</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Photos</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Delivery Docket</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Sample Tins</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>NCRs</span><input type="hidden"></label>
+    </div>
+
+    <div class="actions no-print">
+      <button class="btn btn-primary" onclick="pdf()">PDF</button>
+      <button class="btn btn-danger" onclick="location.reload()">Reset All</button>
+    </div>
+
+    <nav class="pages no-print">
+      <button class="btn" onclick="goPage('index.html')">Page 1</button>
+      <button class="btn" onclick="goPage('page6.html')">Page 6</button>
+    </nav>
   </div>
-
-  <div class="grid">
-    <div>
-      <div class="label">Mass of Canvas Mat &amp; Aggregate (kg)</div>
-      <input id="m1" type="number" step="0.01" inputmode="decimal" placeholder="e.g., 10.5">
-    </div>
-    <div>
-      <div class="label">Mass of Canvas Mat (kg)</div>
-      <input id="m2" type="number" step="0.01" inputmode="decimal" placeholder="e.g., 0.85">
-    </div>
-
-    <div>
-      <div class="label">Area of Canvas Mat (m²)</div>
-      <input id="area" type="number" step="0.01" inputmode="decimal" placeholder="e.g., 0.97">
-    </div>
-    <div>
-      <div class="label">Spread Rate (kg/m²) = (M1 − M2) / A</div>
-      <input id="r1" class="output" type="text" readonly>
-    </div>
-
-    <div>
-      <div class="label">Loose Unit Mass of Screenings (t/m³)</div>
-      <input id="dl" type="number" step="0.01" inputmode="decimal" placeholder="e.g., 1.45">
-    </div>
-    <div>
-      <div class="label">Spread Rate (m²/m³) = 1000 × DL / R1</div>
-      <input id="r2" class="output" type="text" readonly>
-    </div>
-  </div>
-
-  <div class="btns">
-    <button id="calcBtn" class="btn-primary">Calculate</button>
-    <button id="resetBtn" class="btn-outline">Clear</button>
-  </div>
-  <div id="status" class="status">Ready…</div>
-
-  <div class="footer">© Colas Mat Test — offline • Works offline • Up to 2 decimals</div>
-</div>
-
-<script>
-// Local storage keys
-const K = {m1:"m1", m2:"m2", area:"area", dl:"dl"};
-
-function round2(n) {
-  if (!isFinite(n)) return "";
-  return (Math.round(n*100)/100).toFixed(2);
-}
-
-function calc() {
-  const m1 = parseFloat(document.getElementById('m1').value);
-  const m2 = parseFloat(document.getElementById('m2').value);
-  const A  = parseFloat(document.getElementById('area').value);
-  const dl = parseFloat(document.getElementById('dl').value);
-
-  let r1 = "";
-  if (isFinite(m1) && isFinite(m2) && isFinite(A) && A>0) {
-    r1 = round2((m1 - m2) / A);
-  }
-  document.getElementById('r1').value = r1;
-
-  let r2 = "";
-  const r1n = parseFloat(r1);
-  if (isFinite(dl) && isFinite(r1n) && r1n > 0) {
-    r2 = round2(1000 * dl / r1n);
-  }
-  document.getElementById('r2').value = r2;
-
-  document.getElementById('status').textContent = "Calculated.";
-}
-
-function load() {
-  for (const id of Object.values(K)) {
-    const v = localStorage.getItem(id);
-    if (v !== null) document.getElementById(id).value = v;
-  }
-  calc();
-}
-
-function save(e) {
-  const id = e.target.id;
-  if (K[id] !== undefined) localStorage.setItem(id, e.target.value);
-}
-
-document.getElementById('calcBtn').addEventListener('click', calc);
-document.getElementById('resetBtn').addEventListener('click', () => {
-  for (const id of Object.values(K)) { localStorage.removeItem(id); document.getElementById(id).value=""; }
-  document.getElementById('r1').value = "";
-  document.getElementById('r2').value = "";
-  document.getElementById('status').textContent = "Cleared.";
-});
-
-['m1','m2','area','dl'].forEach(id => {
-  const el = document.getElementById(id);
-  el.addEventListener('input', save);
-  el.addEventListener('change', calc);
-});
-
-load();
-
-// Periodic fallback
-setInterval(calc, 2000);
-
-// SW register
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js?v=31').then(reg => {
-      document.getElementById('status').textContent = "Offline ready.";
-    }).catch(err => console.warn('SW failed', err));
-  });
-}
-</script>
 </body>
 </html>
