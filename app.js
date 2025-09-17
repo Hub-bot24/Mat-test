@@ -1,75 +1,68 @@
 
-// No service worker. Self-heal in HTML removed old SW/caches once.
-
-const SKEY = 'mtp_data_v326';
-const getStore = () => { try { return JSON.parse(localStorage.getItem(SKEY)||'{}'); } catch(e){ return {}; } };
-const setStore = (d) => localStorage.setItem(SKEY, JSON.stringify(d));
-
-function bind(ids){
-  const data=getStore();
-  ids.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    if(data[id]!==undefined) el.value = data[id];
-    el.addEventListener('input', ()=>{ const d=getStore(); d[id]=el.value; setStore(d); });
+// ===== Tri-state pills (blank -> tick -> cross) =====
+const STATES = ['blank','tick','cross'];
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    const i = STATES.indexOf(p.dataset.state);
+    p.dataset.state = STATES[(i+1)%STATES.length];
+    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
+    save();
   });
-}
+});
 
-function initTri(){
-  document.querySelectorAll('.tri').forEach(btn=>{
-    const key='tri_'+btn.dataset.key;
-    let s=(getStore()[key] ?? 0)|0; // 0 blank, 1 tick, 2 cross
-    applyTri(btn,s);
-    btn.addEventListener('click', ()=>{ s=(s+1)%3; applyTri(btn,s); const d=getStore(); d[key]=s; setStore(d); });
-  });
-}
-function applyTri(btn,s){ btn.classList.remove('tick','cross'); if(s===1){btn.textContent='✔';btn.classList.add('tick');} else if(s===2){btn.textContent='✖';btn.classList.add('cross');} else {btn.textContent='□';} }
+// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
+const start = document.getElementById('dateStart');
+const end   = document.getElementById('dateEnd');
+const guar  = document.getElementById('dateGuaranteed');
+const conf  = document.getElementById('dateConformed');
 
-function initPDF(btnId){ const b=document.getElementById(btnId); if(b) b.addEventListener('click', ()=>window.print()); }
-function initReset(btnId, keys){
-  const r=document.getElementById(btnId);
-  if(!r) return;
-  r.addEventListener('click', ()=>{
-    if(!confirm('Clear all saved values?')) return;
-    const d=getStore(); keys.forEach(k=> delete d[k]); setStore(d); location.reload();
-  });
-}
+start.addEventListener('change', () => {
+  if(!end.value) end.value = start.value;
+  if(!guar.value) guar.value = start.value;
+  save();
+});
+[end,guar,conf].forEach(el=>el.addEventListener('change', save));
 
-// Page 1
-function initPage1(){
-  bind(['jobNo','projectName','lot','area','bitumen','grade','aggSize','kerosene','additive','totalLitres','description','qaBy','conformedBy','sealBy','workStart','workEnd','guaranteed','notes']);
-  const ws=document.getElementById('workStart'), we=document.getElementById('workEnd'), gu=document.getElementById('guaranteed');
-  if(ws&&we&&gu){ ws.addEventListener('change', ()=>{ const d=getStore(); if(!we.value){we.value=ws.value; d['workEnd']=we.value;} if(!gu.value){gu.value=ws.value; d['guaranteed']=gu.value;} d['workStart']=ws.value; setStore(d); }); }
-  initTri();
-  initPDF('pdf1');
-  initReset('reset1',['jobNo','projectName','lot','area','bitumen','grade','aggSize','kerosene','additive','totalLitres','description','qaBy','conformedBy','sealBy','workStart','workEnd','guaranteed','notes','tri_qvc','tri_spray','tri_memo','tri_ball','tri_photos','tri_agg','tri_docket','tri_tins','tri_ncrs']);
-}
+// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
+const bitumen  = document.getElementById('bitumen');
+const kerosene = document.getElementById('kerosene');
+const additive = document.getElementById('additive');
+const total    = document.getElementById('totalLitres');
 
-// Page 6
-function fix2(n){return (Math.round(n*100)/100).toFixed(2);}
-function num(id){const el=document.getElementById(id); if(!el) return null; const t=el.value.trim(); return t===''?null:parseFloat(t);}
-function setVal(id,v){const el=document.getElementById(id); if(el) el.value=v;}
-function initPage6(){
-  const d=getStore();
-  if (d.projectName && document.getElementById('p6_project')) document.getElementById('p6_project').value=d.projectName;
-  if (d.jobNo && document.getElementById('p6_job')) document.getElementById('p6_job').value=d.jobNo;
-  bind(['p6_project','p6_job','m1','m2','a','dl']);
-  const calc=()=>{
-    const m1=num('m1'), m2=num('m2'), a=num('a'), dl=num('dl');
-    let r1='', r2='';
-    if (m1!=null && m2!=null && a!=null && a>0){ r1 = fix2((m1-m2)/a); }
-    setVal('r1', r1);
-    if (dl!=null && r1 && parseFloat(r1)>0){ r2 = fix2(1000*dl/parseFloat(r1)); }
-    setVal('r2', r2);
-  };
-  document.getElementById('calc6').addEventListener('click', calc);
-  document.getElementById('clear6').addEventListener('click', ()=>{
-    ['p6_project','p6_job','m1','m2','a','dl','r1','r2'].forEach(id=>setVal(id,''));
-    const d=getStore(); ['p6_project','p6_job','m1','m2','a','dl'].forEach(k=>delete d[k]); setStore(d);
-  });
-  ['m1','m2','a','dl'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener('change', calc); el.addEventListener('input', ()=>{ const d=getStore(); d[id]=el.value; setStore(d); }); });
-  initPDF('pdf6');
-  calc();
+function calcTotal(){
+  const b = parseFloat(bitumen.value)  || 0;
+  const k = parseFloat(kerosene.value) || 0;
+  const a = parseFloat(additive.value) || 0;
+  const sum = b+k+a;
+  total.value = sum>0 ? sum.toFixed(2) : '';
 }
+[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
 
-document.addEventListener('DOMContentLoaded', ()=>{ if (location.pathname.endsWith('page6.html')) initPage6(); else initPage1(); });
+// ===== Persistence (localStorage) =====
+const ids = ['jobNo','projectName','lotNumber','description',
+             'dateStart','dateEnd','dateGuaranteed','dateConformed',
+             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
+
+function save(){
+  const data = {};
+  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
+  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
+  localStorage.setItem('coverSheet', JSON.stringify(data));
+}
+function load(){
+  try{
+    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
+    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
+    document.querySelectorAll('.pill').forEach(p => {
+      const s = data['pill_'+p.dataset.key] || 'blank';
+      p.dataset.state = s;
+      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
+    });
+    calcTotal();
+  }catch(e){ /* ignore */ }
+}
+load();
+
+// ===== PDF (print) =====
+function doPDF(){ window.print(); }
+function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }

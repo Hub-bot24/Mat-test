@@ -1,20 +1,35 @@
-<!doctype html><meta charset="utf-8"><title>Force Update</title>
-<style>body{font:16px/1.4 system-ui;padding:24px}button{padding:10px 14px}</style>
-<h2>Force Update for this site</h2>
-<p>If a device is stuck on an old version, click the button.</p>
-<button id="go">Clear & Reload</button>
-<pre id="out"></pre>
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clear Cache & Reload</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;max-width:640px;margin:48px auto;padding:0 16px}
+button{padding:12px 18px;font-size:16px;border-radius:10px;border:0;background:#e11;color:#fff;cursor:pointer}
+.ok{color:#0a0;font-weight:600}.err{color:#c00}
+</style>
+<h1>Clear Cache & Reload</h1>
+<p>This removes Service Workers and caches for this site, then reloads.</p>
+<button id="go">Clear cache & reload</button>
+<p id="out"></p>
 <script>
-document.getElementById('go').onclick = async () => {
-  const out = s => document.getElementById('out').textContent += s + '\n';
+async function kill(){
+  const out = document.getElementById('out');
   try{
-    if ('serviceWorker' in navigator){
+    if('serviceWorker' in navigator){
       const regs = await navigator.serviceWorker.getRegistrations();
-      for (const r of regs) { await r.unregister(); out('Unregistered SW'); }
+      for(const r of regs) await r.unregister();
     }
-    const keys = await caches.keys();
-    for (const k of keys) { await caches.delete(k); out('Deleted cache '+k); }
-    out('Done. Reloading…'); setTimeout(()=>location.reload(true), 400);
-  }catch(e){ out('Error: '+e); }
-};
+    if('caches' in window){
+      const keys = await caches.keys();
+      for(const k of keys) await caches.delete(k);
+    }
+    out.innerHTML = '<span class="ok">Done. Reloading…</span>';
+    setTimeout(()=>location.replace('./'), 400);
+  }catch(e){
+    out.innerHTML = '<span class="err">Error: '+(e && e.message || e)+'</span>';
+  }
+}
+document.getElementById('go').addEventListener('click', kill);
 </script>
+</html>

@@ -1,0 +1,8 @@
+
+/* --- Mat Test spacing hotfix (layout-neutral) v332 --- */
+input[type="text"], input[type="number"], input[type="date"], input[type="search"], textarea, select {
+  margin-left: .4rem;
+  box-sizing: border-box;
+}
+input, select, textarea { vertical-align: baseline; }
+.form-row { column-gap: 8px; }
