@@ -1,28 +1,38 @@
-*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;color:#111}
-.brand{display:flex;align-items:center;gap:16px;padding:12px 16px;border-bottom:2px solid #ddd;background:#fff}
-.brand .logo{height:42px}
-h1{font-size:20px;margin:0}
-.page{max-width:980px;margin:12px auto;padding:12px;background:#fafafa}
-.grid{display:grid;gap:8px;margin:8px 0}
-.grid.one{grid-template-columns:1fr}
-.grid.two{grid-template-columns:1fr 1fr}
-.grid.three{grid-template-columns:1fr 1fr 1fr}
-.grid.light{background:#fff;border:1px solid #e5e5e5;padding:8px;border-radius:8px}
-label{display:flex;flex-direction:column;font-size:13px;font-weight:600;gap:4px}
-input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:8px;border:1px solid #bbb;border-radius:6px;background:#fff;font-size:14px}
-textarea{resize:vertical}
-.attachments{display:grid;grid-template-columns:24px 1fr 24px 1fr;gap:8px 12px;padding:8px;border:1px solid #e5e5e5;background:#fff;border-radius:8px;margin-bottom:8px}
-.tri{width:24px;height:24px;border:1px solid #555;border-radius:4px;background:#fff;font-weight:700;line-height:22px}
-.tri.tick{color:#0a7d1a}
-.tri.cross{color:#b00020}
-.actions{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-top:12px}
-.btn{padding:8px 14px;border:1px solid #444;background:#f4f4f4;border-radius:8px;cursor:pointer;font-weight:600}
-.btn.primary{background:#0d6efd;border-color:#0d6efd;color:#fff}
-.btn.danger{background:#ff4d4f;border-color:#ff4d4f;color:#fff}
-.ver{opacity:.65;font-size:12px;margin-right:12px}
+
+:root{--brand:#ffd400;--ink:#222;--muted:#555;--line:#ddd;--bg:#f7f7f9;--acc:#0ea5e9}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#fff;color:var(--ink)}
+.container{max-width:1100px;margin:24px auto;padding:16px 20px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.header img{height:42px}
+h1{font-size:22px;margin:4px 0 12px 0;font-weight:700}
+hr{border:none;border-top:1px solid var(--line);margin:8px 0 16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px 16px}
+label{font-size:14px;color:var(--muted);display:block;margin:0 0 6px 0}
+input[type="text"], input[type="date"], input[type="number"], textarea{
+  width:100%; padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  font:inherit; background:#fff;
+}
+textarea{min-height:86px;resize:vertical}
+.section-title{font-weight:800;margin:16px 0 8px 0;font-size:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;margin:0 0 8px 0}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px 24px}
+.actions{display:flex;gap:12px;align-items:center;margin-top:14px}
+.btn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
+.btn-primary{background:#16a34a;color:#fff;border-color:#16a34a}
+.btn-danger{background:#ef4444;color:#fff;border-color:#ef4444}
+nav.pages{display:flex;gap:10px;justify-content:center;margin:20px 0 6px}
+nav.pages .btn{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+footer{color:var(--muted);text-align:center;font-size:12px;margin-top:4px}
+.attachments{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:8px 18px;margin-top:6px}
+.tri{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tri-box{width:18px;height:18px;border:1px solid var(--line);border-radius:4px;display:inline-grid;place-items:center;font-weight:900}
+.tri[data-state="check"] .tri-box{background:#22c55e;border-color:#22c55e;color:#fff}
+.tri[data-state="cross"] .tri-box{background:#ef4444;border-color:#ef4444;color:#fff}
 @media print{
-  .actions,.nav,.btn{display:none!important}
-  .page{box-shadow:none;margin:0;padding:0;max-width:100%}
-  body{zoom:0.94}
-  .brand{border:0}
+  body{background:#fff}
+  .no-print{display:none !important}
+  .container{max-width:100%;padding:0 8mm}
+  hr{margin:3mm 0 4mm 0}
 }

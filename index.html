@@ -1,93 +1,122 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lot Conformance — Page 1</title>
-<link rel="manifest" href="manifest.webmanifest?v=40">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="style.css?v=40">
-<script>window.MTP_VER="v2.3 Pro — 2025-09-12 — J. Hugo";</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cover Page — QA Lot Pack</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
-<header class="brand">
-  <img src="icons/colas-logo.png" alt="Colas Logo" class="logo">
-  <h1>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-</header>
-
-<main class="page">
-  <section class="grid two">
-    <label>Job No.<input id="jobNo" type="text"></label>
-    <label>Project Name<input id="projectName" type="text"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Lot<input id="lot" type="text"></label>
-    <label>Area (m²)<input id="area" type="number" step="0.01"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Bitumen<input id="bitumen" type="text"></label>
-    <label>Grade<input id="grade" type="text"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Aggregate Size (mm)<input id="aggSize" type="text"></label>
-    <label>Kerosene<input id="kerosene" type="text"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Additive<input id="additive" type="text"></label>
-    <label>Total Litres<input id="totalLitres" type="number" step="0.01"></label>
-  </section>
-
-  <section class="grid one">
-    <label>Description<textarea id="description" rows="3"></textarea></label>
-  </section>
-
-  <section class="grid three">
-    <label>QA Conducted By<input id="qaBy" type="text"></label>
-    <label>Conformed By<input id="conformedBy" type="text"></label>
-    <label>Seal Designed By<input id="sealBy" type="text"></label>
-  </section>
-
-  <section class="grid three">
-    <label>Work Start<input id="workStart" type="date"></label>
-    <label>Work End<input id="workEnd" type="date"></label>
-    <label>Guaranteed<input id="guaranteed" type="date"></label>
-  </section>
-
-  <h2>Attachments</h2>
-  <div class="attachments">
-    <!-- Tri-state boxes -->
-    <button class="tri" data-key="qvc">□</button><span>QVC Attached</span>
-    <button class="tri" data-key="spray">□</button><span>Spray Sheet</span>
-    <button class="tri" data-key="memo">□</button><span>Site Memo</span>
-    <button class="tri" data-key="ball">□</button><span>Ball Penetration Test</span>
-    <button class="tri" data-key="photos">□</button><span>Photos</span>
-    <button class="tri" data-key="agg">□</button><span>Agg Test Results</span>
-    <button class="tri" data-key="docket">□</button><span>Delivery Docket</span>
-    <button class="tri" data-key="tins">□</button><span>Sample Tins</span>
-    <button class="tri" data-key="ncrs">□</button><span>NCRs</span>
-  </div>
-
-  <section class="grid one">
-    <label>Notes<textarea id="notes" rows="3"></textarea></label>
-  </section>
-
-  <footer class="actions">
-    <button id="pdf" class="btn">PDF</button>
-    <button id="reset" class="btn danger">Reset All</button>
-    <div class="nav">
-      <span class="ver" id="ver"></span>
-      <a class="btn primary" href="page6.html">Next Page ➜</a>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas Logo">
+      <h1>Spray Seal QA Lot Pack — New Works & Reseal QA V1</h1>
     </div>
-  </footer>
-</main>
+    <hr>
 
-<script src="app.js?v=40"></script>
-<script>
-document.getElementById('ver').textContent = window.MTP_VER;
-</script>
+    <!-- Top block: left aligned in order -->
+    <div class="grid2">
+      <div>
+        <label>Job No.</label>
+        <input type="text" id="jobNo">
+      </div>
+      <div>
+        <label>Project Name</label>
+        <input type="text" id="projectName">
+      </div>
+
+      <div>
+        <label>Lot Number</label>
+        <input type="text" id="lotNo">
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea id="description"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">KEY DATES:</div>
+    <div class="grid2">
+      <div>
+        <label>Work Start</label>
+        <input type="date" id="workStart">
+      </div>
+      <div>
+        <label>Work End</label>
+        <input type="date" id="workEnd">
+      </div>
+      <div>
+        <label>Guaranteed</label>
+        <input type="date" id="guaranteed">
+      </div>
+      <div>
+        <label>Conformed</label>
+        <input type="date" id="conformed" placeholder="">
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Next block -->
+    <div class="grid2">
+      <div>
+        <label>Grade</label>
+        <input type="text" id="grade">
+      </div>
+      <div>
+        <label>Total Litres</label>
+        <input type="number" step="0.01" id="totalLitres" placeholder="Auto = Bitumen + Kerosene + Additive">
+      </div>
+
+      <div>
+        <label>Aggregate Size (mm)</label>
+        <input type="text" id="aggSize">
+      </div>
+      <div>
+        <label>Bitumen</label>
+        <input type="number" step="0.01" id="bitumen">
+      </div>
+
+      <div>
+        <label>m³</label>
+        <input type="number" step="0.01" id="m3">
+      </div>
+      <div>
+        <label>Kerosene</label>
+        <input type="number" step="0.01" id="kerosene">
+      </div>
+
+      <div></div>
+      <div>
+        <label>Additive</label>
+        <input type="number" step="0.01" id="additive">
+      </div>
+    </div>
+
+    <div class="section-title">Attachments</div>
+    <div class="attachments">
+      <label class="tri" data-state=""><span class="tri-box"></span><span>QVC Attached</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Site Memo</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Agg Test Results</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Ball Penetration Test</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Spray Sheet</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Photos</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Delivery Docket</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>Sample Tins</span><input type="hidden"></label>
+      <label class="tri" data-state=""><span class="tri-box"></span><span>NCRs</span><input type="hidden"></label>
+    </div>
+
+    <div class="actions no-print">
+      <button class="btn btn-primary" onclick="pdf()">PDF</button>
+      <button class="btn btn-danger" onclick="location.reload()">Reset All</button>
+    </div>
+
+    <nav class="pages no-print">
+      <button class="btn" onclick="goPage('index.html')">Page 1</button>
+      <button class="btn" onclick="goPage('page6.html')">Page 6</button>
+    </nav>
+  </div>
 </body>
 </html>
