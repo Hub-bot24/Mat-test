@@ -1,117 +1,101 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Spray Seal QA Lot Pack — Cover Sheet</title>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lot Conformance — Page 1</title>
+<link rel="icon" href="icons/colas-logo.png">
+<link rel="stylesheet" href="style.css?v=v3.26-spacingfix">
+<script>
+// Self-heal: once per device, remove any old service workers & caches, then reload with cache-bust.
+(async () => {
+  try {
+    if (!localStorage.getItem('mtp_healed_v326')) {
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const r of regs) { await r.unregister(); }
+      }
+      if (window.caches) {
+        const keys = await caches.keys();
+        for (const k of keys) { await caches.delete(k); }
+      }
+      localStorage.setItem('mtp_healed_v326', '1');
+      const u = new URL(location.href);
+      u.searchParams.set('fresh', String(Date.now()));
+      location.replace(u.toString());
+    }
+  } catch(e) {}
+})();
+</script>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="colas-logo.svg" alt="Colas"/>
-      <h1 class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-    </div>
+<header class="brand">
+  <img class="logo" src="icons/colas-logo.png" alt="COLAS">
+  <div>
+    <h1>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
+    <div class="mute">v3.26-spacingfix • 2025-09-17</div>
+  </div>
+</header>
 
-    <div class="grid">
-      <div class="label">Job No.:</div>
-      <input id="jobNo" class="input" autocomplete="off"/>
+<main class="page">
+  <div class="form-grid">
+    <div class="form-row"><label for="jobNo">Job No.:</label><input id="jobNo" type="text"></div>
+    <div class="form-row"><label for="projectName">Project Name:</label><input id="projectName" type="text" style="width:var(--left-field)"></div>
 
-      <div class="label">Project Name:</div>
-      <input id="projectName" class="input" autocomplete="off"/>
+    <div class="form-row"><label for="lot">Lot:</label><input id="lot" type="text"></div>
+    <div class="form-row"><label for="area">Area (m²):</label><input id="area" type="number" step="0.01"></div>
 
-      <div class="label">Lot Number:</div>
-      <input id="lotNumber" class="input" autocomplete="off"/>
+    <div class="form-row"><label for="bitumen">Bitumen:</label><input id="bitumen" type="text" style="width:var(--left-field)"></div>
+    <div class="form-row"><label for="grade">Grade:</label><input id="grade" type="text"></div>
 
-      <div class="label">Description:</div>
-      <textarea id="description" class="input"></textarea>
+    <div class="form-row"><label for="aggSize">Aggregate Size (mm):</label><input id="aggSize" type="text"></div>
+    <div class="form-row"><label for="kerosene">Kerosene:</label><input id="kerosene" type="text"></div>
 
-      <div class="grid-full section-title">KEY DATES:</div>
-
-      <div class="label">Work Start:</div>
-      <div class="date-field">
-        <input id="dateStart" class="input" type="date"/>
-      </div>
-
-      <div class="label">Work End:</div>
-      <div class="date-field">
-        <input id="dateEnd" class="input" type="date"/>
-      </div>
-
-      <div class="label">Guaranteed:</div>
-      <div class="date-field">
-        <input id="dateGuaranteed" class="input" type="date"/>
-      </div>
-
-      <div class="label">Conformed:</div>
-      <div class="date-field">
-        <input id="dateConformed" class="input" type="date" placeholder="(optional)"/>
-      </div>
-
-      <div class="grid-full section-title">MATERIALS &amp; QUANTITIES</div>
-    </div>
-
-    <div class="metrics">
-      <div class="pair">
-        <div class="label">Grade:</div>
-        <input id="grade" class="input"/>
-      </div>
-      <div class="pair">
-        <div class="label">Total Litres:</div>
-        <input id="totalLitres" class="input mini" readonly/>
-      </div>
-
-      <div class="pair">
-        <div class="label">Aggregate Size (mm):</div>
-        <input id="aggSize" class="input mini"/>
-      </div>
-      <div class="pair">
-        <div class="label">Bitumen:</div>
-        <input id="bitumen" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label">m³:</div>
-        <input id="m3" class="input mini" inputmode="decimal"/>
-      </div>
-      <div class="pair">
-        <div class="label">Kerosene:</div>
-        <input id="kerosene" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label"></div>
-        <div></div>
-      </div>
-      <div class="pair">
-        <div class="label">Additive:</div>
-        <input id="additive" class="input mini" inputmode="decimal"/>
-      </div>
-    </div>
-
-    <div class="section-title" style="margin-top:14px;">Attachments</div>
-    <div class="attachments">
-      <label class="attachment"><span class="pill" data-state="blank" data-key="qvc">—</span> QVC Attached</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="site">—</span> Site Memo</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="agg">—</span> Agg Test Results</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ball">—</span> Ball Penetration Test</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="spray">—</span> Spray Sheet</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="photos">—</span> Photos</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="docket">—</span> Delivery Docket</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ncrs">—</span> NCRs</label>
-    </div>
-
-    <div class="actions">
-      <button class="btn-primary" onclick="doPDF()">PDF</button>
-      <button class="btn-danger" onclick="doReset()">Reset All</button>
-    </div>
-
-    <div class="nav">
-      <a href="page6.html">Page 6</a>
-    </div>
+    <div class="form-row"><label for="additive">Additive:</label><input id="additive" type="text"></div>
+    <div class="form-row"><label for="totalLitres">Total Litres:</label><input id="totalLitres" type="number" step="0.01"></div>
   </div>
 
-  <script src="app.js"></script>
+  <h2>Description</h2>
+  <div class="form-row"><label for="description">Details:</label><textarea id="description" rows="3" style="width:100%"></textarea></div>
+
+  <div class="form-grid">
+    <div class="form-row"><label for="qaBy">QA Conducted By:</label><input id="qaBy" type="text"></div>
+    <div class="form-row"><label for="conformedBy">Conformed By:</label><input id="conformedBy" type="text"></div>
+    <div class="form-row"><label for="sealBy">Seal Designed By:</label><input id="sealBy" type="text"></div>
+
+    <div class="form-row"><label for="workStart">Work Start:</label><input id="workStart" type="date"></div>
+    <div class="form-row"><label for="workEnd">Work End:</label><input id="workEnd" type="date"></div>
+    <div class="form-row"><label for="guaranteed">Guaranteed:</label><input id="guaranteed" type="date"></div>
+  </div>
+
+  <h2>Attachments</h2>
+  <div class="attach">
+    <button class="tri" data-key="qvc">□</button><span>QVC Attached</span>
+    <button class="tri" data-key="spray">□</button><span>Spray Sheet</span>
+    <button class="tri" data-key="memo">□</button><span>Site Memo</span>
+    <button class="tri" data-key="ball">□</button><span>Ball Penetration Test</span>
+    <button class="tri" data-key="photos">□</button><span>Photos</span>
+    <button class="tri" data-key="agg">□</button><span>Agg Test Results</span>
+    <button class="tri" data-key="docket">□</button><span>Delivery Docket</span>
+    <button class="tri" data-key="tins">□</button><span>Sample Tins</span>
+    <button class="tri" data-key="ncrs">□</button><span>NCRs</span>
+  </div>
+
+  <h2>Notes</h2>
+  <div class="form-row"><label for="notes">Notes:</label><textarea id="notes" rows="3" style="width:100%"></textarea></div>
+
+  <footer class="actions">
+    <div class="left">
+      <button id="pdf1" class="btn primary">PDF</button>
+      <button id="reset1" class="btn danger">Reset All</button>
+    </div>
+    <div class="right">
+      <span class="ver">v3.26-spacingfix — 2025-09-17 — J. Hugo</span>
+      <a class="btn ok" href="page6.html?v=v3.26-spacingfix">Next Page →</a>
+    </div>
+  </footer>
+</main>
+
+<script src="app.js?v=v3.26-spacingfix" defer></script>
 </body>
 </html>
