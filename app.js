@@ -1,68 +1,65 @@
 
-// ===== Tri-state pills (blank -> tick -> cross) =====
-const STATES = ['blank','tick','cross'];
-document.querySelectorAll('.pill').forEach(p => {
-  p.addEventListener('click', () => {
-    const i = STATES.indexOf(p.dataset.state);
-    p.dataset.state = STATES[(i+1)%STATES.length];
-    p.textContent = p.dataset.state === 'tick' ? '✓' : p.dataset.state === 'cross' ? '✕' : '—';
-    save();
+// Register SW (cache-busted)
+if ('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./service-worker.js?v=331')
+      .catch(console.warn);
   });
-});
-
-// ===== Auto: Work Start copies into End & Guaranteed on change (only if empty) =====
-const start = document.getElementById('dateStart');
-const end   = document.getElementById('dateEnd');
-const guar  = document.getElementById('dateGuaranteed');
-const conf  = document.getElementById('dateConformed');
-
-start.addEventListener('change', () => {
-  if(!end.value) end.value = start.value;
-  if(!guar.value) guar.value = start.value;
-  save();
-});
-[end,guar,conf].forEach(el=>el.addEventListener('change', save));
-
-// ===== Total Litres = Bitumen + Kerosene + Additive (2dp, blank if 0 or NaN) =====
-const bitumen  = document.getElementById('bitumen');
-const kerosene = document.getElementById('kerosene');
-const additive = document.getElementById('additive');
-const total    = document.getElementById('totalLitres');
-
-function calcTotal(){
-  const b = parseFloat(bitumen.value)  || 0;
-  const k = parseFloat(kerosene.value) || 0;
-  const a = parseFloat(additive.value) || 0;
-  const sum = b+k+a;
-  total.value = sum>0 ? sum.toFixed(2) : '';
 }
-[bitumen,kerosene,additive].forEach(el=>el.addEventListener('input', ()=>{ calcTotal(); save(); }));
 
-// ===== Persistence (localStorage) =====
-const ids = ['jobNo','projectName','lotNumber','description',
-             'dateStart','dateEnd','dateGuaranteed','dateConformed',
-             'grade','aggSize','m3','bitumen','kerosene','additive','totalLitres'];
+// Tri-state attachments
+(function(){
+  const STATES = ["", "tick", "cross"];
+  const A11Y = {"":"false","tick":"true","cross":"mixed"};
 
-function save(){
-  const data = {};
-  ids.forEach(id => data[id] = document.getElementById(id)?.value ?? '');
-  document.querySelectorAll('.pill').forEach(p => data['pill_'+p.dataset.key] = p.dataset.state);
-  localStorage.setItem('coverSheet', JSON.stringify(data));
-}
-function load(){
-  try{
-    const data = JSON.parse(localStorage.getItem('coverSheet') || '{}');
-    ids.forEach(id => { if(data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    document.querySelectorAll('.pill').forEach(p => {
-      const s = data['pill_'+p.dataset.key] || 'blank';
-      p.dataset.state = s;
-      p.textContent = s==='tick' ? '✓' : s==='cross' ? '✕' : '—';
+  function syncHidden(tri){
+    const name = tri.dataset.name;
+    const hidden = tri.parentElement.querySelector(`input[name="${name}"]`);
+    if(hidden){
+      hidden.value = (tri.dataset.state==="tick" ? "✓" : tri.dataset.state==="cross" ? "✗" : "");
+    }
+  }
+
+  function cycle(tri){
+    const i = STATES.indexOf(tri.dataset.state || "");
+    const next = STATES[(i+1) % STATES.length];
+    tri.dataset.state = next;
+    tri.setAttribute("aria-checked", A11Y[next]);
+    syncHidden(tri);
+  }
+
+  document.addEventListener('click', e=>{
+    const tri = e.target.closest('.tri');
+    if(tri) cycle(tri);
+  });
+  document.addEventListener('keydown', e=>{
+    if((e.key === ' ' || e.key === 'Enter') && e.target.classList.contains('tri')){
+      e.preventDefault();
+      cycle(e.target);
+    }
+  });
+
+  // Auto-copy Work Start into End & Guaranteed if blank
+  const ws = document.getElementById('workStart');
+  const we = document.getElementById('workEnd');
+  const gu = document.getElementById('guaranteed');
+  if(ws && we && gu){
+    ws.addEventListener('change', ()=>{
+      if(!we.value) we.value = ws.value;
+      if(!gu.value) gu.value = ws.value;
     });
-    calcTotal();
-  }catch(e){ /* ignore */ }
-}
-load();
+  }
 
-// ===== PDF (print) =====
-function doPDF(){ window.print(); }
-function doReset(){ localStorage.removeItem('coverSheet'); location.reload(); }
+  // PDF (print)
+  const btnPdf = document.getElementById('btnPdf');
+  if(btnPdf) btnPdf.addEventListener('click', ()=>{ window.print(); });
+
+  // Reset
+  const btnReset = document.getElementById('btnReset');
+  if(btnReset){
+    btnReset.addEventListener('click', ()=>{
+      document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(el=>el.value="");
+      document.querySelectorAll('.tri').forEach(el=>{ el.dataset.state=""; el.setAttribute('aria-checked','false'); syncHidden(el); });
+    });
+  }
+})();

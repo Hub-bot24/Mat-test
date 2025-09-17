@@ -1,142 +1,147 @@
-
 <!doctype html>
 <html lang="en">
-\1
-
-<!-- self-heal v334: force-remove any old SW & caches once -->
-<script>
-(async ()=>{
-  try{
-    if(!localStorage.getItem('mtp_heal_334')){
-      if('serviceWorker' in navigator){
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (const r of regs) await r.unregister();
-      }
-      if (window.caches){
-        const keys = await caches.keys();
-        for (const k of keys) await caches.delete(k);
-      }
-      localStorage.setItem('mtp_heal_334','1');
-      const u = new URL(location.href); u.searchParams.set('fresh', Date.now()); location.replace(u.toString());
-    }
-  }catch(e){}
-})();
-</script>
-
+<head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Spray Seal QA Lot Pack — Cover Sheet</title>
-  <link rel="stylesheet" href="style.css?v=334"/>
-
-<link rel="stylesheet" href="custom.css?v=334">
-
-<script defer src="spacing-hotfix.js?v=334"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Mat Test — Page 1 (Cover)</title>
+  <link rel="manifest" href="manifest.webmanifest?v=331">
+  <link rel="stylesheet" href="style.css?v=331">
+  <script defer src="app.js?v=331"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="colas-logo.svg" alt="Colas"/>
-      <h1 class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
-    </div>
+  <header class="top">
+    <div class="logo">COLAS</div>
+    <h1>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
+  </header>
 
-    <div class="grid">
-      <div class="label">Job No.:</div>
-      <input id="jobNo" class="input" autocomplete="off"/>
+  <main class="sheet">
 
-      <div class="label">Project Name:</div>
-      <input id="projectName" class="input" autocomplete="off"/>
-
-      <div class="label">Lot Number:</div>
-      <input id="lotNumber" class="input" autocomplete="off"/>
-
-      <div class="label">Description:</div>
-      <textarea id="description" class="input"></textarea>
-
-      <div class="grid-full section-title">KEY DATES:</div>
-
-      <div class="label">Work Start:</div>
-      <div class="date-field">
-        <input id="dateStart" class="input" type="date"/>
+    <section class="block">
+      <div class="row2">
+        <label for="jobNo">Job No.:</label>
+        <input id="jobNo" name="jobNo" type="text">
+        <label for="projectName">Project Name:</label>
+        <input id="projectName" name="projectName" type="text">
       </div>
 
-      <div class="label">Work End:</div>
-      <div class="date-field">
-        <input id="dateEnd" class="input" type="date"/>
+      <div class="row2">
+        <label for="lot">Lot Number:</label>
+        <input id="lot" name="lot" type="text">
       </div>
 
-      <div class="label">Guaranteed:</div>
-      <div class="date-field">
-        <input id="dateGuaranteed" class="input" type="date"/>
+      <div class="row1">
+        <label for="desc">Description:</label>
+        <textarea id="desc" name="desc" rows="2"></textarea>
+      </div>
+    </section>
+
+    <h2>Key Dates</h2>
+    <section class="block">
+      <div class="row4">
+        <label for="workStart">Work Start:</label>
+        <input id="workStart" name="workStart" type="text" placeholder="dd/mm/yyyy">
+        <label for="guaranteed">Guaranteed:</label>
+        <input id="guaranteed" name="guaranteed" type="text" placeholder="dd/mm/yyyy">
       </div>
 
-      <div class="label">Conformed:</div>
-      <div class="date-field">
-        <input id="dateConformed" class="input" type="date" placeholder="(optional)"/>
+      <div class="row4">
+        <label for="workEnd">Work End:</label>
+        <input id="workEnd" name="workEnd" type="text" placeholder="dd/mm/yyyy">
+        <label for="conformed">Conformed:</label>
+        <input id="conformed" name="conformed" type="text" placeholder="dd/mm/yyyy">
+      </div>
+    </section>
+
+    <h2>Materials &amp; Quantities</h2>
+    <section class="block">
+      <div class="row2">
+        <label for="grade">Grade:</label>
+        <input id="grade" name="grade" type="text">
+        <label for="totalLitres">Total Litres:</label>
+        <input id="totalLitres" name="totalLitres" type="number" step="0.01" value="">
+      </div>
+      <div class="row2">
+        <label for="aggSize">Aggregate Size (mm):</label>
+        <input id="aggSize" name="aggSize" type="text">
+        <label for="bitumen">Bitumen:</label>
+        <input id="bitumen" name="bitumen" type="number">
+      </div>
+      <div class="row2">
+        <label for="m3">m³:</label>
+        <input id="m3" name="m3" type="number" step="0.01">
+        <label for="kerosene">Kerosene:</label>
+        <input id="kerosene" name="kerosene" type="number">
+      </div>
+      <div class="row2">
+        <label for="additive">Additive:</label>
+        <input id="additive" name="additive" type="text">
+      </div>
+    </section>
+
+    <h2>Attachments</h2>
+    <section class="block grid2 attach">
+      <!-- Left column -->
+      <div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="qvc_attached"></span>
+          <span class="attach-label">QVC Attached</span>
+          <input type="hidden" name="qvc_attached" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="agg_results"></span>
+          <span class="attach-label">Agg Test Results</span>
+          <input type="hidden" name="agg_results" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="spray_sheet"></span>
+          <span class="attach-label">Spray Sheet</span>
+          <input type="hidden" name="spray_sheet" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="delivery_docket"></span>
+          <span class="attach-label">Delivery Docket</span>
+          <input type="hidden" name="delivery_docket" value="">
+        </div>
       </div>
 
-      <div class="grid-full section-title">MATERIALS &amp; QUANTITIES</div>
-    </div>
+      <!-- Right column -->
+      <div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="site_memo"></span>
+          <span class="attach-label">Site Memo</span>
+          <input type="hidden" name="site_memo" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="ball_pen_test"></span>
+          <span class="attach-label">Ball Penetration Test</span>
+          <input type="hidden" name="ball_pen_test" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="photos"></span>
+          <span class="attach-label">Photos</span>
+          <input type="hidden" name="photos" value="">
+        </div>
+        <div class="attach-item">
+          <span class="tri" role="checkbox" tabindex="0" aria-checked="false" data-state="" data-name="ncrs"></span>
+          <span class="attach-label">NCRs</span>
+          <input type="hidden" name="ncrs" value="">
+        </div>
+      </div>
+    </section>
 
-    <div class="metrics">
-      <div class="pair">
-        <div class="label">Grade:</div>
-        <input id="grade" class="input"/>
-      </div>
-      <div class="pair">
-        <div class="label">Total Litres:</div>
-        <input id="totalLitres" class="input mini" readonly/>
-      </div>
-
-      <div class="pair">
-        <div class="label">Aggregate Size (mm):</div>
-        <input id="aggSize" class="input mini"/>
-      </div>
-      <div class="pair">
-        <div class="label">Bitumen:</div>
-        <input id="bitumen" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label">m³:</div>
-        <input id="m3" class="input mini" inputmode="decimal"/>
-      </div>
-      <div class="pair">
-        <div class="label">Kerosene:</div>
-        <input id="kerosene" class="input mini" inputmode="decimal"/>
-      </div>
-
-      <div class="pair">
-        <div class="label"></div>
-        <div></div>
-      </div>
-      <div class="pair">
-        <div class="label">Additive:</div>
-        <input id="additive" class="input mini" inputmode="decimal"/>
-      </div>
-    </div>
-
-    <div class="section-title" style="margin-top:14px;">Attachments</div>
-    <div class="attachments">
-      <label class="attachment"><span class="pill" data-state="blank" data-key="qvc">—</span> QVC Attached</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="site">—</span> Site Memo</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="agg">—</span> Agg Test Results</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ball">—</span> Ball Penetration Test</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="spray">—</span> Spray Sheet</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="photos">—</span> Photos</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="docket">—</span> Delivery Docket</label>
-      <label class="attachment"><span class="pill" data-state="blank" data-key="ncrs">—</span> NCRs</label>
-    </div>
+    <h2>Notes</h2>
+    <section class="block">
+      <textarea id="notes" rows="3"></textarea>
+    </section>
 
     <div class="actions">
-      <button class="btn-primary" onclick="doPDF()">PDF</button>
-      <button class="btn-danger" onclick="doReset()">Reset All</button>
+      <button id="btnPdf" class="btn primary">PDF</button>
+      <button id="btnReset" class="btn warn">Reset All</button>
     </div>
 
-    <div class="nav">
-      <a href="page6.html?v=334">Page 6</a>
-    </div>
-  </div>
+    <footer class="foot"> v3.31 TriState — 2025-09-17 </footer>
+  </main>
 
-  <script src="app.js?v=334"></script>
+  <noscript>This tool needs JavaScript enabled.</noscript>
 </body>
 </html>
