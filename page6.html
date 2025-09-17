@@ -5,14 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mat Test — Page 6</title>
 <link rel="icon" href="icons/colas-logo.png">
-<link rel="stylesheet" href="style.css?v=v3.24">
+<link rel="stylesheet" href="style.css?v=v3.25-heal">
+<script>
+// Self-heal: once per device, unregister any old service workers on this origin
+// and clear caches, then force a one-time reload with a cache-busting query.
+(async () => {
+  try {
+    if (!localStorage.getItem('mtp_healed_v325')) {
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const r of regs) { await r.unregister(); }
+      }
+      const keys = await caches.keys();
+      for (const k of keys) { await caches.delete(k); }
+      localStorage.setItem('mtp_healed_v325', '1');
+      const u = new URL(location.href);
+      u.searchParams.set('fresh', String(Date.now()));
+      location.replace(u.toString());
+    }
+  } catch(e) {
+    // ignore; UI still works
+  }
+})();
+</script>
 </head>
 <body>
 <header class="brand">
   <img class="logo" src="icons/colas-logo.png" alt="COLAS">
   <div>
     <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
-    <div class="mute">v3.24 • 2025-09-17</div>
+    <div class="mute">v3.25-heal • 2025-09-17</div>
   </div>
 </header>
 
@@ -43,13 +65,13 @@
       <button id="clear6" class="btn danger">Reset All</button>
     </div>
     <div class="right">
-      <a class="btn" href="index.html?v=v3.24">⬅ Back</a>
+      <a class="btn" href="index.html?v=v3.25-heal">⬅ Back</a>
       <button id="pdf6" class="btn ok">PDF</button>
-      <span class="ver">v3.24 — 2025-09-17 — J. Hugo</span>
+      <span class="ver">v3.25-heal — 2025-09-17 — J. Hugo</span>
     </div>
   </footer>
 </main>
 
-<script src="app.js?v=v3.24" defer></script>
+<script src="app.js?v=v3.25-heal" defer></script>
 </body>
 </html>
