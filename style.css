@@ -24,9 +24,8 @@ textarea{resize:vertical}
 .btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
 .btn.danger{background:var(--warn);border-color:var(--warn);color:#fff}
 .ver{opacity:.65;font-size:12px}
-.note{font-size:12px;color:#666}
 @media (max-width:760px){.grid.two{grid-template-columns:1fr} .grid.three{grid-template-columns:1fr}}
-/* Print to one A4 page */
+/* Print: single A4 page; hide buttons */
 @media print{
   @page{size:A4;margin:10mm}
   body{background:#fff}
