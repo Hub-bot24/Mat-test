@@ -1,35 +1,9 @@
-<!doctype html>
-<html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Clear Cache & Reload</title>
-<style>
-body{font-family:system-ui,Arial,sans-serif;max-width:640px;margin:48px auto;padding:0 16px}
-button{padding:12px 18px;font-size:16px;border-radius:10px;border:0;background:#e11;color:#fff;cursor:pointer}
-.ok{color:#0a0;font-weight:600}.err{color:#c00}
-</style>
-<h1>Clear Cache & Reload</h1>
-<p>This removes Service Workers and caches for this site, then reloads.</p>
-<button id="go">Clear cache & reload</button>
-<p id="out"></p>
+<!doctype html><meta charset="utf-8"><title>Clear Cache</title>
+<button id=go>Clear cache & reload</button>
 <script>
-async function kill(){
-  const out = document.getElementById('out');
-  try{
-    if('serviceWorker' in navigator){
-      const regs = await navigator.serviceWorker.getRegistrations();
-      for(const r of regs) await r.unregister();
-    }
-    if('caches' in window){
-      const keys = await caches.keys();
-      for(const k of keys) await caches.delete(k);
-    }
-    out.innerHTML = '<span class="ok">Done. Reloading…</span>';
-    setTimeout(()=>location.replace('./'), 400);
-  }catch(e){
-    out.innerHTML = '<span class="err">Error: '+(e && e.message || e)+'</span>';
-  }
-}
-document.getElementById('go').addEventListener('click', kill);
+(async()=>{const b=document.getElementById('go');b.onclick=async()=>{
+if('serviceWorker' in navigator){for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister();}
+if('caches' in window){for (const k of await caches.keys()) await caches.delete(k);}
+location.replace('./');
+};})();
 </script>
-</html>
