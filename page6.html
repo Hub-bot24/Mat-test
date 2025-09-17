@@ -1,77 +1,62 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mat Test — Page 6</title>
-<link rel="icon" href="icons/colas-logo.png">
-<link rel="stylesheet" href="style.css?v=v3.25-heal">
-<script>
-// Self-heal: once per device, unregister any old service workers on this origin
-// and clear caches, then force a one-time reload with a cache-busting query.
-(async () => {
-  try {
-    if (!localStorage.getItem('mtp_healed_v325')) {
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (const r of regs) { await r.unregister(); }
-      }
-      const keys = await caches.keys();
-      for (const k of keys) { await caches.delete(k); }
-      localStorage.setItem('mtp_healed_v325', '1');
-      const u = new URL(location.href);
-      u.searchParams.set('fresh', String(Date.now()));
-      location.replace(u.toString());
-    }
-  } catch(e) {
-    // ignore; UI still works
-  }
-})();
-</script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mat Test — Page 6</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .calc-card{ border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:16px; }
+    .row{ display:grid; grid-template-columns: 220px 1fr 220px 1fr; gap:12px; margin-bottom:10px; align-items:center; }
+    .out{ background:#f7f7f7; }
+  </style>
 </head>
 <body>
-<header class="brand">
-  <img class="logo" src="icons/colas-logo.png" alt="COLAS">
-  <div>
-    <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
-    <div class="mute">v3.25-heal • 2025-09-17</div>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas"/>
+      <h1 class="title">Field Spread Rate — Offline Calculator</h1>
+    </div>
+
+    <div class="calc-card">
+      <div class="row">
+        <div class="label">Mass of Canvas Mat &amp; Aggregate (kg)</div><input id="m1" class="input" inputmode="decimal"/>
+        <div class="label">Mass of Canvas Mat (kg)</div><input id="m2" class="input" inputmode="decimal"/>
+      </div>
+      <div class="row">
+        <div class="label">Area of Canvas Mat (m²)</div><input id="a" class="input" inputmode="decimal"/>
+        <div class="label">Spread Rate (kg/m²) = (M1 − M2) / A</div><input id="r1" class="input out" readonly/>
+      </div>
+      <div class="row">
+        <div class="label">Loose Unit Mass of Screenings (t/m³)</div><input id="dl" class="input" inputmode="decimal"/>
+        <div class="label">Spread Rate (m²/m³) = 1000 × DL / R1</div><input id="r2" class="input out" readonly/>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" onclick="calc()">Calculate</button>
+        <button class="btn-danger" onclick="clr()">Clear</button>
+        <button class="btn-primary" onclick="window.print()">PDF</button>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Page 1</a>
+    </div>
   </div>
-</header>
 
-<main class="page">
-  <section class="grid two">
-    <label>Project<input id="p6_project" type="text"></label>
-    <label>Job No.<input id="p6_job" type="text"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Mass of Canvas Mat &amp; Aggregate (kg)<input id="m1" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Mass of Canvas Mat (kg)<input id="m2" type="number" step="0.000001" inputmode="decimal"></label>
-  </section>
-
-  <section class="grid two">
-    <label>Area of Canvas Mat (m²)<input id="a" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Spread Rate (kg/m²) = (M1 − M2) / A<input id="r1" type="text" readonly></label>
-  </section>
-
-  <section class="grid two">
-    <label>Loose Unit Mass of Screenings (t/m³)<input id="dl" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Spread Rate (m²/m³) = 1000 × DL / R1<input id="r2" type="text" readonly></label>
-  </section>
-
-  <footer class="actions">
-    <div class="left">
-      <button id="calc6" class="btn primary">Calculate</button>
-      <button id="clear6" class="btn danger">Reset All</button>
-    </div>
-    <div class="right">
-      <a class="btn" href="index.html?v=v3.25-heal">⬅ Back</a>
-      <button id="pdf6" class="btn ok">PDF</button>
-      <span class="ver">v3.25-heal — 2025-09-17 — J. Hugo</span>
-    </div>
-  </footer>
-</main>
-
-<script src="app.js?v=v3.25-heal" defer></script>
+  <script>
+    function val(id){ return parseFloat(document.getElementById(id).value); }
+    function set(id, v){ document.getElementById(id).value = v; }
+    function calc(){
+      const m1 = val('m1')||0, m2 = val('m2')||0, a = val('a')||0;
+      const r1 = a ? (m1-m2)/a : 0;
+      set('r1', r1 ? r1.toFixed(2) : '');
+      const dl = val('dl')||0;
+      const r2 = r1 ? (1000*dl)/r1 : 0;
+      set('r2', r2 ? r2.toFixed(2) : '');
+    }
+    ['m1','m2','a','dl'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+    function clr(){ ['m1','m2','a','dl','r1','r2'].forEach(id => set(id,'')); }
+  </script>
 </body>
 </html>
