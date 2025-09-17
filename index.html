@@ -1,59 +1,93 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Field Spread Rate of Cover Aggregate (Canvas Mat)</title>
-<link rel="manifest" href="manifest.webmanifest?v=322">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lot Conformance — Page 1</title>
+<link rel="manifest" href="manifest.webmanifest?v=323">
 <link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="style.css?v=322">
-<meta name="theme-color" content="#ffd400">
+<link rel="stylesheet" href="style.css?v=323">
 </head>
 <body>
 <header class="brand">
   <img class="logo" src="logo.png" alt="COLAS">
-  <div class="titles">
-    <h1>Field Spread Rate of Cover Aggregate (Canvas Mat)</h1>
-    <div class="muted">v3.22 • 2025-09-17</div>
+  <div>
+    <h1>Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
+    <div class="mute">v3.23 • 2025-09-17</div>
   </div>
 </header>
 
-<main class="wrap">
+<main class="page">
   <section class="grid two">
-    <label>Project<input id="project" type="text" autocomplete="on"></label>
-    <label>Job No.<input id="job" type="text" autocomplete="on"></label>
+    <label>Job No.<input id="jobNo" type="text"></label>
+    <label>Project Name<input id="projectName" type="text"></label>
   </section>
 
   <section class="grid two">
-    <label>Mass of Canvas Mat &amp; Aggregate (kg)<input id="m1" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Mass of Canvas Mat (kg)<input id="m2" type="number" step="0.000001" inputmode="decimal"></label>
+    <label>Lot<input id="lot" type="text"></label>
+    <label>Area (m²)<input id="area" type="number" step="0.01"></label>
   </section>
 
   <section class="grid two">
-    <label>Area of Canvas Mat (m²)<input id="a" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Spread Rate (kg/m²) = (M1 − M2) / A<input id="r1" class="out" type="text" readonly></label>
+    <label>Bitumen<input id="bitumen" type="text"></label>
+    <label>Grade<input id="grade" type="text"></label>
   </section>
 
   <section class="grid two">
-    <label>Loose Unit Mass of Screenings (t/m³)<input id="dl" type="number" step="0.000001" inputmode="decimal"></label>
-    <label>Spread Rate (m²/m³) = 1000 × DL / R1<input id="r2" class="out" type="text" readonly></label>
+    <label>Aggregate Size (mm)<input id="aggSize" type="text"></label>
+    <label>Kerosene<input id="kerosene" type="text"></label>
+  </section>
+
+  <section class="grid two">
+    <label>Additive<input id="additive" type="text"></label>
+    <label>Total Litres<input id="totalLitres" type="number" step="0.01"></label>
+  </section>
+
+  <section class="grid one">
+    <label>Description<textarea id="description" rows="3"></textarea></label>
+  </section>
+
+  <section class="grid three">
+    <label>QA Conducted By<input id="qaBy" type="text"></label>
+    <label>Conformed By<input id="conformedBy" type="text"></label>
+    <label>Seal Designed By<input id="sealBy" type="text"></label>
+  </section>
+
+  <section class="grid three">
+    <label>Work Start<input id="workStart" type="date"></label>
+    <label>Work End<input id="workEnd" type="date"></label>
+    <label>Guaranteed<input id="guaranteed" type="date"></label>
+  </section>
+
+  <h2>Attachments</h2>
+  <div class="attach">
+    <button class="tri" data-key="qvc">□</button><span>QVC Attached</span>
+    <button class="tri" data-key="spray">□</button><span>Spray Sheet</span>
+    <button class="tri" data-key="memo">□</button><span>Site Memo</span>
+    <button class="tri" data-key="ball">□</button><span>Ball Penetration Test</span>
+    <button class="tri" data-key="photos">□</button><span>Photos</span>
+    <button class="tri" data-key="agg">□</button><span>Agg Test Results</span>
+    <button class="tri" data-key="docket">□</button><span>Delivery Docket</span>
+    <button class="tri" data-key="tins">□</button><span>Sample Tins</span>
+    <button class="tri" data-key="ncrs">□</button><span>NCRs</span>
+  </div>
+
+  <section class="grid one">
+    <label>Notes<textarea id="notes" rows="3"></textarea></label>
   </section>
 
   <footer class="actions">
     <div class="left">
-      <button id="calc" class="btn primary">Calculate</button>
-      <button id="clear" class="btn danger">Reset All</button>
+      <button id="pdf1" class="btn primary">PDF</button>
+      <button id="reset1" class="btn danger">Reset All</button>
     </div>
     <div class="right">
-      <button id="pdf" class="btn">PDF</button>
-      <a id="kill" class="btn ghost" href="sw-kill.html">Force Update</a>
+      <span class="ver">v3.23 — 2025-09-17 — J. Hugo</span>
+      <a class="btn ok" href="page6.html?v=323">Next Page →</a>
     </div>
   </footer>
 </main>
 
-<script>
-  window.APP_VERSION = "v3.22";
-</script>
-<script src="app.js?v=322" defer></script>
+<script src="app.js?v=323" defer></script>
 </body>
 </html>
