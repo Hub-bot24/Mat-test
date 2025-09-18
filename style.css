@@ -99,5 +99,3 @@ button{
   .container{ width: 800px; margin:0; border:none; box-shadow:none; }
   .nav, .actions .btn-danger{ display:none !important; }
 }
-
-.version { font-weight: bold; margin-left: 10px; color: #000; }

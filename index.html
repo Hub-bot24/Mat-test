@@ -1,15 +1,13 @@
 
 <!doctype html>
-<span class='version' id='versionString'></span>
-
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Spray Seal QA Lot Pack — Cover Sheet</title>
-  <link rel="stylesheet" href="style.css?v=20250918?v=20250918"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body><div class='version'>2.0.2 Pro — 2025-09-11 — J. Hugo</div>
+<body>
   <div class="container">
     <div class="header">
       <img src="colas-logo.svg" alt="Colas"/>
@@ -114,59 +112,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=20250918?v=20250918"></script>
-
-<script>
-(function(){
-  // Version string (static parts) + today's date
-  function setVersion() {
-    try {
-      var el = document.getElementById('versionString');
-      if (el) {
-        var today = new Date().toISOString().split('T')[0];
-        el.textContent = "2.0.2 Pro — " + today + " — J. Hugo";
-      }
-    } catch(e) {}
-  }
-  document.addEventListener('DOMContentLoaded', setVersion);
-
-  // Service worker registration with auto-refresh
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function(){
-      var swUrl = new URL('service-worker.js', window.location.href).toString();
-      navigator.serviceWorker.register(swUrl).then(function(reg){
-        // Force waiting worker to activate ASAP
-        if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
-        reg.addEventListener('updatefound', function(){
-          var nw = reg.installing;
-          if (nw) {
-            nw.addEventListener('statechange', function(){
-              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                // New version installed — when it takes control, the page will reload (below)
-                console.log('New version installed, waiting for controllerchange to reload...');
-              }
-            });
-          }
-        });
-      }).catch(function(e){ console.log('SW reg failed', e); });
-
-      // When SW takes control, reload to get fresh HTML
-      navigator.serviceWorker.addEventListener('controllerchange', function(){
-        window.location.reload();
-      });
-
-      // Also check for updates when page becomes visible again
-      document.addEventListener('visibilitychange', function(){
-        if (document.visibilityState === 'visible' && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.getRegistration().then(function(reg){
-            if (reg) reg.update();
-          });
-        }
-      });
-    });
-  }
-})();
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>
