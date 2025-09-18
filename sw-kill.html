@@ -1,21 +1,13 @@
-<!doctype html><meta charset="utf-8">
-<title>Clear SW Cache</title>
-<style>body{font-family:system-ui;padding:20px}button{padding:10px 14px}</style>
-<h1>Clear Cache & Reload</h1>
-<p>This will unregister the service worker and delete all caches for this origin.</p>
-<button id="go">Clear Cache & Reload</button>
-<div id="out"></div>
+<!DOCTYPE html>
+<html><body>
+<h3>Clear Cache Helper</h3>
+<button onclick="killSW()">Clear Cache & Reload</button>
 <script>
-async function clearAll(){
-  const out = document.getElementById('out');
-  if('serviceWorker' in navigator){
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for(const r of regs){ await r.unregister(); }
-  }
-  const keys = await caches.keys();
-  for(const k of keys){ await caches.delete(k); }
-  out.textContent = 'Done. Reloading...';
-  setTimeout(()=>location.reload(true), 500);
+async function killSW() {
+  const regs = await navigator.serviceWorker.getRegistrations();
+  for (let reg of regs) { await reg.unregister(); }
+  caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+  location.reload(true);
 }
-document.getElementById('go').addEventListener('click', clearAll);
 </script>
+</body></html>

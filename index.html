@@ -1,100 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
-<link rel="manifest" href="manifest.webmanifest?v=333">
-<link rel="icon" href="icons/icon-192.png">
-<meta name="theme-color" content="#ffd400">
-<link rel="stylesheet" href="style.css?v=333"/>
-<script>
-// SW registration
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js?v=333').catch(()=>{});
-  });
-}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatTestPro v3.34</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="page-header no-print">
-  <img src="icons/colas-logo.svg" alt="Colas Logo" class="logo"/>
-  <div class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</div>
-</header>
+  <h1>MatTestPro v3.34</h1>
+  <form id="matForm">
+    <label>Work Start: <input type="text" id="workStart"></label><br>
+    <label>Work End: <input type="text" id="workEnd"></label><br>
+    <label>Guaranteed: <input type="text" id="guaranteed"></label><br>
+    <label>Conformed: <input type="text" id="conformed"></label><br>
+    <label>Bitumen: <input type="number" step="0.01" id="bitumen"></label><br>
+    <label>Kerosene: <input type="number" step="0.01" id="kerosene"></label><br>
+    <label>Additive: <input type="number" step="0.01" id="additive"></label><br>
+    <label>Total Litres: <input type="text" id="totalLitres" readonly></label><br>
+    <button type="button" id="exportPDF">Export PDF</button>
+  </form>
 
-<main>
-  <section class="card">
-    <div class="row two">
-      <label>Job No.<input id="jobNo" type="text"></label>
-      <label>Project Name<input id="projectName" type="text"></label>
-    </div>
-
-    <div class="row two">
-      <label>Lot Number<input id="lotNumber" type="text"></label>
-      <label></label>
-    </div>
-
-    <div class="row one">
-      <label>Description<textarea id="description" rows="2"></textarea></label>
-    </div>
-  </section>
-
-  <section class="card">
-    <h3>Key Dates</h3>
-    <div class="row two">
-      <label>Work Start<input id="workStart" type="date"></label>
-      <label>Guaranteed<input id="guaranteed" type="date"></label>
-    </div>
-    <div class="row two">
-      <label>Work End<input id="workEnd" type="date"></label>
-      <label>Conformed<input id="conformed" type="date" placeholder=""/></label>
-    </div>
-  </section>
-
-  <section class="card">
-    <h3>Materials &amp; Quantities</h3>
-    <div class="row two">
-      <label>Grade<input id="grade" type="text"></label>
-      <label>Total Litres<input id="totalLitres" type="text" readonly class="ro"></label>
-    </div>
-    <div class="row three">
-      <label>Aggregate Size (mm)<input id="aggSize" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Bitumen<input id="bitumen" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Kerosene<input id="kerosene" type="number" step="0.01" inputmode="decimal"></label>
-    </div>
-    <div class="row two">
-      <label>m³<input id="m3" type="number" step="0.01" inputmode="decimal"></label>
-      <label>Additive<input id="additive" type="number" step="0.01" inputmode="decimal"></label>
-    </div>
-  </section>
-
-  <section class="card">
-    <h3>Attachments</h3>
-    <div class="attach-grid">
-      <button class="tri" data-name="qvc">QVC Attached</button>
-      <button class="tri" data-name="siteMemo">Site Memo</button>
-      <button class="tri" data-name="agg">Agg Test Results</button>
-      <button class="tri" data-name="ball">Ball Penetration Test</button>
-      <button class="tri" data-name="spray">Spray Sheet</button>
-      <button class="tri" data-name="photos">Photos</button>
-      <button class="tri" data-name="docket">Delivery Docket</button>
-      <button class="tri" data-name="ncr">NCRs</button>
-    </div>
-  </section>
-
-  <section class="card">
-    <h3>Notes</h3>
-    <textarea id="notes" rows="3"></textarea>
-  </section>
-
-  <div class="actions no-print">
-    <button id="pdfBtn" class="btn">PDF</button>
-    <button id="resetBtn" class="btn danger">Reset All</button>
-    <span class="ver">v3.33 — 2025-09-17 — J. Hugo</span>
-  </div>
-</main>
-
-<script src="app.js?v=333"></script>
+  <script src="app.js"></script>
 </body>
 </html>
