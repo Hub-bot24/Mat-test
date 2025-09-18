@@ -1,30 +1,25 @@
-const CACHE_NAME = "tristate-cache-v3"; // bump version each update
-const ASSETS = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/app.js",
-  "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/colas-logo.svg"
+const CACHE_NAME = 'mat-test-v202pro-' + Date.now();
+const FILES_TO_CACHE = [
+  './',
+  './index.html',
+  './app.js',
+  './manifest.webmanifest',
+  './service-worker.js'
 ];
 
-// Install SW and cache assets
-self.addEventListener("install", event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
     })
   );
-  self.skipWaiting(); // activate worker immediately
+  self.skipWaiting();
 });
 
-// Activate SW and remove old caches
-self.addEventListener("activate", event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => {
+    caches.keys().then((keyList) =>
+      Promise.all(keyList.map((key) => {
         if (key !== CACHE_NAME) {
           return caches.delete(key);
         }
@@ -34,21 +29,10 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// Fetch handler
-self.addEventListener("fetch", event => {
-  if (event.request.mode === "navigate") {
-    // Always try network first for HTML pages
-    event.respondWith(
-      fetch(event.request).catch(() =>
-        caches.match("/index.html")
-      )
-    );
-  } else {
-    // Cache-first for other assets
-    event.respondWith(
-      caches.match(event.request).then(response =>
-        response || fetch(event.request)
-      )
-    );
-  }
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
