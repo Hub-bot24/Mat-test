@@ -1,38 +1,45 @@
 <!doctype html>
 <html lang="en">
-\1
+<head>
+  <meta charset="utf-8" />
+  <title>TriState (multi-file, fresh)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <!-- Force fresh load -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Spray Seal QA Lot Pack — New Works & Reseal QA V1</title>
-<link rel="manifest" href="manifest.webmanifest?v=333">
-<link rel="icon" href="icons/icon-192.png">
-<meta name="theme-color" content="#ffd400">
-<link rel="stylesheet" href="style.css?v=333"/>
+  <link rel="manifest" href="manifest.webmanifest?v=20250918012727">
+  <link rel="stylesheet" href="style.css?v=20250918012727">
+</head>
+<body>
+  <header>
+    <h1>TriState</h1>
+    <div class="ver">v3.35 TriState — 2025-09-18</div>
+  </header>
 
+  <main>
+    <form id="triForm" autocomplete="off">
+      <label for="workStart">Work Start:</label>
+      <input type="date" id="workStart" name="workStart" autocomplete="off" />
 
+      <label for="guaranteed">Guaranteed:</label>
+      <input type="date" id="guaranteed" name="guaranteed" autocomplete="off" />
 
+      <label for="workEnd">Work End:</label>
+      <input type="date" id="workEnd" name="workEnd" autocomplete="off" />
 
+      <label for="conformed">Conformed:</label>
+      <input type="date" id="conformed" name="conformed" autocomplete="off" />
 
+      <label for="notes" style="grid-column:1/-1;">Notes:</label>
+      <textarea id="notes" name="notes" autocomplete="off" placeholder="Type notes here…"></textarea>
+    </form>
+  </main>
 
+  <footer id="buildFooter">Loading build version…</footer>
 
-
-
-<footer id="buildFooter" style="text-align:center; margin-top:20px; font-size:12px; color:#666;">
-  Loading build version...
-</footer>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const now = new Date();
-    const buildStr = `Build version: ${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,"0")}-${now.getDate().toString().padStart(2,"0")} ` +
-                     `${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")}:${now.getSeconds().toString().padStart(2,"0")}`;
-    document.getElementById("buildFooter").innerText = buildStr;
-  });
-</script>
-
+  <script src="app.js?v=20250918012727"></script>
 </body>
 </html>
