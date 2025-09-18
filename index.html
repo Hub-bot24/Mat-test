@@ -1,57 +1,172 @@
-<!DOCTYPE html>
+
+<!doctype html>
+<span class='version' id='versionString'></span>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MatTestPro 2.0.2 Pro</title>
-  <link rel="stylesheet" href="style.css?v=20250918">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Spray Seal QA Lot Pack — Cover Sheet</title>
+  <link rel="stylesheet" href="style.css?v=20250918?v=20250918"/>
 </head>
-<body>
-  <header>
-    <img src="colas-logo.svg" class="logo" alt="COLAS">
-    <span class="version" id="versionString"></span>
-  </header>
+<body><div class='version'>2.0.2 Pro — 2025-09-11 — J. Hugo</div>
+  <div class="container">
+    <div class="header">
+      <img src="colas-logo.svg" alt="Colas"/>
+      <h1 class="title">Spray Seal QA Lot Pack — New Works &amp; Reseal QA V1</h1>
+    </div>
 
-  <main>
-    <h2>Welcome to MatTestPro</h2>
-    <p>If you see today's date at the top, you're on the latest build.</p>
-    <p><a href="./page6.html">Go to Page 6</a></p>
-    <p><a href="./sw-kill.html">Force Clear Cache (backup)</a></p>
-  </main>
+    <div class="grid">
+      <div class="label">Job No.:</div>
+      <input id="jobNo" class="input" autocomplete="off"/>
 
-  <script src="app.js?v=20250918"></script>
-  <script>
-    // Update version string with today's date
-    document.addEventListener("DOMContentLoaded", () => {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById("versionString").textContent =
-        "2.0.2 Pro — " + today + " — J. Hugo";
-    });
+      <div class="label">Project Name:</div>
+      <input id="projectName" class="input" autocomplete="off"/>
 
-    // Register service worker with project-relative path
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const swUrl = new URL('service-worker.js', window.location.href).toString();
-        navigator.serviceWorker.register(swUrl).then(reg => {
-          // If there's an updated SW waiting, tell it to activate
-          if (reg.waiting) { reg.waiting.postMessage({type: 'SKIP_WAITING'}); }
-          // Listen for updates
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker && newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New SW installed, trigger refresh when it takes control
-                console.log('New version installed; page will auto-refresh.');
+      <div class="label">Lot Number:</div>
+      <input id="lotNumber" class="input" autocomplete="off"/>
+
+      <div class="label">Description:</div>
+      <textarea id="description" class="input"></textarea>
+
+      <div class="grid-full section-title">KEY DATES:</div>
+
+      <div class="label">Work Start:</div>
+      <div class="date-field">
+        <input id="dateStart" class="input" type="date"/>
+      </div>
+
+      <div class="label">Work End:</div>
+      <div class="date-field">
+        <input id="dateEnd" class="input" type="date"/>
+      </div>
+
+      <div class="label">Guaranteed:</div>
+      <div class="date-field">
+        <input id="dateGuaranteed" class="input" type="date"/>
+      </div>
+
+      <div class="label">Conformed:</div>
+      <div class="date-field">
+        <input id="dateConformed" class="input" type="date" placeholder="(optional)"/>
+      </div>
+
+      <div class="grid-full section-title">MATERIALS &amp; QUANTITIES</div>
+    </div>
+
+    <div class="metrics">
+      <div class="pair">
+        <div class="label">Grade:</div>
+        <input id="grade" class="input"/>
+      </div>
+      <div class="pair">
+        <div class="label">Total Litres:</div>
+        <input id="totalLitres" class="input mini" readonly/>
+      </div>
+
+      <div class="pair">
+        <div class="label">Aggregate Size (mm):</div>
+        <input id="aggSize" class="input mini"/>
+      </div>
+      <div class="pair">
+        <div class="label">Bitumen:</div>
+        <input id="bitumen" class="input mini" inputmode="decimal"/>
+      </div>
+
+      <div class="pair">
+        <div class="label">m³:</div>
+        <input id="m3" class="input mini" inputmode="decimal"/>
+      </div>
+      <div class="pair">
+        <div class="label">Kerosene:</div>
+        <input id="kerosene" class="input mini" inputmode="decimal"/>
+      </div>
+
+      <div class="pair">
+        <div class="label"></div>
+        <div></div>
+      </div>
+      <div class="pair">
+        <div class="label">Additive:</div>
+        <input id="additive" class="input mini" inputmode="decimal"/>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:14px;">Attachments</div>
+    <div class="attachments">
+      <label class="attachment"><span class="pill" data-state="blank" data-key="qvc">—</span> QVC Attached</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="site">—</span> Site Memo</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="agg">—</span> Agg Test Results</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="ball">—</span> Ball Penetration Test</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="spray">—</span> Spray Sheet</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="photos">—</span> Photos</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="docket">—</span> Delivery Docket</label>
+      <label class="attachment"><span class="pill" data-state="blank" data-key="ncrs">—</span> NCRs</label>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="doPDF()">PDF</button>
+      <button class="btn-danger" onclick="doReset()">Reset All</button>
+    </div>
+
+    <div class="nav">
+      <a href="page6.html">Page 6</a>
+    </div>
+  </div>
+
+  <script src="app.js?v=20250918?v=20250918"></script>
+
+<script>
+(function(){
+  // Version string (static parts) + today's date
+  function setVersion() {
+    try {
+      var el = document.getElementById('versionString');
+      if (el) {
+        var today = new Date().toISOString().split('T')[0];
+        el.textContent = "2.0.2 Pro — " + today + " — J. Hugo";
+      }
+    } catch(e) {}
+  }
+  document.addEventListener('DOMContentLoaded', setVersion);
+
+  // Service worker registration with auto-refresh
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      var swUrl = new URL('service-worker.js', window.location.href).toString();
+      navigator.serviceWorker.register(swUrl).then(function(reg){
+        // Force waiting worker to activate ASAP
+        if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+        reg.addEventListener('updatefound', function(){
+          var nw = reg.installing;
+          if (nw) {
+            nw.addEventListener('statechange', function(){
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                // New version installed — when it takes control, the page will reload (below)
+                console.log('New version installed, waiting for controllerchange to reload...');
               }
             });
-          });
-        }).catch(err => console.log('SW registration failed:', err));
-        // Auto-reload when new SW takes control
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          window.location.reload();
+          }
         });
+      }).catch(function(e){ console.log('SW reg failed', e); });
+
+      // When SW takes control, reload to get fresh HTML
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        window.location.reload();
       });
-    }
-  </script>
+
+      // Also check for updates when page becomes visible again
+      document.addEventListener('visibilitychange', function(){
+        if (document.visibilityState === 'visible' && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.getRegistration().then(function(reg){
+            if (reg) reg.update();
+          });
+        }
+      });
+    });
+  }
+})();
+</script>
+
 </body>
 </html>

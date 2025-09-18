@@ -2,18 +2,20 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clear Cache & Reload</title>
+<style>body{font-family:Arial,sans-serif;margin:20px}</style>
 </head><body>
-<h3>Clear Cache & Reload</h3>
+<h2>Clear Cache & Reload</h2>
+<p>This will unregister the Service Worker and delete all caches, then reload.</p>
 <button onclick="kill()">Clear</button>
 <pre id="out"></pre>
 <script>
 async function kill(){
-  let out = document.getElementById('out');
+  const out = document.getElementById('out');
   try{
     const regs = await navigator.serviceWorker.getRegistrations();
-    for (const reg of regs){ await reg.unregister(); }
+    for (const reg of regs) { await reg.unregister(); }
     const keys = await caches.keys();
-    for (const k of keys){ await caches.delete(k); }
+    for (const k of keys) { await caches.delete(k); }
     out.textContent = 'Cleared. Reloading...';
     location.reload(true);
   }catch(e){
