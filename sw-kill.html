@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html><body>
-<h3>Clear Cache Helper</h3>
-<button onclick="killSW()">Clear Cache & Reload</button>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clear Cache & Reload</title>
+</head><body>
+<h3>Clear Cache & Reload</h3>
+<button onclick="kill()">Clear</button>
+<pre id="out"></pre>
 <script>
-async function killSW() {
-  const regs = await navigator.serviceWorker.getRegistrations();
-  for (let reg of regs) { await reg.unregister(); }
-  caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-  location.reload(true);
+async function kill(){
+  let out = document.getElementById('out');
+  try{
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const reg of regs){ await reg.unregister(); }
+    const keys = await caches.keys();
+    for (const k of keys){ await caches.delete(k); }
+    out.textContent = 'Cleared. Reloading...';
+    location.reload(true);
+  }catch(e){
+    out.textContent = 'Error: ' + e;
+  }
 }
 </script>
 </body></html>

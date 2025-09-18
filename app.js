@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const workStart = document.getElementById("workStart");
   const workEnd = document.getElementById("workEnd");
   const guaranteed = document.getElementById("guaranteed");
-  const conformed = document.getElementById("conformed");
   const bitumen = document.getElementById("bitumen");
   const kerosene = document.getElementById("kerosene");
   const additive = document.getElementById("additive");
@@ -10,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (workStart) {
     workStart.addEventListener("input", () => {
-      workEnd.value = workStart.value;
-      guaranteed.value = workStart.value;
+      if (workEnd) workEnd.value = workStart.value;
+      if (guaranteed) guaranteed.value = workStart.value;
     });
   }
 

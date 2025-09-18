@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MatTestPro 2.0.2 Pro</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20250918">
 </head>
 <body>
   <header>
@@ -14,11 +14,12 @@
 
   <main>
     <h2>Welcome to MatTestPro</h2>
-    <p>Use the menu to switch between forms.</p>
-    <a href="page6.html">Go to Page 6</a>
+    <p>If you see today's date at the top, you're on the latest build.</p>
+    <p><a href="./page6.html">Go to Page 6</a></p>
+    <p><a href="./sw-kill.html">Force Clear Cache (backup)</a></p>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=20250918"></script>
   <script>
     // Update version string with today's date
     document.addEventListener("DOMContentLoaded", () => {
@@ -27,12 +28,28 @@
         "2.0.2 Pro — " + today + " — J. Hugo";
     });
 
-    // Register service worker
+    // Register service worker with project-relative path
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(reg => console.log('Service Worker registered:', reg.scope))
-          .catch(err => console.log('Service Worker error:', err));
+        const swUrl = new URL('service-worker.js', window.location.href).toString();
+        navigator.serviceWorker.register(swUrl).then(reg => {
+          // If there's an updated SW waiting, tell it to activate
+          if (reg.waiting) { reg.waiting.postMessage({type: 'SKIP_WAITING'}); }
+          // Listen for updates
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker && newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New SW installed, trigger refresh when it takes control
+                console.log('New version installed; page will auto-refresh.');
+              }
+            });
+          });
+        }).catch(err => console.log('SW registration failed:', err));
+        // Auto-reload when new SW takes control
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          window.location.reload();
+        });
       });
     }
   </script>
