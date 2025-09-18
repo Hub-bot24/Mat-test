@@ -3,23 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MatTestPro v3.34</title>
+  <title>MatTestPro v3.35</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>MatTestPro v3.34</h1>
-  <form id="matForm">
-    <label>Work Start: <input type="text" id="workStart"></label><br>
-    <label>Work End: <input type="text" id="workEnd"></label><br>
-    <label>Guaranteed: <input type="text" id="guaranteed"></label><br>
-    <label>Conformed: <input type="text" id="conformed"></label><br>
-    <label>Bitumen: <input type="number" step="0.01" id="bitumen"></label><br>
-    <label>Kerosene: <input type="number" step="0.01" id="kerosene"></label><br>
-    <label>Additive: <input type="number" step="0.01" id="additive"></label><br>
-    <label>Total Litres: <input type="text" id="totalLitres" readonly></label><br>
-    <button type="button" id="exportPDF">Export PDF</button>
-  </form>
+  <header>
+    <img src="icons/colas-logo.svg" alt="COLAS" class="logo">
+    <div class="header-right">
+      <select id="pageSelect">
+        <option value="page1">Page 1 – Cover Aggregate</option>
+        <option value="page6">Page 6 – Bitumen/Kerosene/Additive</option>
+      </select>
+      <span class="version">v3.35</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="page1" class="page active">
+      <h2>Field Spread Rate of Cover Aggregate</h2>
+      <!-- Page 1 content placeholder -->
+      <form>
+        <label>Aggregate Type: <input type="text"></label><br>
+        <label>Spread Rate: <input type="number" step="0.01"></label><br>
+        <label>Notes: <input type="text"></label><br>
+      </form>
+    </section>
+
+    <section id="page6" class="page">
+      <h2>Field Spread Rate of Bitumen/Kerosene/Additive</h2>
+      <form id="page6Form">
+        <label>Work Start: <input type="text" id="workStart"></label><br>
+        <label>Work End: <input type="text" id="workEnd"></label><br>
+        <label>Guaranteed: <input type="text" id="guaranteed"></label><br>
+        <label>Conformed: <input type="text" id="conformed"></label><br>
+        <label>Bitumen: <input type="number" step="0.01" id="bitumen"></label><br>
+        <label>Kerosene: <input type="number" step="0.01" id="kerosene"></label><br>
+        <label>Additive: <input type="number" step="0.01" id="additive"></label><br>
+        <label>Total Litres: <input type="text" id="totalLitres" readonly></label><br>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <button id="exportCurrent">Export Current Page</button>
+    <button id="exportAll">Export All Pages</button>
+  </footer>
 
   <script src="app.js"></script>
 </body>
