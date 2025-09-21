@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spray Seal QA Lot Pack</title>
+  <link rel="stylesheet" href="style_fixed.css">
+  <script defer src="app_fixed.js"></script>
+</head>
+<body>
+  <header>
+    <img src="icons/logo.png" alt="Logo" class="logo">
+    <h1>Spray Seal QA Lot Pack</h1>
+  </header>
+
+  <main>
+    <form id="qaForm">
+      <label>Job No.: <input type="text" id="jobNo"></label>
+      <label>Project Name: <input type="text" id="projectName"></label>
+      <label>Work Start: <input type="date" id="workStart"></label>
+      <label>Work End: <input type="date" id="workEnd"></label>
+      <label>Bitumen (L): <input type="number" id="bitumen" step="0.01"></label>
+      <label>Kerosene (L): <input type="number" id="kerosene" step="0.01"></label>
+      <label>Additive (L): <input type="number" id="additive" step="0.01"></label>
+      <label>Total Litres: <input type="number" id="totalLitres" readonly></label>
+
+      <div class="actions">
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
