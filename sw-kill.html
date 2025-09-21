@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clear Cache & Reload</title>
-<style>body{font-family:Arial,sans-serif;margin:20px}</style>
-</head><body>
-<h2>Clear Cache & Reload</h2>
-<p>This will unregister the Service Worker and delete all caches, then reload.</p>
-<button onclick="kill()">Clear</button>
-<pre id="out"></pre>
+<!doctype html><meta charset="utf-8">
+<title>Clear SW Cache</title>
+<style>body{font-family:system-ui;padding:20px}button{padding:10px 14px}</style>
+<h1>Clear Cache & Reload</h1>
+<p>This will unregister the service worker and delete all caches for this origin.</p>
+<button id="go">Clear Cache & Reload</button>
+<div id="out"></div>
 <script>
-async function kill(){
+async function clearAll(){
   const out = document.getElementById('out');
-  try{
+  if('serviceWorker' in navigator){
     const regs = await navigator.serviceWorker.getRegistrations();
-    for (const reg of regs) { await reg.unregister(); }
-    const keys = await caches.keys();
-    for (const k of keys) { await caches.delete(k); }
-    out.textContent = 'Cleared. Reloading...';
-    location.reload(true);
-  }catch(e){
-    out.textContent = 'Error: ' + e;
+    for(const r of regs){ await r.unregister(); }
   }
+  const keys = await caches.keys();
+  for(const k of keys){ await caches.delete(k); }
+  out.textContent = 'Done. Reloading...';
+  setTimeout(()=>location.reload(true), 500);
 }
+document.getElementById('go').addEventListener('click', clearAll);
 </script>
-</body></html>
