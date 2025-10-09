@@ -5,5 +5,33 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffd400",
-  "icons": []
+  "icons": [],
+  "shortcuts": [
+    {
+      "name": "Mat Test \u2013 Page 2",
+      "short_name": "Page 2",
+      "url": "page2.html",
+      "description": "Open the additional notes page"
+    },
+    {
+      "name": "Surfacing Checklist",
+      "short_name": "Surfacing Checklist",
+      "url": "surfacing_checklist.html"
+    },
+    {
+      "name": "Lot Conformance Report",
+      "short_name": "Lot Conformance Report",
+      "url": "conformance_report.html"
+    },
+    {
+      "name": "Field Spread (Agg\u20110009A)",
+      "short_name": "Field Spread (Agg\u20110009A)",
+      "url": "field_spread_canvas.html"
+    },
+    {
+      "name": "Mat Test (Index)",
+      "short_name": "Mat Test",
+      "url": "index.html"
+    }
+  ]
 }

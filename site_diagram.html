@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Spread Rate of Cover Aggregate (Canvas Mat)</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd400">
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f9; }
+    #page { display:flex; flex-direction:column; justify-content:space-between;
+             max-width:210mm; margin:0 auto; background:#fff; min-height:100vh; }
+    .wrap { padding:14px; flex:1; }
+    .header { display:flex; align-items:center; border-bottom:2px solid #ccc; padding-bottom:6px; margin-bottom:10px; }
+    .logo { height:50px; margin-right:12px; }
+    h1 { font-size:20px; margin:0; flex:1; }
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:10px 0; }
+    .info-grid label { font-weight:bold; font-size:12px; }
+    .info-grid input { width:100%; border:1px solid #ccc; padding:4px; font-size:12px; }
+    .panel { border:1px solid #ccc; padding:8px; margin:6px 0; border-radius:6px; background:#fff; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { border:1px solid #999; padding:4px; }
+    th { background:#eee; text-align:left; }
+    .actions { margin:12px 0; display:flex; justify-content:space-between; }
+    .btn-pdf { background:#4CAF50; color:#fff; }
+    .btn-reset { background:#f44336; color:#fff; }
+    button { padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; }
+    footer { text-align:center; font-size:10px; color:#000; font-weight:bold; padding:6px; }
+    @page { size: A4 portrait; margin: 10mm; }
+    @media print {
+      html, body { width:210mm; height:297mm; margin:0; padding:0; }
+      #page { transform: scale(0.95); transform-origin: top left; width:105%; height:auto; }
+      .actions { display:none; }
+      * { -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div id="page">
+  <div class="wrap">
+    <div class="header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/OOjs_UI_icon_edit-ltr-progressive.svg/48px-OOjs_UI_icon_edit-ltr-progressive.svg.png" class="logo" alt="logo" />
+      <h1>Site Diagram Worksheet</h1>
+      <div class="badge">PWA</div>
+    </div>
+
+    <p>Map not to scale — include chainages and notes. (Add photos via links on Page 2.)</p>
+
+    <div class="section">
+      <div class="info-grid">
+        <label>Customer</label><input type="text" id="sd_customer" placeholder="">
+        <label>Job No</label><input type="text" id="sd_job" placeholder="">
+        <label>Job Location</label><input type="text" id="sd_location" placeholder="">
+        <label>Date</label><input type="date" id="sd_date">
+        <label>Chainage/Notes</label><textarea id="sd_chainage" rows="5" placeholder="" style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Additional Site Diagram Worksheet Notes</h2>
+      <textarea id="site_diagram_notes" rows="6" style="width:100%;" placeholder="Notes / comments..."></textarea>
+    </div>
+
+    <div class="btn-row" style="margin-top:14px;">
+      <a class="btn" href="index.html">← Page 1</a>
+      <a class="btn" href="page2.html">Page 2</a>
+      <button class="btn" id="save_btn">Save</button>
+      <button class="btn-reset" id="reset_btn">Reset</button>
+    </div>
+  </div>
+  <footer>v2.0.2 Pro — Site Diagram Worksheet — 2025-10-09</footer>
+</div>
+
+<script>
+(function() {
+  const KEY = 'site_diagram.html_v1';
+  const $ = (id) => document.getElementById(id);
+  const fieldIds = ["sd_customer", "sd_job", "sd_location", "sd_date", "sd_chainage", "site_diagram_notes"];
+
+  // load
+  try {
+    const data = JSON.parse(localStorage.getItem(KEY) || '{}');
+    fieldIds.forEach(id => { if (data[id] !== undefined) $(id).value = data[id]; });
+    // auto-set date fields if blank
+    fieldIds.filter(id => id.toLowerCase().includes('date')).forEach(id => {
+      if (!$(id).value) { try { $(id).valueAsDate = new Date(); } catch(e) {} }
+    });
+  } catch(e) { console.warn(e); }
+
+  // save
+  document.getElementById('save_btn').addEventListener('click', () => {
+    const data = {};
+    fieldIds.forEach(id => data[id] = $(id).value);
+    localStorage.setItem(KEY, JSON.stringify(data));
+    alert('Saved locally.');
+  });
+
+  // reset
+  document.getElementById('reset_btn').addEventListener('click', () => {
+    if (confirm('Clear this form?')) {
+      fieldIds.forEach(id => $(id).value = '');
+      localStorage.removeItem(KEY);
+    }
+  });
+
+  // SW
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+})();
+</script>
+</body>
+</html>

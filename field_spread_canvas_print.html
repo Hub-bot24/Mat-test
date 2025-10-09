@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Field Spread Rate — Agg‑0009A (Canvas Mat, Q711A)</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ffd400">
+  <style>
+/* A4 print landscape: switch to portrait by toggling the size below */
+@page { size: A4 portrait; margin: 12mm; }
+:root {
+  --border: #000;
+  --muted: #000;
+  --pad: 6px;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  background: #fff;
+  margin: 0;
+}
+.form {
+  width: 190mm; /* within A4 minus margins */
+  margin: 0 auto;
+}
+.header {
+  display: grid;
+  grid-template-columns: 28mm 1fr 36mm;
+  align-items: center;
+  gap: 6mm;
+  margin-bottom: 6mm;
+}
+.header .logo {
+  height: 24mm;
+  width: auto;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  padding: 2mm;
+}
+.header .title {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+.header h1 {
+  font-size: 14pt;
+  font-weight: 700;
+  margin: 0;
+}
+.header .meta {
+  font-size: 9pt;
+  color: #000;
+}
+.header .form-code {
+  border: 1px solid var(--border);
+  padding: 2mm;
+  font-size: 9pt;
+  text-align: center;
+  line-height: 1.2;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4mm;
+}
+.table th, .table td {
+  border: 1px solid var(--border);
+  padding: var(--pad);
+  font-size: 10.5pt;
+  vertical-align: top;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2mm; }
+.label { font-size: 9pt; color: #000; margin-bottom: 2px; }
+.input {
+  min-height: 9mm;
+  border: 1px solid var(--border);
+  padding: 2mm;
+  font-size: 11pt;
+  width: 100%;
+}
+.row { display: grid; grid-template-columns: 40mm 1fr 35mm 35mm; gap: 2mm; margin-bottom: 2mm; }
+.small { min-height: 7mm; }
+.notes { min-height: 24mm; }
+.signature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 6mm; }
+.sig-box { border: 1px solid var(--border); height: 18mm; }
+.footer-meta {
+  margin-top: 6mm;
+  display: flex; justify-content: space-between; font-size: 9pt;
+  border-top: 1px solid var(--border); padding-top: 2mm;
+}
+/* Screen-only toolbar */
+.toolbar { display: flex; gap: 8px; margin: 8px 0 16px 0; }
+.toolbar button, .toolbar a {
+  padding: 8px 12px; border: 1px solid #000; background:#fff; color:#000; text-decoration:none;
+  cursor:pointer;
+}
+@media print {
+  .toolbar { display: none !important; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <a href="index.html">← Back</a>
+  <button onclick="window.print()">Print</button>
+</div>
+<div class="form">
+  <div class="header">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/240px-React-icon.svg.png" alt="Logo">
+    <div class="title">
+      <h1>Field Spread Rate — Agg‑0009A (Canvas Mat, Q711A)</h1>
+      <div class="meta">Project / Contract / Location / Date</div>
+    </div>
+    <div class="form-code">
+      <div><strong>AGG‑0009A</strong></div>
+      <div>Rev: V1</div>
+      <div>Date: 2025-10-09</div>
+    </div>
+  </div>
+  
+<table class="table">
+  <tr><th style="width:35%">Project</th><td></td></tr>
+  <tr><th>Site Location</th><td></td></tr>
+  <tr><th>Quarry Source</th><td></td></tr>
+  <tr><th>Aggregate Size (mm)</th><td></td></tr>
+  <tr><th>Date</th><td></td></tr>
+</table>
+
+<table class="table">
+  <tr><th colspan="4">Measurements</th></tr>
+  <tr><th style="width:35%">M1 — Mat + Aggregate (kg)</th><td></td><th style="width:35%">M2 — Mat Only (kg)</th><td></td></tr>
+  <tr><th>A — Area of Mat (m²)</th><td></td><th>DL — Loose Unit Mass (t/m³)</th><td></td></tr>
+</table>
+
+<table class="table">
+  <tr><th style="width:35%">R1 — Spread (kg/m²)</th><td></td></tr>
+  <tr><th>R2 — Spread (m²/m³)</th><td></td></tr>
+</table>
+
+<div class="label">Formulae:</div>
+<div class="input small">R1 = (M1 − M2) / A</div>
+<div class="input small">R2 = 1000 × DL / R1</div>
+
+  <div class="footer-meta">
+    <div>Prepared by: ____________  Approved: ____________</div>
+    <div>Page 1 of 1</div>
+  </div>
+</div>
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }
+</script>
+</body>
+</html>

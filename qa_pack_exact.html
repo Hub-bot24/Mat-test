@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA Pack — Exact PDF Pages</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffd400">
+<style>
+@page { size: A4 portrait; margin: 0; }
+html, body { height: 100%; margin: 0; background: #ccc; }
+.page {
+  width: 210mm; height: 297mm;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 0 0.5mm rgba(0,0,0,0.4);
+  page-break-after: always;
+  position: relative;
+}
+.page img.bg {
+  width: 210mm; height: 297mm; display: block;
+}
+.toolbar { display:flex; gap:8px; padding:8px; background:#f5f5f5; border-bottom:1px solid #ddd; }
+.toolbar a, .toolbar button { padding:8px 12px; border:1px solid #000; background:#fff; text-decoration:none; color:#000; }
+@media print {
+  .toolbar { display:none !important; }
+  body { background: #fff; }
+  .page { box-shadow:none; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <a href="index.html">← Back</a>
+  <button onclick="window.print()">Print</button>
+</div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-1.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-2.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-3.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-4.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-5.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-6.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-7.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-8.png" alt="PDF Page"></div>
+<div class="page"><img class="bg" src="assets/pdf_pages/page-9.png" alt="PDF Page"></div>
+
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }
+</script>
+</body></html>
