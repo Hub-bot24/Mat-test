@@ -1,8 +1,155 @@
-<!doctype html><meta charset="utf-8">
-<title>Mat-test — LIVE Check</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QA Pack — EXACT-size + Fillable</title>
 <style>
-  body{margin:0;min-height:100vh;display:grid;place-items:center;
-       font:20px system-ui;background:#0b1220;color:#e2e8f0}
+  @page { size: A4 portrait; margin: 0; }
+  html,body{height:100%;margin:0;background:#fff}
+  .toolbar{position:sticky;top:0;z-index:10;display:flex;gap:8px;flex-wrap:wrap;padding:8px;background:#f5f5f5;border-bottom:1px solid #ddd}
+  .toolbar button,.toolbar select{padding:8px 12px}
+  .page{width:210mm;height:297mm;margin:0 auto;position:relative;page-break-after:always;background:#fff}
+  .bg{width:210mm;height:297mm;display:block;object-fit:fill}
+  .overlay{position:absolute;left:0;top:0;width:210mm;height:297mm}
+  .box{position:absolute;min-width:20mm;min-height:8mm;border:1px dashed #0ea5e9;background:rgba(255,255,255,.9);padding:2mm;font:12pt Arial;outline:none}
+  .box.dragging{opacity:.7}
+  .hint{position:absolute;right:6px;bottom:6px;font:9pt Arial;background:rgba(255,255,255,.7);padding:2px 6px;border:1px solid #ccc}
+  .missing{background:repeating-linear-gradient(45deg,#eee,#eee 10px,#ddd 10px,#ddd 20px)}
+  .missing-msg{position:absolute;top:10mm;left:10mm;background:#fff;padding:6px 10px;border:1px solid #bbb;font:11pt system-ui}
+  @media print{.toolbar{display:none!important}.box{border:none}.hint{display:none}}
 </style>
-<div>✅ LIVE from <b>docs/index.html</b> — <span id="t"></span></div>
-<script>document.getElementById('t').textContent=new Date().toISOString();</script>
+</head>
+<body>
+<div class="toolbar">
+  <button id="add">Add box</button>
+  <select id="goto"></select>
+  <button id="print">Print</button>
+  <button id="clear">Clear this page</button>
+  <button id="clear-all">Clear ALL pages</button>
+</div>
+
+<!-- PAGES: replace src with real PNGs in /docs later -->
+<div id="pages"></div>
+
+<script>
+(function(){
+  const NUM_PAGES = 7; // change if your pack has more/less
+  const pagesRoot = document.getElementById('pages');
+  const gotoSel = document.getElementById('goto');
+  const addBtn = document.getElementById('add');
+  const printBtn = document.getElementById('print');
+  const clearBtn = document.getElementById('clear');
+  const clearAllBtn = document.getElementById('clear-all');
+  const KEY = (i)=>'qa_fillable_v1_page_'+i;
+
+  // Build pages
+  for(let i=1;i<=NUM_PAGES;i++){
+    const page = document.createElement('div');
+    page.className = 'page'; page.dataset.index = (i-1);
+    const img = document.createElement('img');
+    img.className = 'bg';
+    img.alt = 'Page '+i;
+    img.src = 'page-'+i+'.png';   // <-- put your real PNGs in /docs with these names
+    img.addEventListener('error', ()=>{
+      page.classList.add('missing');
+      const m=document.createElement('div');
+      m.className='missing-msg';
+      m.textContent='Missing image: '+img.src+' (upload to /docs)';
+      page.appendChild(m);
+    });
+
+    const overlay = document.createElement('div');
+    overlay.className='overlay';
+    const hint = document.createElement('div');
+    hint.className='hint';
+    hint.textContent='Double-click to add a text box • Drag to move • Shift+drag to resize • Auto-saves';
+
+    page.appendChild(img); page.appendChild(overlay); page.appendChild(hint);
+    pagesRoot.appendChild(page);
+
+    const opt = document.createElement('option');
+    opt.value = (i-1); opt.textContent = 'Page '+i;
+    gotoSel.appendChild(opt);
+  }
+
+  const pages = Array.from(document.querySelectorAll('.page'));
+  const $ = (s,root=document)=>root.querySelector(s);
+
+  function save(i){
+    const overlay = $('.overlay', pages[i]);
+    const data = Array.from(overlay.querySelectorAll('.box')).map(b=>({
+      x:b.style.left,y:b.style.top,w:b.style.width,h:b.style.height,html:b.innerHTML
+    }));
+    localStorage.setItem(KEY(i), JSON.stringify(data));
+  }
+  function load(i){
+    const overlay = $('.overlay', pages[i]);
+    overlay.innerHTML='';
+    try{
+      const raw = localStorage.getItem(KEY(i)); if(!raw) return;
+      JSON.parse(raw).forEach(d=>{
+        const b = createBox(overlay);
+        b.style.left=d.x; b.style.top=d.y;
+        if(d.w) b.style.width=d.w; if(d.h) b.style.height=d.h;
+        b.innerHTML=d.html;
+      });
+    }catch(e){}
+  }
+  function createBox(overlay){
+    const b=document.createElement('div');
+    b.className='box'; b.contentEditable='true';
+    b.style.left='10mm'; b.style.top='10mm'; b.style.width='60mm'; b.style.height='10mm';
+    overlay.appendChild(b);
+
+    // drag
+    let drag=null;
+    b.addEventListener('mousedown',e=>{
+      if(e.target!==b) return;
+      drag={x:e.clientX,y:e.clientY,left:b.offsetLeft,top:b.offsetTop};
+      b.classList.add('dragging'); e.preventDefault();
+    });
+    document.addEventListener('mousemove',e=>{
+      if(!drag) return;
+      b.style.left=(drag.left+e.clientX-drag.x)+'px';
+      b.style.top=(drag.top+e.clientY-drag.y)+'px';
+    });
+    document.addEventListener('mouseup',()=>{
+      if(drag){ b.classList.remove('dragging'); drag=null; persist(b); }
+    });
+
+    // resize with Shift+drag
+    b.addEventListener('mousedown',e=>{
+      if(!e.shiftKey) return;
+      const s={x:e.clientX,y:e.clientY,w:b.offsetWidth,h:b.offsetHeight};
+      const mv=ev=>{ b.style.width=(s.w+ev.clientX-s.x)+'px'; b.style.height=(s.h+ev.clientY-s.y)+'px'; };
+      const up=()=>{ document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); persist(b); };
+      document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up);
+      e.preventDefault();
+    });
+
+    b.addEventListener('input',()=>persist(b));
+    return b;
+  }
+  function persist(box){ const i=parseInt(box.closest('.page').dataset.index,10); save(i); }
+
+  // init
+  pages.forEach((_,i)=>load(i));
+  gotoSel.addEventListener('change',e=>{
+    const i=parseInt(e.target.value,10);
+    pages[i].scrollIntoView({behavior:'smooth'}); 
+  });
+  addBtn.addEventListener('click',()=>{ const i=parseInt(gotoSel.value||'0',10); const overlay=$('.overlay', pages[i]); createBox(overlay); save(i); });
+  clearBtn.addEventListener('click',()=>{
+    const i=parseInt(gotoSel.value||'0',10);
+    if(confirm('Clear Page '+(i+1)+'?')){ localStorage.removeItem(KEY(i)); $('.overlay', pages[i]).innerHTML=''; }
+  });
+  clearAllBtn.addEventListener('click',()=>{
+    if(!confirm('Clear ALL pages?')) return;
+    pages.forEach((_,i)=>{ localStorage.removeItem(KEY(i)); $('.overlay', pages[i]).innerHTML=''; });
+  });
+  document.querySelectorAll('.overlay').forEach((ov,i)=>ov.addEventListener('dblclick',()=>{ createBox(ov); save(i); }));
+  document.getElementById('print').addEventListener('click',()=>window.print());
+})();
+</script>
+</body>
+</html>
