@@ -1,37 +1,20 @@
 {
   "name": "Colas Mat Test",
-  "short_name": "MatTest",
-  "start_url": "./index.html",
+  "short_name": "Mat Test",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffd400",
-  "icons": [],
-  "shortcuts": [
+  "icons": [
     {
-      "name": "Mat Test \u2013 Page 2",
-      "short_name": "Page 2",
-      "url": "page2.html",
-      "description": "Open the additional notes page"
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "name": "Surfacing Checklist",
-      "short_name": "Surfacing Checklist",
-      "url": "surfacing_checklist.html"
-    },
-    {
-      "name": "Lot Conformance Report",
-      "short_name": "Lot Conformance Report",
-      "url": "conformance_report.html"
-    },
-    {
-      "name": "Field Spread (Agg\u20110009A)",
-      "short_name": "Field Spread (Agg\u20110009A)",
-      "url": "field_spread_canvas.html"
-    },
-    {
-      "name": "Mat Test (Index)",
-      "short_name": "Mat Test",
-      "url": "index.html"
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
